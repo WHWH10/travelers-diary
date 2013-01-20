@@ -1,7 +1,6 @@
 package com.android.diary;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +9,7 @@ import com.android.diary.R;
 
 import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -22,6 +22,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ListAdapter;
@@ -29,9 +30,11 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
 public class RoutesActivity extends ListActivity{
+	
+//	private static final String LOG_TAG = "ROUTES ACTIVITY";
 
 	private ListView listView;
-	private List<LocationInfo> routes;
+	private List<Route> routes;
 	private int itemSelected;
 	private String title;
 	private boolean showRoute;
@@ -52,26 +55,30 @@ public class RoutesActivity extends ListActivity{
 	}
 	
 	private void prepareList()
-	{
+	{		
 		DatabaseHandler db = new DatabaseHandler(this);
-		this.routes = db.getRouteTitles();
+		this.routes = db.getRoutes();
 		db.close();
+		
+		if(this.routes == null || this.routes.isEmpty())
+			return;	
 		
 		String from[] = {"route", "date"};
 		
 		List<Map<String, String>> g = new ArrayList<Map<String, String>>();
-		for(int i = 0; i < this.routes.size(); i++)
-		{
+		
+		for (int i = 0; i < this.routes.size(); i++) {
 			Map<String, String> map = new HashMap<String, String>();
-			Date date = new Date();
-			date.setTime(routes.get(i).getTime());
-			String route = routes.get(i).getRoute();
-			if(routes.get(i).getRoute().equals(""))
-				route = getResources().getString(R.string.route) + ": " + routes.get(i).getRoute_id();
-			map.put("route", route);
-			map.put("date", getResources().getString(R.string.date) + ": " + date.toString());
+									
+			String routeTitle = this.routes.get(i).getTitle();
+			
+			if(routeTitle == null || routeTitle.isEmpty())
+				routeTitle = getString(R.string.unnamed);
+			map.put("route", routeTitle);
+			map.put("date", getResources().getString(R.string.date) + ": " + this.routes.get(i).getDateCreated());
 			g.add(map);
 		}
+		
 		ListAdapter adapter = new SimpleAdapter(this, g, android.R.layout.two_line_list_item, from, new int[] {android.R.id.text1, android.R.id.text2});
 		setListAdapter(adapter);
 	}
@@ -128,7 +135,7 @@ public class RoutesActivity extends ListActivity{
 	}	
 	
 	@Override
-	public void finish() {
+	public void finish() {		
 		if(showRoute)
 			setResult(itemSelected);
 		else 
@@ -138,11 +145,19 @@ public class RoutesActivity extends ListActivity{
 	
 	private void showRouteOnMap()
 	{
-		SharedPreferences settings = getSharedPreferences(MainActivity.APP_PREFS, 0);
+		SharedPreferences settings = getSharedPreferences(MapActivity.APP_PREFS, 0);
 		SharedPreferences.Editor editor = settings.edit();		
-		editor.putInt(MainActivity.LAST_ROUTE, MainActivity.ROUTES_CTRL);
+		editor.putInt(MapActivity.LAST_ROUTE, MapActivity.ROUTES_CTRL);
 		editor.commit();
-		itemSelected = this.routes.get(itemSelected).getRoute_id();
+		
+		if(this.routes == null || this.routes.size() <= itemSelected)
+		{
+			itemSelected = -1;
+			this.finish();
+		}
+		
+		itemSelected = this.routes.get(itemSelected).getRouteId();
+		
 		this.finish();
 	}
 
@@ -158,15 +173,14 @@ public class RoutesActivity extends ListActivity{
 		dialog.setView(editText);
 		dialog.setNeutralButton(R.string.dialog_set, new OnClickListener() {
 			
-			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				title = editText.getText().toString();
 				changeTitle();
+				getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 			}
 		});
 		dialog.setNegativeButton(R.string.dialog_cancel, new OnClickListener() {
 			
-			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				dialog.cancel();
 			}
@@ -174,35 +188,44 @@ public class RoutesActivity extends ListActivity{
 		dialog.show();		
 	}
 	
+	public void addRoute(View view)
+	{
+		EditText et = (EditText) findViewById(R.id.routes_title_editText);
+		if(et.getText().length() > 0)
+		{
+			ContentValues contentValues = new ContentValues();
+			contentValues.put(DatabaseHandler.KEY_TITLE, et.getText().toString());
+			
+			DatabaseHandler db = new DatabaseHandler(this);
+			db.insertRoute(contentValues);
+			db.close();
+			
+			prepareList();
+		}
+	}
+	
 	private void changeTitle()
 	{
-		if(!title.equals("") || !title.equals(" "))
-			routes.get(itemSelected).setRoute(title);
-		updateDatabase();
-		prepareList();
+		if(!title.isEmpty() && this.routes != null && itemSelected < this.routes.size())
+		{
+			ContentValues contentValues = new ContentValues();
+			contentValues.put(DatabaseHandler.KEY_TITLE, title);
+			
+			DatabaseHandler db = new DatabaseHandler(this);
+			db.updateRoute(contentValues, this.routes.get(itemSelected).getRouteId());
+			db.close();
+			prepareList();
+		}		
 	}
 	
 	private void deleteRoute()
 	{
-		DatabaseHandler db = new DatabaseHandler(this);
-		List<LocationInfo> loc = db.getRoute(routes.get(itemSelected).getRoute_id());
-		for(int i = 0; i < loc.size(); i++)
-		{
-			db.deleteLocationInfo(loc.get(i));
-		}
-		db.close();
-		prepareList();
-	}
-	
-	private void updateDatabase()
-	{
-		DatabaseHandler db = new DatabaseHandler(this);
-		List<LocationInfo> loc = db.getRoute(routes.get(itemSelected).getRoute_id());
-		for(int i = 0; i < loc.size(); i++)
-		{
-			loc.get(i).setRoute(title);
-			db.updateLocationInfo(loc.get(i));
-		}
-		db.close();
+		if(this.routes != null && this.routes.size() > itemSelected)
+		{				
+			DatabaseHandler db = new DatabaseHandler(this);
+			db.deleteRoute(this.routes.get(itemSelected).getRouteId());
+			db.close();
+			prepareList();			
+		}	
 	}
 }

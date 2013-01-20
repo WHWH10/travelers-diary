@@ -3,6 +3,7 @@ package com.android.diary;
 import java.util.Date;
 import java.util.List;
 
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningServiceInfo;
 import android.content.Context;
@@ -11,13 +12,19 @@ import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
 
 import com.android.diary.R;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.maps.*;
 
-public class MainActivity extends MapActivity {
+public class MapActivity extends Activity {
 
 	public static final String COORDINATES_FILE = "Coordinates.txt"; // File of coordinates
 	public static final String APP_PREFS = "app_prefs";
@@ -34,58 +41,54 @@ public class MainActivity extends MapActivity {
 	public static final int ROUTES_CTRL = -1;
 	public static final int ROUTES_REQ_CODE = 1;
 
-	private MapView mapView;
+	private static final int DEFAULT_ZOOM = 14;
+	
 	private Intent myService;
 	private List<LocationInfo> locationList;
-	private List<Overlay> mapOverlays;
-	private MapOverlay overlay;
+//	private List<Overlay> mapOverlays;
+//	private MapOverlay overlay;
+	private GoogleMap mapView;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
         
-        mapView = (MapView) findViewById(R.id.mapview);
-        mapView.setBuiltInZoomControls(true);
-        mapView.getController().setZoom(16);
-        mapView.setSatellite(false);
+        requestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
+//        getActionBar().setBackgroundDrawable(null);
+//        DatabaseHandler db = new DatabaseHandler(this);
+        setContentView(R.layout.activity_map);       
+        
+        mapView = ((MapFragment) getFragmentManager().findFragmentById(R.id.mapView)).getMap();       
 
-        mapOverlays = mapView.getOverlays();
-        overlay = new MapOverlay(getResources().getDrawable(R.drawable.mark_empty), this);
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
         Location location2 = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        GeoPoint point;
         
         if(location == null)
         {
         	if(location2 == null)
         	{
-        		mapOverlays.add(overlay);
+//        		mapOverlays.add(overlay);
         	}
         	else
         	{
-        		point = getGeoPoint(location2.getLatitude(), location2.getLongitude());
-        		mapOverlays.add(overlay);
-        	    mapView.getController().animateTo(point);
+//        		mapOverlays.add(overlay);
+        		mapView.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location2.getLatitude(), location2.getLongitude()), DEFAULT_ZOOM));
         	}
         }
         else
         {
         	if(location2 == null)
         	{
-        		point = getGeoPoint(location.getLatitude(), location.getLongitude());
-        		mapOverlays.add(overlay);
-                mapView.getController().animateTo(point);
+//        		mapOverlays.add(overlay);
+        		mapView.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), DEFAULT_ZOOM));
         	}
         	else
         	{
         		if(location.getTime() > location2.getTime())
-                	point = getGeoPoint(location.getLatitude(), location.getLongitude());
+        			mapView.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), DEFAULT_ZOOM));
                 else
-                	point = getGeoPoint(location2.getLatitude(), location2.getLongitude());
-                mapOverlays.add(overlay);
-                mapView.getController().animateTo(point);
+                	mapView.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location2.getLatitude(), location2.getLongitude()), DEFAULT_ZOOM));                
         	}
         }        
     }
@@ -152,11 +155,6 @@ public class MainActivity extends MapActivity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-
-	@Override
-	protected boolean isRouteDisplayed() {
-		return false;
-	}
 	
 //	private void getAllLocations()
 //	{
@@ -187,32 +185,27 @@ public class MainActivity extends MapActivity {
 	}
 	
 	@Override
-	protected void onStart() {
-		super.onStart();
-	}
-	
-	@Override
 	protected void onRestart() {
-		SharedPreferences settings = getSharedPreferences(MainActivity.APP_PREFS, 0);
-		int route = settings.getInt(LAST_ROUTE, -1);
-		if(route == -1)
-		{
-			super.onRestart();
-			return;
-		}
-		loadLastPoints(route);
+//		SharedPreferences settings = getSharedPreferences(MapActivity.APP_PREFS, 0);
+//		int route = settings.getInt(LAST_ROUTE, -1);
+//		if(route == -1)
+//		{
+//			super.onRestart();
+//			return;
+//		}
+//		loadLastPoints(route);
 		super.onRestart();
 	}
 
 	private void loadLastPoints(int route_id)
 	{
-		mapOverlays.add(overlay);
+//		mapOverlays.add(overlay);
 		showRouteOnMap(route_id);		
 	}
 	
 	private void saveLastRoute(int route_id)
 	{
-		SharedPreferences settings = getSharedPreferences(MainActivity.APP_PREFS, 0);
+		SharedPreferences settings = getSharedPreferences(MapActivity.APP_PREFS, 0);
 		SharedPreferences.Editor editor = settings.edit();		
 		editor.putInt(LAST_ROUTE, route_id);
 		editor.commit();
@@ -220,25 +213,25 @@ public class MainActivity extends MapActivity {
 	
 	@Override
 	protected void onStop() {
-		 if(!mapOverlays.isEmpty())
-	     {
-	         mapOverlays.clear();
-			 overlay.clear();
-	         mapView.getOverlays().clear();
-	         mapView.invalidate();
-	         if(locationList == null || locationList.isEmpty())
-	         {
-	        	 super.onStop();
-	        	 return;
-	         }
-	         saveLastRoute(locationList.get(0).getRoute_id());
-	     }
+//		 if(!mapOverlays.isEmpty())
+//	     {
+//	         mapOverlays.clear();
+//			 overlay.clear();
+////	         mapView.getOverlays().clear();
+////	         mapView.invalidate();
+//	         if(locationList == null || locationList.isEmpty())
+//	         {
+//	        	 super.onStop();
+//	        	 return;
+//	         }
+//	         saveLastRoute(locationList.get(0).getRoute_id());
+//	     }
 		super.onStop();
 	}
 
 	@Override
 	protected void onDestroy() {
-		saveLastRoute(ROUTES_CTRL);
+//		saveLastRoute(ROUTES_CTRL);
 		super.onDestroy();
 	}
 
@@ -247,13 +240,13 @@ public class MainActivity extends MapActivity {
 		DatabaseHandler db = new DatabaseHandler(this);
 		locationList = db.getRoute(routeID);
 		db.close();
-		mapOverlays.add(overlay);
+//		mapOverlays.add(overlay);
 		drawLocations();
 	}
 	
 	private void getLatestRoute()
 	{
-		SharedPreferences settings = getSharedPreferences(MainActivity.APP_PREFS, 0);
+		SharedPreferences settings = getSharedPreferences(MapActivity.APP_PREFS, 0);
 		int route = settings.getInt(ROUTE_ID, 0);
 		DatabaseHandler db = new DatabaseHandler(this);
 		if(locationList != null)
@@ -264,7 +257,9 @@ public class MainActivity extends MapActivity {
 	
 	private void drawLocations()
 	{
-		overlay.clear();
+//		overlay.clear();
+		if(locationList == null)
+			return;
 		for(int i = 0; i < locationList.size(); i++)
 		{
 			drawMarker(locationList.get(i));
@@ -275,8 +270,8 @@ public class MainActivity extends MapActivity {
 	{
 		GeoPoint point = getGeoPoint(loc.getAddress().getLatitude(), loc.getAddress().getLongitude());
 		OverlayItem overlayItem = new OverlayItem(point, "", "");
-        overlay.addOverlayItem(overlayItem);
-        mapView.getController().animateTo(point);
+//        overlay.addOverlayItem(overlayItem);
+//        mapView.getController().animateTo(point);
 	}
 	
 	private GeoPoint getGeoPoint(double latitude, double longitude)
@@ -307,8 +302,6 @@ public class MainActivity extends MapActivity {
 	public void onDetailsPressed(int index)
 	{
 		Intent intent = new Intent(this, DetailsActivity.class);
-		
-		System.out.println(index + " " + locationList.size());
 		
 		intent.putExtra(MARKER_TITLE, locationList.get(index).getTitle());
 		intent.putExtra(MARKER_DESCRIPTION, locationList.get(index).getDescription());

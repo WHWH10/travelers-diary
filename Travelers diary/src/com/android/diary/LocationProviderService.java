@@ -17,6 +17,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 import android.widget.Toast;
 
 public class LocationProviderService extends IntentService{
@@ -51,7 +52,7 @@ public class LocationProviderService extends IntentService{
 	{
 		NotificationCompat.Builder notification = new NotificationCompat.Builder(this);
 		
-		Intent notificationIntent = new Intent(this, MainActivity.class);
+		Intent notificationIntent = new Intent(this, MapActivity.class);
 		PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
 		notification.setSmallIcon(R.drawable.ic_launcher);
 		notification.setContentTitle(getText(R.string.notif_tracking_title));
@@ -70,7 +71,8 @@ public class LocationProviderService extends IntentService{
 		{
 			if(locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER))
 			{
-				locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10000, 0, locationListener);
+				Toast.makeText(this, "Locating", Toast.LENGTH_SHORT).show();
+				locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 2000, 0, locationListener);
 				notifyForegroundService();
 				return;
 			}
@@ -110,7 +112,7 @@ public class LocationProviderService extends IntentService{
 	
 	LocationListener locationListener = new LocationListener() {
 		
-		@Override
+		
 		public void onStatusChanged(String provider, int status, Bundle extras) {
 			switch (status) {
 			case LocationProvider.AVAILABLE:
@@ -128,7 +130,7 @@ public class LocationProviderService extends IntentService{
 			}
 		}
 		
-		@Override
+		
 		public void onProviderEnabled(String provider) {
 			if(provider.equals("gps"))
 			{
@@ -178,7 +180,7 @@ public class LocationProviderService extends IntentService{
 			}
 		}
 		
-		@Override
+		
 		public void onProviderDisabled(String provider) {
 			if(provider.equals("gps"))
 			{
@@ -186,7 +188,7 @@ public class LocationProviderService extends IntentService{
 				{
 					if(locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER))
 					{
-						locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10000, 0, locationListener);
+						locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 0, locationListener);
 						return;
 					}
 					else
@@ -213,11 +215,12 @@ public class LocationProviderService extends IntentService{
 			}
 		}
 		
-		@Override
+		
 		public void onLocationChanged(Location location) {
+			Log.i("LOC_SERVICE", "New Point");
 			DatabaseHandler db = new DatabaseHandler(getApplicationContext());
 			
-			db.addLocationInfo(new LocationInfo(location, route));
+			db.addLocationInfo(2, location.getAltitude(), location.getLatitude(), location.getLongitude());
     		counter++;
     		db.close();
     		newLocationAdded = true;
@@ -227,22 +230,22 @@ public class LocationProviderService extends IntentService{
 	
 	private void save()
 	{
-		SharedPreferences settings = getSharedPreferences(MainActivity.APP_PREFS, 0);
+		SharedPreferences settings = getSharedPreferences(MapActivity.APP_PREFS, 0);
 		SharedPreferences.Editor editor = settings.edit();
 		if(newLocationAdded)
-			editor.putInt(MainActivity.ROUTE_ID, this.route);
+			editor.putInt(MapActivity.ROUTE_ID, this.route);
 		else
 		{
 			this.route--;
-			editor.putInt(MainActivity.ROUTE_ID, this.route);
+			editor.putInt(MapActivity.ROUTE_ID, this.route);
 		}
 		editor.commit();
 	}
 	
 	private void load()
 	{
-		SharedPreferences settings = getSharedPreferences(MainActivity.APP_PREFS, 0);
-		route = settings.getInt(MainActivity.ROUTE_ID, 0);
+		SharedPreferences settings = getSharedPreferences(MapActivity.APP_PREFS, 0);
+		route = settings.getInt(MapActivity.ROUTE_ID, 0);
 	}
 	
 	/**

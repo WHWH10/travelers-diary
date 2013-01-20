@@ -6,6 +6,28 @@
          android:paddingLeft="8dp"
          android:paddingRight="8dp">
 
+     <TextView
+         android:id="@+id/routes_title_textView"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:text="@string/routes_title"
+         android:textAppearance="?android:attr/textAppearanceMedium" />
+
+     <EditText
+         android:id="@+id/routes_title_editText"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:hint="@string/routes_title_hint"
+         android:inputType="textCapSentences"
+         android:ems="10" />
+
+     <Button
+         android:id="@+id/routes_add_button"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:text="@string/routes_add_button"
+         android:onClick="addRoute" />
+
      <ListView android:id="@android:id/list"
                android:layout_width="match_parent"
                android:layout_height="0dp"

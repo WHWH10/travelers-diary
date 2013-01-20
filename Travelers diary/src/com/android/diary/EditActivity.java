@@ -35,7 +35,7 @@ public class EditActivity extends Activity{
 		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 		
 		Bundle bundle = getIntent().getExtras();
-		this.id = bundle.getInt(MainActivity.MARKER_ID);
+		this.id = bundle.getInt(MapActivity.MARKER_ID);
 		
 		DatabaseHandler db = new DatabaseHandler(this);
 		locationInfo = db.getLocationInfo(id);

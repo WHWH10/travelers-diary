@@ -17,10 +17,10 @@ import com.google.android.maps.OverlayItem;
 public class MapOverlay extends ItemizedOverlay<OverlayItem> {
 
 	private ArrayList<OverlayItem> mOverlays = new ArrayList<OverlayItem>();
-	private MainActivity mContext;
+	private MapActivity mContext;
 	private long systemTime = System.currentTimeMillis();
 
-	public MapOverlay(Drawable marker, MainActivity context) {
+	public MapOverlay(Drawable marker, MapActivity context) {
 		super(boundCenterBottom(marker));
 		mContext = context;
 		populate();
@@ -75,21 +75,18 @@ public class MapOverlay extends ItemizedOverlay<OverlayItem> {
 		dialog.setTitle(mContext.getText(R.string.select_action));
 		dialog.setNeutralButton(R.string.dialog_edit, new OnClickListener() {
 			
-			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				mContext.onEditPressed(ind);
 			}
 		});
 		dialog.setNegativeButton(R.string.dialog_cancel, new OnClickListener() {
 			
-			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				dialog.cancel();
 			}
 		});
 		dialog.setPositiveButton(R.string.dialog_details, new OnClickListener() {
 			
-			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				mContext.onDetailsPressed(ind);
 			}
