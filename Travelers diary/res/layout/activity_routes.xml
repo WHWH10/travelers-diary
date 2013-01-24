@@ -1,37 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
- <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-         android:orientation="vertical"
-         android:layout_width="match_parent"
-         android:layout_height="match_parent"
-         android:paddingLeft="8dp"
-         android:paddingRight="8dp">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp" >
 
-     <TextView
-         android:id="@+id/routes_title_textView"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:text="@string/routes_title"
-         android:textAppearance="?android:attr/textAppearanceMedium" />
+    <TextView
+        android:id="@+id/routes_title_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/routes_title"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
-     <EditText
-         android:id="@+id/routes_title_editText"
-         android:layout_width="match_parent"
-         android:layout_height="wrap_content"
-         android:hint="@string/routes_title_hint"
-         android:inputType="textCapSentences"
-         android:ems="10" />
+    <EditText
+        android:id="@+id/routes_title_editText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/routes_title_hint"
+        android:inputType="textCapSentences" />
 
-     <Button
-         android:id="@+id/routes_add_button"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:text="@string/routes_add_button"
-         android:onClick="addRoute" />
+    <Button
+        android:id="@+id/routes_add_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="addRoute"
+        android:text="@string/routes_add_button" />
 
-     <ListView android:id="@android:id/list"
-               android:layout_width="match_parent"
-               android:layout_height="0dp"
-               android:layout_weight="1"
-               android:drawSelectorOnTop="false"/>
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:drawSelectorOnTop="false" />
 
- </LinearLayout>
+</LinearLayout>

@@ -7,6 +7,7 @@ import java.util.List;
 import com.android.diary.R;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
@@ -19,7 +20,7 @@ import android.widget.Toast;
 public class EditActivity extends Activity{
 	
 	private int id;
-	private LocationInfo locationInfo;
+	private RouteItem routeItem;
 	private EditText title;
 	private EditText description;
 	private EditText country;
@@ -38,17 +39,17 @@ public class EditActivity extends Activity{
 		this.id = bundle.getInt(MapActivity.MARKER_ID);
 		
 		DatabaseHandler db = new DatabaseHandler(this);
-		locationInfo = db.getLocationInfo(id);
+		routeItem = db.getRouteItem(id);
 		db.close();
 		
 		TextView routeName = (TextView) findViewById(R.id.edit_route_name);
-		if(locationInfo.getRoute().equals(""))
-			routeName.setText(getString(R.string.route) + ": " + locationInfo.getRoute_id());
+		if(routeItem.getTitle().equals(""))
+			routeName.setText(getString(R.string.route) + ": " + routeItem.getRouteItemId());
 		else
-			routeName.setText(locationInfo.getRoute());
+			routeName.setText(routeItem.getTitle());
 		
 		TextView date = (TextView) findViewById(R.id.edit_date);
-		Date dt = new Date(locationInfo.getTime());
+		Date dt = routeItem.getDateCreated();
 		date.setText(dt.toString());
 		
 		loadViews();
@@ -64,11 +65,11 @@ public class EditActivity extends Activity{
 		postal = (EditText) findViewById(R.id.edit_postal);
 		feature = (EditText) findViewById(R.id.edit_feature);
 		
-		if(!locationInfo.getTitle().equals(""))
-			title.setText(locationInfo.getTitle());
-		if(!locationInfo.getDescription().equals(""))
-			description.setText(locationInfo.getDescription());
-		Address address = locationInfo.getAddress();
+		if(!routeItem.getTitle().equals(""))
+			title.setText(routeItem.getTitle());
+		if(!routeItem.getDescription().equals(""))
+			description.setText(routeItem.getDescription());
+		Address address = routeItem.getAddress();
 		
 		fillAddressFields(address);
 	}
@@ -103,12 +104,12 @@ public class EditActivity extends Activity{
 	{
 		Geocoder geocoder = new Geocoder(this);
 		DatabaseHandler db = new DatabaseHandler(this);
-		LocationInfo locationInfo = db.getLocationInfo(id);
+		RouteItem routeItem = db.getRouteItem(id);
 		db.close();
 		
 		try {			
-			List<Address> address = geocoder.getFromLocation(locationInfo.getAddress().getLatitude(), locationInfo.getAddress().getLongitude(), 1);
-			locationInfo.setAddress(address.get(0));
+			List<Address> address = geocoder.getFromLocation(routeItem.getLatitude(), routeItem.getLongitude(), 1);
+			routeItem.setAddress(address.get(0));
 			fillAddressFields(address.get(0));
 //			Toast.makeText(this, address.get(0).getAdminArea(), Toast.LENGTH_LONG).show();
 		} catch (IOException e) {
@@ -126,26 +127,24 @@ public class EditActivity extends Activity{
 	
 	private void saveData()
 	{
-		Address address = locationInfo.getAddress();
+		ContentValues cv = new ContentValues();
 		if(!title.getText().equals(""))
-			locationInfo.setTitle(title.getText().toString());
+			cv.put(DatabaseHandler.KEY_TITLE, title.getText().toString());
 		if(!description.getText().equals(""))
-			locationInfo.setDescription(description.getText().toString());
+			cv.put(DatabaseHandler.KEY_DESCRIPTION, description.getText().toString());
 		if(!country.getText().equals(""))
-			address.setCountryName(country.getText().toString());
+			cv.put(DatabaseHandler.KEY_COUNTRY, country.getText().toString());
 		if(!city.getText().equals(""))
-			address.setAdminArea(city.getText().toString());
+			cv.put(DatabaseHandler.KEY_ADMIN_AREA, city.getText().toString());
 		if(!street.getText().equals(""))
-			address.setAddressLine(0, street.getText().toString());
+			cv.put(DatabaseHandler.KEY_ADDRESS_LINE, street.getText().toString());
 		if(!postal.getText().equals(""))
-			address.setPostalCode(postal.getText().toString());
+			cv.put(DatabaseHandler.KEY_POSTAL_CODE, postal.getText().toString());
 		if(!feature.getText().equals(""))
-			address.setFeatureName(feature.getText().toString());
-		
-		locationInfo.setAddress(address);
-		
+			cv.put(DatabaseHandler.KEY_FEATURE, feature.getText().toString());
+				
 		DatabaseHandler db = new DatabaseHandler(this);
-		db.updateLocationInfo(locationInfo);
+		db.updateRouteItem(cv, id);
 		db.close();
 		
 		Toast.makeText(this, getText(R.string.edit_saved), Toast.LENGTH_SHORT).show();

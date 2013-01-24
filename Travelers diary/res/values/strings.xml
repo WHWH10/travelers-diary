@@ -50,9 +50,19 @@
  	<string name="routes_title_hint">Enter route title here</string>
  	<string name="routes_add_button">Add new route</string>
  	
+ 	<!-- Route detail fragment -->
+ 	<string name="route_detail_title">Route title</string>
+ 	<string name="route_detail_description">Description</string>
+ 	<string name="route_detail_created">Created on</string>
+ 	<string name="route_detail_modified">Modified on</string>
+ 	<string name="route_detail_bntSave">Save</string>
+ 	<string name="route_detail_title_hint">Enter title here</string>
+ 	<string name="route_detail_description_hint">Enter description here</string>
+ 	
  	<!-- Messages -->
  	<string name="warn_locProvider">No location providers available.</string>
  	
+ 	<!-- Other -->
     <string name="unknown">Unknown</string>
     <string name="unnamed">Unnamed</string>
     <string name="latitude">Latitude:</string>
@@ -61,6 +71,7 @@
     <string name="routes">Routes</string>
     <string name="route">Route</string>
     <string name="date">Date</string>
+    <string name="edit">Edit</string>
     
    	<string name="dialog_set">Set</string>
    	<string name="hint_title">Enter route title here</string>

@@ -15,4 +15,12 @@
         android:title="@string/menu_showRouteOnMap"
         android:orderInCategory="100"
         android:showAsAction="never" />
+    <item android:id="@+id/menu_startTracking"
+        android:title="@string/menu_startTracking"
+        android:orderInCategory="100"
+        android:showAsAction="never" />
+    <item android:id="@+id/menu_stopTracking"
+        android:title="@string/menu_stopTracking"
+        android:orderInCategory="100"
+        android:showAsAction="never" />
 </menu>

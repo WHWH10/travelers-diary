@@ -51,6 +51,8 @@
         </activity>
         <activity android:name=".EditActivity" >
         </activity>
+        <activity android:name=".RouteDetailActivity" >
+        </activity>
 
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"

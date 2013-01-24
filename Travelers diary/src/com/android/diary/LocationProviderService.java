@@ -8,7 +8,6 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -22,27 +21,38 @@ import android.widget.Toast;
 
 public class LocationProviderService extends IntentService{
 	
+	public static final String ROUTE_ID = "rouID";
+	
 	private boolean stop;
-	private boolean newLocationAdded;
 	private LocationManager locationManager;
 	private int counter;
-	private int route;
+	private int routeId;
 	public LocationProviderService() {
 		super("Location provider");
 	}
 
 	@Override
-	protected void onHandleIntent(Intent intent) {		
+	protected void onHandleIntent(Intent intent) {	
+		if(routeId == 0)
+			return;
 		while(!stop){}
+	}
+
+	@Override
+	public void onStart(Intent intent, int startId) {
+		routeId = 0;
+		if(intent.getExtras() != null)
+		{
+			routeId = intent.getExtras().getInt(ROUTE_ID, 0);
+		}
+		
+		super.onStart(intent, startId);
 	}
 
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		this.newLocationAdded = false;
 		this.stop = false;
-		this.load();
-		this.route++;		
 		counter = 0;		
 		
 		startLocating();
@@ -72,14 +82,14 @@ public class LocationProviderService extends IntentService{
 			if(locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER))
 			{
 				Toast.makeText(this, "Locating", Toast.LENGTH_SHORT).show();
-				locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 2000, 0, locationListener);
+				locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 120000, 0, locationListener);
 				notifyForegroundService();
 				return;
 			}
 		}
 		if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
 		{
-			locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 0, locationListener);
+			locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 120000, 0, locationListener);
 			notifyForegroundService();
 		}
 		else
@@ -101,7 +111,7 @@ public class LocationProviderService extends IntentService{
 	public void onDestroy() {
 		super.onDestroy();
 		stop = true;
-		this.save();
+//		this.save();
 		stopLocating();
 	}
 
@@ -218,35 +228,33 @@ public class LocationProviderService extends IntentService{
 		
 		public void onLocationChanged(Location location) {
 			Log.i("LOC_SERVICE", "New Point");
-			DatabaseHandler db = new DatabaseHandler(getApplicationContext());
-			
-			db.addLocationInfo(2, location.getAltitude(), location.getLatitude(), location.getLongitude());
+			DatabaseHandler db = new DatabaseHandler(getApplicationContext());			
+			db.addLocationInfo(routeId, location.getAltitude(), location.getLatitude(), location.getLongitude());
     		counter++;
     		db.close();
-    		newLocationAdded = true;
     		pointAdded();
 		}
 	};
 	
-	private void save()
-	{
-		SharedPreferences settings = getSharedPreferences(MapActivity.APP_PREFS, 0);
-		SharedPreferences.Editor editor = settings.edit();
-		if(newLocationAdded)
-			editor.putInt(MapActivity.ROUTE_ID, this.route);
-		else
-		{
-			this.route--;
-			editor.putInt(MapActivity.ROUTE_ID, this.route);
-		}
-		editor.commit();
-	}
+//	private void save()
+//	{
+//		SharedPreferences settings = getSharedPreferences(MapActivity.APP_PREFS, 0);
+//		SharedPreferences.Editor editor = settings.edit();
+//		if(newLocationAdded)
+//			editor.putInt(MapActivity.ROUTE_ID, this.route);
+//		else
+//		{
+//			this.route--;
+//			editor.putInt(MapActivity.ROUTE_ID, this.route);
+//		}
+//		editor.commit();
+//	}
 	
-	private void load()
-	{
-		SharedPreferences settings = getSharedPreferences(MapActivity.APP_PREFS, 0);
-		route = settings.getInt(MapActivity.ROUTE_ID, 0);
-	}
+//	private void load()
+//	{
+//		SharedPreferences settings = getSharedPreferences(MapActivity.APP_PREFS, 0);
+//		route = settings.getInt(MapActivity.ROUTE_ID, 0);
+//	}
 	
 	/**
 	 * Checks if network is available.

@@ -161,23 +161,29 @@ containing a value of this type.
         public static final int edit_title=0x7f040018;
         public static final int imageView_details=0x7f040004;
         public static final int mapView=0x7f040027;
-        public static final int menu_addRoute=0x7f040030;
-        public static final int menu_changeRouteTtitle=0x7f040031;
-        public static final int menu_deleteRoute=0x7f040033;
-        public static final int menu_drawLocations=0x7f04002d;
-        public static final int menu_routes=0x7f04002e;
-        public static final int menu_settings=0x7f04002f;
-        public static final int menu_showRouteDetails=0x7f040032;
-        public static final int menu_showRouteOnMap=0x7f040034;
-        public static final int menu_startTracking=0x7f04002b;
-        public static final int menu_stopTraking=0x7f04002c;
+        public static final int menu_changeRouteTtitle=0x7f040035;
+        public static final int menu_deleteRoute=0x7f040037;
+        public static final int menu_drawLocations=0x7f040032;
+        public static final int menu_routes=0x7f040033;
+        public static final int menu_settings=0x7f040034;
+        public static final int menu_showRouteDetails=0x7f040036;
+        public static final int menu_showRouteOnMap=0x7f040038;
+        public static final int menu_startTracking=0x7f040039;
+        public static final int menu_stopTracking=0x7f04003a;
         public static final int none=0x7f040000;
         public static final int normal=0x7f040001;
+        public static final int routeDetailFragment=0x7f040028;
         public static final int routeText_details=0x7f040006;
+        public static final int route_det_created_textView=0x7f040030;
+        public static final int route_det_description_btnEdit=0x7f04002e;
+        public static final int route_det_description_textView=0x7f04002f;
+        public static final int route_det_modified_textView=0x7f040031;
+        public static final int route_det_title_btnEdit=0x7f04002c;
+        public static final int route_det_title_textView=0x7f04002d;
         public static final int route_details=0x7f040005;
-        public static final int routes_add_button=0x7f04002a;
-        public static final int routes_title_editText=0x7f040029;
-        public static final int routes_title_textView=0x7f040028;
+        public static final int routes_add_button=0x7f04002b;
+        public static final int routes_title_editText=0x7f04002a;
+        public static final int routes_title_textView=0x7f040029;
         public static final int satellite=0x7f040002;
         public static final int scrollView1=0x7f040012;
         public static final int terrain=0x7f040003;
@@ -198,18 +204,19 @@ containing a value of this type.
         public static final int activity_details=0x7f030000;
         public static final int activity_edit=0x7f030001;
         public static final int activity_map=0x7f030002;
-        public static final int activity_routes=0x7f030003;
+        public static final int activity_route_detail=0x7f030003;
+        public static final int activity_routes=0x7f030004;
+        public static final int fragment_route_detail=0x7f030005;
     }
     public static final class menu {
         public static final int activity_main=0x7f080000;
-        public static final int activity_route_options=0x7f080001;
-        public static final int activity_routes_context=0x7f080002;
+        public static final int activity_routes_context=0x7f080001;
     }
     public static final class string {
         /**  App main values 
          */
         public static final int app_name=0x7f05000b;
-        public static final int city=0x7f05003c;
+        public static final int city=0x7f050044;
         /**  Button in confirmation dialog to enable Google Play services.  Clicking it
         will direct user to application settings of Google Play services where they
         can enable it [CHAR LIMIT=30] 
@@ -253,8 +260,8 @@ containing a value of this type.
         Google Play services (from Play Store) [CHAR LIMIT=40] 
          */
         public static final int common_google_play_services_update_title=0x7f050007;
-        public static final int country=0x7f05003b;
-        public static final int date=0x7f050036;
+        public static final int country=0x7f050043;
+        public static final int date=0x7f05003d;
         /**  Details activity 
          */
         public static final int details_address=0x7f05001e;
@@ -268,24 +275,25 @@ containing a value of this type.
          */
         public static final int dialog_details=0x7f05001a;
         public static final int dialog_edit=0x7f05001b;
-        public static final int dialog_set=0x7f050037;
+        public static final int dialog_set=0x7f05003f;
+        public static final int edit=0x7f05003e;
         public static final int edit_autoFillAddress=0x7f05002a;
         public static final int edit_city_hint=0x7f050024;
         /**  Edit activity 
          */
         public static final int edit_coutry_hint=0x7f050023;
-        public static final int edit_desc_hint=0x7f05003a;
+        public static final int edit_desc_hint=0x7f050042;
         public static final int edit_feature_hint=0x7f050028;
         public static final int edit_housenr_hint=0x7f050026;
         public static final int edit_postal_hint=0x7f050027;
         public static final int edit_saved=0x7f050029;
         public static final int edit_street_hint=0x7f050025;
-        public static final int edit_title_hint=0x7f050039;
-        public static final int feature=0x7f05003f;
-        public static final int hint_title=0x7f050038;
-        public static final int house_number=0x7f050040;
-        public static final int latitude=0x7f050031;
-        public static final int longitude=0x7f050032;
+        public static final int edit_title_hint=0x7f050041;
+        public static final int feature=0x7f050047;
+        public static final int hint_title=0x7f050040;
+        public static final int house_number=0x7f050048;
+        public static final int latitude=0x7f050038;
+        public static final int longitude=0x7f050039;
         public static final int menu_addRoute=0x7f050012;
         public static final int menu_changeRouteTitle=0x7f050010;
         public static final int menu_deleteRoute=0x7f050011;
@@ -305,22 +313,33 @@ containing a value of this type.
          */
         public static final int notif_tracking_ticker=0x7f050014;
         public static final int notif_tracking_title=0x7f050015;
-        public static final int postal_code=0x7f05003e;
-        public static final int route=0x7f050035;
-        public static final int route_name=0x7f050033;
-        public static final int routes=0x7f050034;
+        public static final int postal_code=0x7f050046;
+        public static final int route=0x7f05003c;
+        public static final int route_detail_bntSave=0x7f050032;
+        public static final int route_detail_created=0x7f050030;
+        public static final int route_detail_description=0x7f05002f;
+        public static final int route_detail_description_hint=0x7f050034;
+        public static final int route_detail_modified=0x7f050031;
+        /**  Route detail fragment 
+         */
+        public static final int route_detail_title=0x7f05002e;
+        public static final int route_detail_title_hint=0x7f050033;
+        public static final int route_name=0x7f05003a;
+        public static final int routes=0x7f05003b;
         public static final int routes_add_button=0x7f05002d;
         /**  Routes activity 
          */
         public static final int routes_title=0x7f05002b;
         public static final int routes_title_hint=0x7f05002c;
-        public static final int select_action=0x7f050041;
-        public static final int street=0x7f05003d;
-        public static final int unknown=0x7f05002f;
-        public static final int unnamed=0x7f050030;
+        public static final int select_action=0x7f050049;
+        public static final int street=0x7f050045;
+        /**  Other 
+         */
+        public static final int unknown=0x7f050036;
+        public static final int unnamed=0x7f050037;
         /**  Messages 
          */
-        public static final int warn_locProvider=0x7f05002e;
+        public static final int warn_locProvider=0x7f050035;
     }
     public static final class style {
         public static final int AppTheme=0x7f070000;

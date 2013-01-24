@@ -104,7 +104,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getReadableDatabase();
 		
 		Cursor cursor = db.query(TABLE_ROUTE, new String[] {KEY_ID, KEY_TITLE, KEY_DESCRIPTION, 
-				KEY_DATE_CREATED, KEY_DATE_MODIFIED}, null, null, null, null, null, null);
+				KEY_DATE_CREATED, KEY_DATE_MODIFIED}, null, null, null, null, KEY_DATE_CREATED + " DESC", null);
 		
 		List<Route> list = new ArrayList<Route>();
 		
@@ -124,6 +124,26 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		db.close();
 				
 		return list;
+	}
+	
+	public Route getRoute(int routeId)
+	{
+		SQLiteDatabase db = this.getReadableDatabase();
+		
+		Cursor cursor = db.query(TABLE_ROUTE, new String[] {KEY_ID, KEY_TITLE, KEY_DESCRIPTION, 
+				KEY_DATE_CREATED, KEY_DATE_MODIFIED}, KEY_ID + "=?", new String[]{String.valueOf(routeId)}, null, null, null, null);
+		
+		Route route = null;
+		
+		if(cursor.moveToFirst())
+		{			
+			route = Route.parse(cursor);		
+		}
+		
+		cursor.close();
+		db.close();
+				
+		return route;
 	}
 	
 	public void insertRoute(ContentValues contentValues)
@@ -168,92 +188,106 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.delete(TABLE_ROUTE, KEY_ID + "=?", new String[]{String.valueOf(routeId)});
 		db.close();
-	}	
-	
-	public LocationInfo getLocationInfo(int id)
-	{
-//		SQLiteDatabase db = this.getReadableDatabase();
-//		
-//		Cursor cursor = db.query(TABLE_LOC_INFO, new String[] {KEY_ID, KEY_ADDRESS, 
-//				KEY_TITLE, KEY_DESCRIPTION, KEY_TIME, KEY_ROUTE, KEY_ROUTE_ID}, KEY_ID + "=?", 
-//				new String[] {String.valueOf(id)},
-//				null, null, null, null);
-//		if(cursor != null)
-//		{
-//			cursor.moveToFirst();
-//		}
-//		
-//		LocationInfo loc = new LocationInfo(Integer.parseInt(cursor.getString(0)), 
-//				cursor.getString(1), cursor.getInt(6), cursor.getString(5), cursor.getString(2), 
-//				cursor.getString(3), Long.parseLong(cursor.getString(4)));
-//		cursor.close();
-//		return loc;
-		return null;
 	}
 	
-	public List<LocationInfo> getAllLocationsInfos()
+	public List<RouteItem> getRouteItems(int routeId)
 	{
-//		List<LocationInfo> locList = new ArrayList<LocationInfo>();
-//		
-//		String selectQuery = "SELECT * FROM " + TABLE_LOC_INFO;
-//		
-//		SQLiteDatabase db = this.getReadableDatabase();
-//		Cursor cursor = db.rawQuery(selectQuery, null);
-//		if(cursor.moveToFirst())
-//		{
-//			do
-//			{
-//				LocationInfo loc = new LocationInfo();
-//				loc.set_id(Integer.parseInt(cursor.getString(0)));
-//				loc.setTitle(cursor.getString(1));
-//				loc.setDescription(cursor.getString(2));
-//				loc.setRoute(cursor.getString(3));
-//				loc.setAddress(cursor.getString(4));
-//				loc.setTime(Long.parseLong(cursor.getString(5)));
-//				
-//				locList.add(loc);				
-//			}
-//			while(cursor.moveToNext());
-//		}
-//		cursor.close();
-//		return locList;
-		return null;
-	}
-	
-	public List<LocationInfo> getRoute(int route)
-	{
-//		List<LocationInfo> locList = new ArrayList<LocationInfo>();
-//		
-//		String selectQuery = "SELECT * FROM " + TABLE_LOC_INFO + " WHERE " + route + " = " 
-//				+ TABLE_LOC_INFO + "." + KEY_ROUTE_ID;
-//		
-//		SQLiteDatabase db = this.getReadableDatabase();
-//		Cursor cursor = db.rawQuery(selectQuery, null);
-//		if(cursor.moveToFirst())
-//		{
-//			do
-//			{
-//				LocationInfo loc = new LocationInfo();
-//				loc.set_id(Integer.parseInt(cursor.getString(0)));
-//				loc.setTitle(cursor.getString(1));
-//				loc.setDescription(cursor.getString(2));
-//				loc.setRoute_id(cursor.getInt(3));
-//				loc.setRoute(cursor.getString(4));
-//				loc.setAddress(cursor.getString(5));
-//				loc.setTime(Long.parseLong(cursor.getString(6)));
-//				
-//				locList.add(loc);
-//			}
-//			while(cursor.moveToNext());
-//		}
-//		cursor.close();
-//		return locList;
-		return null;
-	}	
+		SQLiteDatabase db = this.getReadableDatabase();
 		
-	public int getLocationInfosCount()
+		Cursor cursor = db.query(TABLE_ROUTE_ITEM, new String[] {KEY_ID, KEY_ROUTE_ID, KEY_TITLE, KEY_DESCRIPTION, 
+				KEY_DATE_CREATED, KEY_DATE_MODIFIED, KEY_ADDRESS_LINE, KEY_ADMIN_AREA, KEY_ALTITUDE,
+				KEY_LATITUDE, KEY_LONGITUDE, KEY_COUNTRY, KEY_FEATURE, KEY_LOCALE, KEY_LOCALITY, KEY_POSTAL_CODE,
+				KEY_THOROUGHFARE, KEY_SUB_THOROUGHFARE}, KEY_ROUTE_ID + "=?", new String[]{String.valueOf(routeId)}, null, null, null, null);
+				
+		List<RouteItem> list = new ArrayList<RouteItem>();
+		
+		if(cursor.moveToFirst())
+		{
+			do
+			{
+				RouteItem route = RouteItem.parse(cursor);
+				if(route == null)
+					continue;
+				list.add(route);			
+			}
+			while(cursor.moveToNext());
+		}
+		
+		cursor.close();
+		db.close();
+				
+		return list;
+	}
+	
+	public RouteItem getRouteItem(int routeItemId)
 	{
-		String countQuery = "SELECT * FROM " + TABLE_ROUTE_ITEM;
+		SQLiteDatabase db = this.getReadableDatabase();
+		
+		Cursor cursor = db.query(TABLE_ROUTE_ITEM, new String[] {KEY_ID, KEY_ROUTE_ID, KEY_TITLE, KEY_DESCRIPTION, 
+				KEY_DATE_CREATED, KEY_DATE_MODIFIED, KEY_ADDRESS_LINE, KEY_ADMIN_AREA, KEY_ALTITUDE,
+				KEY_LATITUDE, KEY_LONGITUDE, KEY_COUNTRY, KEY_FEATURE, KEY_LOCALE, KEY_LOCALITY, KEY_POSTAL_CODE,
+				KEY_THOROUGHFARE, KEY_SUB_THOROUGHFARE}, KEY_ID + "=?", new String[]{String.valueOf(routeItemId)}, null, null, null, null);
+				
+		RouteItem routeItem = null;
+		
+		if(cursor.moveToFirst())
+		{
+			routeItem = RouteItem.parse(cursor);
+		}
+		
+		cursor.close();
+		db.close();
+				
+		return routeItem;
+	}
+	
+	public void insertRouteItem(ContentValues contentValues)
+	{
+		if(contentValues == null)
+			return;
+		
+		SQLiteDatabase db = this.getWritableDatabase();	
+		
+		try {				
+			db.insertOrThrow(TABLE_ROUTE_ITEM, null, contentValues);
+			
+		} catch (SQLException e) {
+			Log.e(LOG_TAG, e.toString());
+		} finally {
+			db.close();
+		}		
+	}
+	
+	public void updateRouteItem(ContentValues contentValues, int routeItemId)
+	{
+		if(contentValues == null)
+			return;
+		
+		contentValues.put(KEY_DATE_MODIFIED, new Date().toString());
+		
+		SQLiteDatabase db = this.getWritableDatabase();	
+		
+		try {				
+			db.update(TABLE_ROUTE_ITEM, contentValues, KEY_ID + "=?", new String[]{String.valueOf(routeItemId)});
+			
+		} catch (SQLException e) {
+			Log.e(LOG_TAG, e.toString());
+		} finally {
+			db.close();
+		}
+		
+	}
+	
+	public void deleteRouteItem(int routeItemId)
+	{
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.delete(TABLE_ROUTE_ITEM, KEY_ID + "=?", new String[]{String.valueOf(routeItemId)});
+		db.close();
+	}
+		
+	public int getRoutesCount()
+	{
+		String countQuery = "SELECT * FROM " + TABLE_ROUTE;
 		SQLiteDatabase db = this.getReadableDatabase();
 		
 		Cursor cursor = db.rawQuery(countQuery, null);
@@ -264,31 +298,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		return count;
 	}
 	
-	public int updateLocationInfo(LocationInfo locationInfo)
+	public int getRouteItemsCount(int routeId)
 	{
-//		SQLiteDatabase db = this.getWritableDatabase();
-//		
-//		ContentValues values = new ContentValues();
-//		values.put(KEY_ADDRESS, locationInfo.getAddressInString());
-//		values.put(KEY_DESCRIPTION, locationInfo.getDescription());
-//		values.put(KEY_TITLE, locationInfo.getTitle());
-//		values.put(KEY_ROUTE, locationInfo.getRoute());
-//		values.put(KEY_TIME, locationInfo.getTime());
-//		values.put(KEY_ROUTE_ID, locationInfo.getRoute_id());
-//		
-//		int i = db.update(TABLE_LOC_INFO, values, KEY_ID + " =?", 
-//				new String[] {String.valueOf(locationInfo.get_id())});
-//		
-//		db.close();
-//		return i;
-		return 0;
-	}
-	
-	public void deleteLocationInfo(LocationInfo locationInfo)
-	{
-//		SQLiteDatabase db = this.getWritableDatabase();
-//		db.delete(TABLE_LOC_INFO, KEY_ID + " =?", 
-//				new String[] {String.valueOf(locationInfo.get_id())});
-//		db.close();
+		String countQuery = "SELECT * FROM " + TABLE_ROUTE_ITEM + " WHERE " + KEY_ROUTE_ID + "=" + routeId;
+		SQLiteDatabase db = this.getReadableDatabase();
+		
+		Cursor cursor = db.rawQuery(countQuery, null);
+		int count = cursor.getCount();
+		cursor.close();
+		db.close();
+		
+		return count;
 	}
 }

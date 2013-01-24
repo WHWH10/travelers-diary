@@ -2,5 +2,6 @@
 <lint>
     <issue id="SimpleDateFormat">
         <ignore path="src\com\android\diary\Route.java" />
+        <ignore path="src\com\android\diary\RouteItem.java" />
     </issue>
 </lint>

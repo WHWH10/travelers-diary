@@ -7,18 +7,20 @@ import java.util.Map;
 
 import com.android.diary.R;
 
+import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.app.ActivityManager.RunningServiceInfo;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,6 +34,7 @@ import android.widget.SimpleAdapter;
 public class RoutesActivity extends ListActivity{
 	
 //	private static final String LOG_TAG = "ROUTES ACTIVITY";
+	private Intent myService;
 
 	private ListView listView;
 	private List<Route> routes;
@@ -94,12 +97,34 @@ public class RoutesActivity extends ListActivity{
 			break;
 			
 		case R.id.menu_showRouteDetails:
-			
+			showRouteDetail();
 			break;
 			
 		case R.id.menu_showRouteOnMap:
 			showRoute = true;
 			showRouteOnMap();			
+			break;
+			
+		case R.id.menu_startTracking:
+			if(this.routes == null || this.routes.size() <= itemSelected)
+				break;
+						
+			myService = new Intent(this, LocationProviderService.class);
+			myService.putExtra(LocationProviderService.ROUTE_ID, this.routes.get(itemSelected).getRouteId());
+			startService(myService);
+			break;
+			
+		case R.id.menu_stopTracking:
+			if(isMyServiceRunning() && myService != null)
+			{
+				stopService(myService);
+			}
+			else
+			{
+				myService = new Intent(this, LocationProviderService.class);
+				startService(myService);
+				stopService(myService);			
+			}
 			break;
 
 		default:
@@ -114,12 +139,6 @@ public class RoutesActivity extends ListActivity{
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.activity_routes_context, menu);
 		super.onCreateContextMenu(menu, v, menuInfo);
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.activity_route_options, menu);
-		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
@@ -159,6 +178,16 @@ public class RoutesActivity extends ListActivity{
 		itemSelected = this.routes.get(itemSelected).getRouteId();
 		
 		this.finish();
+	}
+	
+	private void showRouteDetail()
+	{
+		Intent intent = new Intent(getApplicationContext(), RouteDetailActivity.class);
+		if(this.routes != null && this.routes.size() > itemSelected)
+		{
+			intent.putExtra(RouteDetailFragment.ROUTE_ID, this.routes.get(itemSelected).getRouteId());
+		}
+		startActivity(intent);
 	}
 
 	private void changeRouteTitle()
@@ -228,4 +257,15 @@ public class RoutesActivity extends ListActivity{
 			prepareList();			
 		}	
 	}
+	
+	private boolean isMyServiceRunning() {
+	    ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+	    for (RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+	    	
+	        if ("com.android.diary.LocationProviderService".equals(service.service.getClassName())) {
+	            return true;
+	        }
+	    }
+	    return false;
+	}   
 }
