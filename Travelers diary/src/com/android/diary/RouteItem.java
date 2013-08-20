@@ -1,7 +1,7 @@
 package com.android.diary;
 
+import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
@@ -91,12 +91,9 @@ public class RouteItem {
 	
 	public void setDateCreated(String dateCreated){
 		try {
-			String newFormat = "yyyy-MM-dd HH:mm:ss";
-
-		    SimpleDateFormat sdf = new SimpleDateFormat(newFormat);
-			this.dateCreated = sdf.parse(dateCreated);
+			this.dateCreated = DateFormat.getDateTimeInstance().parse(dateCreated);
 		} catch (ParseException e) {
-			Log.e(LOG_TAG,e.toString());
+			Log.e(LOG_TAG, e.toString());
 			this.dateCreated = new Date();
 		}
 	}
@@ -111,12 +108,9 @@ public class RouteItem {
 	
 	public void setDateModified(String dateModified){
 		try {
-		    String newFormat = "yyyy-MM-dd HH:mm:ss";
-
-		    SimpleDateFormat sdf = new SimpleDateFormat(newFormat);
-			this.dateModified = sdf.parse(dateModified);
+			this.dateModified = DateFormat.getDateTimeInstance().parse(dateModified);
 		} catch (ParseException e) {
-			Log.e(LOG_TAG,e.toString());
+			Log.e(LOG_TAG, e.toString());
 			this.dateModified = new Date();
 		}
 	}

@@ -1,5 +1,6 @@
 package com.android.diary;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -10,16 +11,18 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Build;
 import android.util.Log;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 	
 	private static final String LOG_TAG = "DATABASE HANDLER";
-
+	
 	private static final int DATABASE_VERSION = 1;
 	private static final String DATABASE_NAME = "Routes.db";
 	private static final String TABLE_ROUTE = "Route";
 	private static final String TABLE_ROUTE_ITEM = "RouteItem";
+	private static final String TABLE_LOG = "Log";
 	
 	public static final String KEY_ID = "id";
 	public static final String KEY_ROUTE_ID = "routeId";	
@@ -40,21 +43,31 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	public static final String KEY_SUB_THOROUGHFARE = "subThoroughfare";
 	public static final String KEY_LOCALE = "locale";
 	public static final String KEY_LOCALITY = "locality";
+	public static final String KEY_LOG_MESSAGE = "logMessage";
+	public static final String KEY_USER = "user";
+	public static final String KEY_OS = "OS";
+	public static final String KEY_DEVICE = "device";
+	public static final String KEY_MODEL = "model";
+	public static final String KEY_PRODUCT = "product";
+	public static final String KEY_TAG = "tag";
 	
 	private static final String CREATE_ROUTE_TABLE = "CREATE  TABLE IF NOT EXISTS " + TABLE_ROUTE + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL  UNIQUE, " +
-			KEY_TITLE + " TEXT, " + KEY_DESCRIPTION + " TEXT, " + KEY_DATE_CREATED + " DATETIME DEFAULT CURRENT_TIMESTAMP, " + 
-			KEY_DATE_MODIFIED + " DATETIME DEFAULT CURRENT_TIMESTAMP" + ")";
+			KEY_TITLE + " TEXT, " + KEY_DESCRIPTION + " TEXT, " + KEY_DATE_CREATED + " DATETIME NOT NULL, " + 
+			KEY_DATE_MODIFIED + " DATETIME NOT NULL" + ")";
 	
 	private static final String CREATE_ROUTE_ITEM_TABLE = "CREATE  TABLE IF NOT EXISTS " + TABLE_ROUTE_ITEM + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL  UNIQUE, " +
-			KEY_ROUTE_ID + " INTEGER NOT NULL, " + KEY_TITLE + " TEXT, " + KEY_DESCRIPTION + " TEXT, " + KEY_DATE_CREATED + " DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP, " +
-			KEY_DATE_MODIFIED + " DATETIME NOT NULL  DEFAULT CURRENT_TIMESTAMP, " + KEY_COUNTRY + " TEXT, " + KEY_ADMIN_AREA + " TEXT, " + KEY_FEATURE + " TEXT, " +
+			KEY_ROUTE_ID + " INTEGER NOT NULL, " + KEY_TITLE + " TEXT, " + KEY_DESCRIPTION + " TEXT, " + KEY_DATE_CREATED + " DATETIME NOT NULL, " +
+			KEY_DATE_MODIFIED + " DATETIME NOT NULL, " + KEY_COUNTRY + " TEXT, " + KEY_ADMIN_AREA + " TEXT, " + KEY_FEATURE + " TEXT, " +
 			KEY_ALTITUDE + " DOUBLE, " + KEY_LATITUDE + " DOUBLE, " + KEY_LONGITUDE + " DOUBLE, " + KEY_POSTAL_CODE + " TEXT, " + 
 			KEY_ADDRESS_LINE + " TEXT, " + KEY_THOROUGHFARE + " TEXT, " + KEY_SUB_THOROUGHFARE + " TEXT, " + KEY_LOCALE + " TEXT, " + KEY_LOCALITY + " TEXT, " +
 			"CONSTRAINT fk_routeItem FOREIGN KEY(" + KEY_ROUTE_ID + ") REFERENCES " + TABLE_ROUTE + "(" + KEY_ID + ") " + "ON DELETE CASCADE ON UPDATE CASCADE" + ")";
 	
+	private static final String CREATE_LOG_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_LOG + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE, " + KEY_DATE_CREATED + 
+			" DATETIME NOT NULL, " + KEY_LOG_MESSAGE + " TEXT, " + KEY_USER + " TEXT, " + KEY_OS + " TEXT, " + KEY_DEVICE + " TEXT, " + KEY_MODEL + " TEXT, " + KEY_PRODUCT + " TEXT, " +  KEY_TAG + " TEXT)";			
+	
 	public DatabaseHandler(Context context)
-	{
-		super(context, DATABASE_NAME, null, DATABASE_VERSION);
+	{		
+		super(context, DATABASE_NAME, null, DATABASE_VERSION);	
 	}
 	
 	@Override
@@ -66,14 +79,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) 
-	{
-		Log.i("DB HANDLER", "START ROUTE CREATION");		
+	{	
 		db.execSQL(CREATE_ROUTE_TABLE);
-		Log.i("DB HANDLER", "FINISH ROUTE CREATION");
-		
-		Log.i("DB HANDLER", "START ROUTE ITEM CREATION");		
 		db.execSQL(CREATE_ROUTE_ITEM_TABLE);	
-		Log.i("DB HANDLER", "FINISH ROUTE ITEM CREATION");
+		db.execSQL(CREATE_LOG_TABLE);
 	}
 
 	@Override
@@ -81,19 +90,22 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	{
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_ROUTE);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_ROUTE_ITEM);
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_LOG);
 		
 		onCreate(db);
 	}
 	
 	public void addLocationInfo(int routeId, double altitude, double latitude, double longitude)
 	{
-		SQLiteDatabase db = this.getWritableDatabase();
-		
 		ContentValues values = new ContentValues();
 		values.put(KEY_ROUTE_ID, routeId);
 		values.put(KEY_ALTITUDE, altitude);
 		values.put(KEY_LATITUDE, latitude);
 		values.put(KEY_LONGITUDE, longitude);
+		values.put(KEY_DATE_CREATED, DateFormat.getDateTimeInstance().format(new Date()));
+		values.put(KEY_DATE_MODIFIED, DateFormat.getDateTimeInstance().format(new Date()));
+		
+		SQLiteDatabase db = this.getWritableDatabase();		
 		
 		db.insertOrThrow(TABLE_ROUTE_ITEM, null, values);
 		db.close();
@@ -153,7 +165,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		
 		SQLiteDatabase db = this.getWritableDatabase();	
 		
-		try {				
+		try {
+			contentValues.put(KEY_DATE_CREATED, DateFormat.getDateTimeInstance().format(new Date()));
+			contentValues.put(KEY_DATE_MODIFIED, DateFormat.getDateTimeInstance().format(new Date()));
 			db.insertOrThrow(TABLE_ROUTE, null, contentValues);
 			
 		} catch (SQLException e) {
@@ -168,7 +182,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		if(contentValues == null)
 			return;
 		
-		contentValues.put(KEY_DATE_MODIFIED, new Date().toString());
+		contentValues.put(KEY_DATE_MODIFIED, DateFormat.getDateTimeInstance().format(new Date()));
 		
 		SQLiteDatabase db = this.getWritableDatabase();	
 		
@@ -248,7 +262,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		
 		SQLiteDatabase db = this.getWritableDatabase();	
 		
-		try {				
+		try {
+			contentValues.put(KEY_DATE_CREATED, DateFormat.getDateTimeInstance().format(new Date()));
+			contentValues.put(KEY_DATE_MODIFIED, DateFormat.getDateTimeInstance().format(new Date()));
 			db.insertOrThrow(TABLE_ROUTE_ITEM, null, contentValues);
 			
 		} catch (SQLException e) {
@@ -263,7 +279,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		if(contentValues == null)
 			return;
 		
-		contentValues.put(KEY_DATE_MODIFIED, new Date().toString());
+		contentValues.put(KEY_DATE_MODIFIED, DateFormat.getDateTimeInstance().format(new Date()));
 		
 		SQLiteDatabase db = this.getWritableDatabase();	
 		
@@ -309,5 +325,32 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		db.close();
 		
 		return count;
+	}
+	
+	public void insertLog(String message, String user, String tag)
+	{
+		if(message == null || message.isEmpty() || user == null)
+			return;
+		
+		SQLiteDatabase db = this.getWritableDatabase();	
+		
+		try {
+			ContentValues contentValues = new ContentValues();
+			contentValues.put(KEY_LOG_MESSAGE, message);
+			contentValues.put(KEY_USER, user);
+			contentValues.put(KEY_DATE_CREATED, DateFormat.getDateTimeInstance().format(new Date()));
+			contentValues.put(KEY_OS, Build.VERSION.SDK);
+			contentValues.put(KEY_MODEL, Build.MODEL);
+			contentValues.put(KEY_PRODUCT, Build.PRODUCT);
+			contentValues.put(KEY_DEVICE, Build.DEVICE);
+			contentValues.put(KEY_TAG, tag);
+			
+			db.insertOrThrow(TABLE_LOG, null, contentValues);
+			
+		} catch (SQLException e) {
+			Log.e(LOG_TAG, e.toString());
+		} finally {
+			db.close();
+		}		
 	}
 }

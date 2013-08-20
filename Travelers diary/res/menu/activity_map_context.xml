@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:id="@+id/menu_addPointToRoute"
+        android:title="@string/menu_addPointToRoute"
+        android:orderInCategory="100"
+        android:showAsAction="never" />
+    <item android:id="@+id/menu_showRouteDetails"
+        android:title="@string/dialog_details"
+        android:orderInCategory="100"
+        android:showAsAction="never" />
+    <item android:id="@+id/menu_deleteRoute"
+        android:title="@string/menu_deleteRoute"
+        android:orderInCategory="100"
+        android:showAsAction="never" />
+    <item android:id="@+id/menu_showRouteOnMap"
+        android:title="@string/menu_showRouteOnMap"
+        android:orderInCategory="100"
+        android:showAsAction="never" />
+    <item android:id="@+id/menu_startTracking"
+        android:title="@string/menu_startTracking"
+        android:orderInCategory="100"
+        android:showAsAction="never" />
+    <item android:id="@+id/menu_stopTracking"
+        android:title="@string/menu_stopTracking"
+        android:orderInCategory="100"
+        android:showAsAction="never" />
+</menu>

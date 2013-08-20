@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import com.android.diary.R;
 
 public class RouteDetailFragment extends Fragment {
 	
@@ -23,12 +24,12 @@ public class RouteDetailFragment extends Fragment {
 		return view;
 	}
 	
-	public static RouteDetailFragment newInstance(int routeID)
+	public static RouteDetailFragment newInstance(int routeId)
 	{
 		RouteDetailFragment fragment = new RouteDetailFragment();
-		
+		 
 		Bundle args = new Bundle();
-		args.putInt(ROUTE_ID, routeID);
+		args.putInt(ROUTE_ID, routeId);
 		fragment.setArguments(args);
 		return fragment;
 	}

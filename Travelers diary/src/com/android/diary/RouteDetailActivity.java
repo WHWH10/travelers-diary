@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import com.android.diary.R;
 
 public class RouteDetailActivity extends Activity {
 

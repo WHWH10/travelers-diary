@@ -3,6 +3,7 @@
     <string name="app_name">Traveler\'s diary</string>
     
     <!-- MapActivity -->
+    <string name="no_title">No title</string>
     
     <!-- Menu items -->
     <string name="menu_settings">Settings</string>
@@ -13,6 +14,8 @@
     <string name="menu_deleteRoute">Delete route</string>
     <string name="menu_addRoute">New route</string>
    	<string name="menu_showRouteOnMap">Show route on map</string>
+   	<string name="menu_edit">Edit</string>
+   	<string name="menu_addPointToRoute">Add point</string>
     
     <!-- Notification -->
     <string name="notif_tracking_ticker">Tracking started</string>
@@ -26,24 +29,34 @@
     <string name="dialog_details">Details</string>
     <string name="dialog_edit">Edit</string>
     <string name="dialog_cancel">Cancel</string>
-    <string name="dialog_addInfo">Add Info</string>
+    <string name="dialog_addInfo">Add Info</string>    
     
-    <!-- Details activity -->
-    <string name="details_address">Address</string>
-    <string name="details_coordinates">Coordinates</string>
-    <string name="details_title">Title</string>
-    <string name="details_description">Description</string>
-    <string name="details_date">Date</string>
-    
-    <!-- Edit activity -->
-    <string name="edit_coutry_hint">Enter country here</string>
- 	<string name="edit_city_hint">Enter city here</string>
- 	<string name="edit_street_hint">Enter street here</string>
- 	<string name="edit_housenr_hint">Enter house number here</string>
- 	<string name="edit_postal_hint">Enter postal code here</string>
- 	<string name="edit_feature_hint">Enter feature here</string>
- 	<string name="edit_saved">Successfully saved.</string>
- 	<string name="edit_autoFillAddress">Autofill address</string>
+    <!-- Edit route item activity -->
+    <string name="ri_edit_save">Save</string>
+    <string name="ri_edit_saved">Successfully saved.</string>
+ 	<string name="ri_edit_autoFillAddress">Autofill address</string>
+ 	<string name="ri_edit_address">Address</string> 
+ 	
+    <string name="ri_edit_title_hint">Enter title here</string>
+ 	<string name="ri_edit_desc_hint">Enter description here</string>
+    <string name="ri_edit_coutry_hint">Enter country here</string>
+    <string name="ri_edit_admin_area_hint">Enter administrative area here</string>
+    <string name="ri_edit_feature_hint">Enter feature here</string>
+    <string name="ri_edit_postal_hint">Enter postal code here</string>
+ 	<string name="ri_edit_address_line_hint">Enter city here</string>
+ 	<string name="ri_edit_thoroughfare_hint">Enter street here</string>
+ 	<string name="ri_edit_subthoroughfare_hint">Enter house number here</string> 	
+ 	
+ 	<string name="ri_edit_title">Title</string>
+ 	<string name="ri_edit_description">Description</string> 		
+    <string name="ri_edit_country">Country:</string>
+    <string name="ri_edit_admin_area">Administrative area:</string>
+    <string name="ri_edit_feature">Feature:</string>
+    <string name="ri_edit_postal_code">Postal code:</string>
+    <string name="ri_edit_address_line">City:</string>
+    <string name="ri_edit_thoroughfare">Street:</string>
+    <string name="ri_edit_subthoroughfare">Sub street:</string>
+ 	
  	
  	<!-- Routes activity -->
  	<string name="routes_title">Route title</string>
@@ -62,24 +75,36 @@
  	<!-- Messages -->
  	<string name="warn_locProvider">No location providers available.</string>
  	
+ 	<!-- Route item detail fragment -->
+ 	<string name="route_item_detail_latitude">Latitude:</string>
+    <string name="route_item_detail_longitude">Longitude:</string>
+    <string name="route_item_detail_route_title">Route name</string>
+    <string name="route_item_detail_address">Address</string>
+    <string name="route_item_detail_coordinates">Coordinates</string>
+    <string name="route_item_detail_title">Title</string>
+    <string name="route_item_detail_description">Description</string>
+    <string name="route_item_detail_date">Date</string>
+    <string name="route_item_detail_country">Country:</string>
+    <string name="route_item_detail_admin_area">Administrative area:</string>
+    <string name="route_item_detail_feature">Feature:</string>
+    <string name="route_item_detail_postal_code">Postal code:</string>
+    <string name="route_item_detail_address_line">City:</string>
+    <string name="route_item_detail_thoroughfare">Street:</string>
+    <string name="route_item_detail_subthoroughfare">Sub street:</string>
+    
  	<!-- Other -->
     <string name="unknown">Unknown</string>
     <string name="unnamed">Unnamed</string>
-    <string name="latitude">Latitude:</string>
-    <string name="longitude">Longitude:</string>
-    <string name="route_name">Route name</string>
+    
     <string name="routes">Routes</string>
     <string name="route">Route</string>
     <string name="date">Date</string>
     <string name="edit">Edit</string>
     
    	<string name="dialog_set">Set</string>
-   	<string name="hint_title">Enter route title here</string>
-   	
-   	
+   	<string name="hint_title">Enter route title here</string>   	
  	
- 	<string name="edit_title_hint">Enter title here</string>
- 	<string name="edit_desc_hint">Enter description here</string>
+ 	
  	<string name="country">Country</string>
  	<string name="city">City</string>
  	<string name="street">Street</string>
@@ -87,6 +112,7 @@
  	<string name="feature">Feature</string>
  	<string name="house_number">House number</string>
  	
- 	<string name="select_action">Select action</string>
+ 	<string name="error_indexOutOfBounds">Error occurred.</string>
+ 	<string name="error_indexOutOfBounds_Log">Index out of bound.</string>
 
 </resources>

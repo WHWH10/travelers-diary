@@ -140,83 +140,85 @@ containing a value of this type.
         public static final int mark_info=0x7f020004;
     }
     public static final class id {
-        public static final int addressText_details=0x7f04000e;
-        public static final int address_details=0x7f04000d;
-        public static final int button1=0x7f040026;
-        public static final int coordinatesLat_details=0x7f040010;
-        public static final int coordinatesLon_details=0x7f040011;
-        public static final int coordinates_details=0x7f04000f;
-        public static final int dateText_details=0x7f04000c;
-        public static final int date_details=0x7f04000b;
-        public static final int descriptionText_details=0x7f04000a;
-        public static final int description_details=0x7f040009;
-        public static final int edit_city=0x7f04001f;
-        public static final int edit_coutry=0x7f04001d;
-        public static final int edit_date=0x7f040016;
-        public static final int edit_description=0x7f04001a;
-        public static final int edit_feature=0x7f040025;
-        public static final int edit_postal=0x7f040023;
-        public static final int edit_route_name=0x7f040014;
-        public static final int edit_street=0x7f040021;
-        public static final int edit_title=0x7f040018;
-        public static final int imageView_details=0x7f040004;
-        public static final int mapView=0x7f040027;
-        public static final int menu_changeRouteTtitle=0x7f040035;
-        public static final int menu_deleteRoute=0x7f040037;
-        public static final int menu_drawLocations=0x7f040032;
-        public static final int menu_routes=0x7f040033;
-        public static final int menu_settings=0x7f040034;
-        public static final int menu_showRouteDetails=0x7f040036;
-        public static final int menu_showRouteOnMap=0x7f040038;
-        public static final int menu_startTracking=0x7f040039;
-        public static final int menu_stopTracking=0x7f04003a;
+        public static final int main_existingRoute=0x7f040005;
+        public static final int main_gallery=0x7f040006;
+        public static final int main_newRoute=0x7f040004;
+        public static final int main_settings=0x7f040007;
+        public static final int mapView=0x7f040008;
+        public static final int menu_EditRouteItem=0x7f040036;
+        public static final int menu_addPointToRoute=0x7f040030;
+        public static final int menu_changeRouteTtitle=0x7f040037;
+        public static final int menu_deleteRoute=0x7f040032;
+        public static final int menu_drawLocations=0x7f04002d;
+        public static final int menu_routes=0x7f04002e;
+        public static final int menu_settings=0x7f04002f;
+        public static final int menu_showRouteDetails=0x7f040031;
+        public static final int menu_showRouteOnMap=0x7f040033;
+        public static final int menu_startTracking=0x7f040034;
+        public static final int menu_stopTracking=0x7f040035;
         public static final int none=0x7f040000;
         public static final int normal=0x7f040001;
-        public static final int routeDetailFragment=0x7f040028;
-        public static final int routeText_details=0x7f040006;
-        public static final int route_det_created_textView=0x7f040030;
-        public static final int route_det_description_btnEdit=0x7f04002e;
-        public static final int route_det_description_textView=0x7f04002f;
-        public static final int route_det_modified_textView=0x7f040031;
-        public static final int route_det_title_btnEdit=0x7f04002c;
-        public static final int route_det_title_textView=0x7f04002d;
-        public static final int route_details=0x7f040005;
-        public static final int routes_add_button=0x7f04002b;
-        public static final int routes_title_editText=0x7f04002a;
-        public static final int routes_title_textView=0x7f040029;
+        public static final int ri_edit_addressLine=0x7f040026;
+        public static final int ri_edit_adminArea_et=0x7f040025;
+        public static final int ri_edit_autofill_btn=0x7f04002b;
+        public static final int ri_edit_country=0x7f040024;
+        public static final int ri_edit_description=0x7f040023;
+        public static final int ri_edit_feature=0x7f04002a;
+        public static final int ri_edit_postal=0x7f040029;
+        public static final int ri_edit_save_btn=0x7f04002c;
+        public static final int ri_edit_subthoroughfare_et=0x7f040028;
+        public static final int ri_edit_thoroughfare=0x7f040027;
+        public static final int ri_edit_title=0x7f040022;
+        public static final int routeDetailFragment=0x7f040009;
+        public static final int routeItemDetailFragment=0x7f04000a;
+        public static final int routeItemEditFragment=0x7f04000b;
+        public static final int routeItem_det_adminArea_tV=0x7f04001a;
+        public static final int routeItem_det_city_tV=0x7f04001b;
+        public static final int routeItem_det_coordinatesLat_tV=0x7f040020;
+        public static final int routeItem_det_coordinatesLon_tV=0x7f040021;
+        public static final int routeItem_det_country_tV=0x7f040019;
+        public static final int routeItem_det_date_tV=0x7f040018;
+        public static final int routeItem_det_description_tV=0x7f040017;
+        public static final int routeItem_det_feature_tV=0x7f04001f;
+        public static final int routeItem_det_postalCode_tV=0x7f04001e;
+        public static final int routeItem_det_route_title_tV=0x7f040015;
+        public static final int routeItem_det_subthoroughfare_tV=0x7f04001d;
+        public static final int routeItem_det_thoroughfare_tV=0x7f04001c;
+        public static final int routeItem_det_title_tV=0x7f040016;
+        public static final int route_det_created_textView=0x7f040013;
+        public static final int route_det_description_btnEdit=0x7f040011;
+        public static final int route_det_description_textView=0x7f040012;
+        public static final int route_det_modified_textView=0x7f040014;
+        public static final int route_det_title_btnEdit=0x7f04000f;
+        public static final int route_det_title_textView=0x7f040010;
+        public static final int routes_add_button=0x7f04000e;
+        public static final int routes_title_editText=0x7f04000d;
+        public static final int routes_title_textView=0x7f04000c;
         public static final int satellite=0x7f040002;
-        public static final int scrollView1=0x7f040012;
         public static final int terrain=0x7f040003;
-        public static final int textView1=0x7f040013;
-        public static final int textView10=0x7f04001e;
-        public static final int textView11=0x7f040020;
-        public static final int textView12=0x7f040024;
-        public static final int textView13=0x7f040022;
-        public static final int textView3=0x7f040017;
-        public static final int textView4=0x7f040019;
-        public static final int textView5=0x7f040015;
-        public static final int textView7=0x7f04001b;
-        public static final int textView9=0x7f04001c;
-        public static final int titleText_details=0x7f040008;
-        public static final int title_details=0x7f040007;
     }
     public static final class layout {
-        public static final int activity_details=0x7f030000;
-        public static final int activity_edit=0x7f030001;
-        public static final int activity_map=0x7f030002;
-        public static final int activity_route_detail=0x7f030003;
-        public static final int activity_routes=0x7f030004;
-        public static final int fragment_route_detail=0x7f030005;
+        public static final int activity_main=0x7f030000;
+        public static final int activity_map=0x7f030001;
+        public static final int activity_route_detail=0x7f030002;
+        public static final int activity_route_item_details=0x7f030003;
+        public static final int activity_route_item_edit=0x7f030004;
+        public static final int activity_routes=0x7f030005;
+        public static final int fragment_route_detail=0x7f030006;
+        public static final int fragment_route_item_details=0x7f030007;
+        public static final int fragment_route_item_edit=0x7f030008;
     }
     public static final class menu {
         public static final int activity_main=0x7f080000;
-        public static final int activity_routes_context=0x7f080001;
+        public static final int activity_map_context=0x7f080001;
+        public static final int activity_route_item_detail=0x7f080002;
+        public static final int activity_routes_context=0x7f080003;
     }
     public static final class string {
         /**  App main values 
          */
         public static final int app_name=0x7f05000b;
-        public static final int city=0x7f050044;
+        public static final int city=0x7f05005a;
         /**  Button in confirmation dialog to enable Google Play services.  Clicking it
         will direct user to application settings of Google Play services where they
         can enable it [CHAR LIMIT=30] 
@@ -260,86 +262,110 @@ containing a value of this type.
         Google Play services (from Play Store) [CHAR LIMIT=40] 
          */
         public static final int common_google_play_services_update_title=0x7f050007;
-        public static final int country=0x7f050043;
-        public static final int date=0x7f05003d;
-        /**  Details activity 
-         */
-        public static final int details_address=0x7f05001e;
-        public static final int details_coordinates=0x7f05001f;
-        public static final int details_date=0x7f050022;
-        public static final int details_description=0x7f050021;
-        public static final int details_title=0x7f050020;
-        public static final int dialog_addInfo=0x7f05001d;
-        public static final int dialog_cancel=0x7f05001c;
+        public static final int country=0x7f050059;
+        public static final int date=0x7f050055;
+        public static final int dialog_addInfo=0x7f050020;
+        public static final int dialog_cancel=0x7f05001f;
         /**  Dialog 
          */
-        public static final int dialog_details=0x7f05001a;
-        public static final int dialog_edit=0x7f05001b;
-        public static final int dialog_set=0x7f05003f;
-        public static final int edit=0x7f05003e;
-        public static final int edit_autoFillAddress=0x7f05002a;
-        public static final int edit_city_hint=0x7f050024;
-        /**  Edit activity 
+        public static final int dialog_details=0x7f05001d;
+        public static final int dialog_edit=0x7f05001e;
+        public static final int dialog_set=0x7f050057;
+        public static final int edit=0x7f050056;
+        public static final int error_indexOutOfBounds=0x7f05005f;
+        public static final int error_indexOutOfBounds_Log=0x7f050060;
+        public static final int feature=0x7f05005d;
+        public static final int hint_title=0x7f050058;
+        public static final int house_number=0x7f05005e;
+        public static final int menu_addPointToRoute=0x7f050016;
+        public static final int menu_addRoute=0x7f050013;
+        public static final int menu_changeRouteTitle=0x7f050011;
+        public static final int menu_deleteRoute=0x7f050012;
+        public static final int menu_drawLocations=0x7f050010;
+        public static final int menu_edit=0x7f050015;
+        /**  Menu items 
          */
-        public static final int edit_coutry_hint=0x7f050023;
-        public static final int edit_desc_hint=0x7f050042;
-        public static final int edit_feature_hint=0x7f050028;
-        public static final int edit_housenr_hint=0x7f050026;
-        public static final int edit_postal_hint=0x7f050027;
-        public static final int edit_saved=0x7f050029;
-        public static final int edit_street_hint=0x7f050025;
-        public static final int edit_title_hint=0x7f050041;
-        public static final int feature=0x7f050047;
-        public static final int hint_title=0x7f050040;
-        public static final int house_number=0x7f050048;
-        public static final int latitude=0x7f050038;
-        public static final int longitude=0x7f050039;
-        public static final int menu_addRoute=0x7f050012;
-        public static final int menu_changeRouteTitle=0x7f050010;
-        public static final int menu_deleteRoute=0x7f050011;
-        public static final int menu_drawLocations=0x7f05000f;
+        public static final int menu_settings=0x7f05000d;
+        public static final int menu_showRouteOnMap=0x7f050014;
+        public static final int menu_startTracking=0x7f05000e;
+        public static final int menu_stopTracking=0x7f05000f;
         /**  MapActivity 
- Menu items 
          */
-        public static final int menu_settings=0x7f05000c;
-        public static final int menu_showRouteOnMap=0x7f050013;
-        public static final int menu_startTracking=0x7f05000d;
-        public static final int menu_stopTracking=0x7f05000e;
-        public static final int notif_prov_text=0x7f050019;
-        public static final int notif_prov_ticker=0x7f050017;
-        public static final int notif_prov_title=0x7f050018;
-        public static final int notif_tracking_text=0x7f050016;
+        public static final int no_title=0x7f05000c;
+        public static final int notif_prov_text=0x7f05001c;
+        public static final int notif_prov_ticker=0x7f05001a;
+        public static final int notif_prov_title=0x7f05001b;
+        public static final int notif_tracking_text=0x7f050019;
         /**  Notification 
          */
-        public static final int notif_tracking_ticker=0x7f050014;
-        public static final int notif_tracking_title=0x7f050015;
-        public static final int postal_code=0x7f050046;
-        public static final int route=0x7f05003c;
-        public static final int route_detail_bntSave=0x7f050032;
-        public static final int route_detail_created=0x7f050030;
-        public static final int route_detail_description=0x7f05002f;
-        public static final int route_detail_description_hint=0x7f050034;
-        public static final int route_detail_modified=0x7f050031;
+        public static final int notif_tracking_ticker=0x7f050017;
+        public static final int notif_tracking_title=0x7f050018;
+        public static final int postal_code=0x7f05005c;
+        public static final int ri_edit_address=0x7f050024;
+        public static final int ri_edit_address_line=0x7f050034;
+        public static final int ri_edit_address_line_hint=0x7f05002b;
+        public static final int ri_edit_admin_area=0x7f050031;
+        public static final int ri_edit_admin_area_hint=0x7f050028;
+        public static final int ri_edit_autoFillAddress=0x7f050023;
+        public static final int ri_edit_country=0x7f050030;
+        public static final int ri_edit_coutry_hint=0x7f050027;
+        public static final int ri_edit_desc_hint=0x7f050026;
+        public static final int ri_edit_description=0x7f05002f;
+        public static final int ri_edit_feature=0x7f050032;
+        public static final int ri_edit_feature_hint=0x7f050029;
+        public static final int ri_edit_postal_code=0x7f050033;
+        public static final int ri_edit_postal_hint=0x7f05002a;
+        /**  Edit route item activity 
+         */
+        public static final int ri_edit_save=0x7f050021;
+        public static final int ri_edit_saved=0x7f050022;
+        public static final int ri_edit_subthoroughfare=0x7f050036;
+        public static final int ri_edit_subthoroughfare_hint=0x7f05002d;
+        public static final int ri_edit_thoroughfare=0x7f050035;
+        public static final int ri_edit_thoroughfare_hint=0x7f05002c;
+        public static final int ri_edit_title=0x7f05002e;
+        public static final int ri_edit_title_hint=0x7f050025;
+        public static final int route=0x7f050054;
+        public static final int route_detail_bntSave=0x7f05003e;
+        public static final int route_detail_created=0x7f05003c;
+        public static final int route_detail_description=0x7f05003b;
+        public static final int route_detail_description_hint=0x7f050040;
+        public static final int route_detail_modified=0x7f05003d;
         /**  Route detail fragment 
          */
-        public static final int route_detail_title=0x7f05002e;
-        public static final int route_detail_title_hint=0x7f050033;
-        public static final int route_name=0x7f05003a;
-        public static final int routes=0x7f05003b;
-        public static final int routes_add_button=0x7f05002d;
+        public static final int route_detail_title=0x7f05003a;
+        public static final int route_detail_title_hint=0x7f05003f;
+        public static final int route_item_detail_address=0x7f050045;
+        public static final int route_item_detail_address_line=0x7f05004e;
+        public static final int route_item_detail_admin_area=0x7f05004b;
+        public static final int route_item_detail_coordinates=0x7f050046;
+        public static final int route_item_detail_country=0x7f05004a;
+        public static final int route_item_detail_date=0x7f050049;
+        public static final int route_item_detail_description=0x7f050048;
+        public static final int route_item_detail_feature=0x7f05004c;
+        /**  Route item detail fragment 
+         */
+        public static final int route_item_detail_latitude=0x7f050042;
+        public static final int route_item_detail_longitude=0x7f050043;
+        public static final int route_item_detail_postal_code=0x7f05004d;
+        public static final int route_item_detail_route_title=0x7f050044;
+        public static final int route_item_detail_subthoroughfare=0x7f050050;
+        public static final int route_item_detail_thoroughfare=0x7f05004f;
+        public static final int route_item_detail_title=0x7f050047;
+        public static final int routes=0x7f050053;
+        public static final int routes_add_button=0x7f050039;
         /**  Routes activity 
          */
-        public static final int routes_title=0x7f05002b;
-        public static final int routes_title_hint=0x7f05002c;
-        public static final int select_action=0x7f050049;
-        public static final int street=0x7f050045;
+        public static final int routes_title=0x7f050037;
+        public static final int routes_title_hint=0x7f050038;
+        public static final int street=0x7f05005b;
         /**  Other 
          */
-        public static final int unknown=0x7f050036;
-        public static final int unnamed=0x7f050037;
+        public static final int unknown=0x7f050051;
+        public static final int unnamed=0x7f050052;
         /**  Messages 
          */
-        public static final int warn_locProvider=0x7f050035;
+        public static final int warn_locProvider=0x7f050041;
     }
     public static final class style {
         public static final int AppTheme=0x7f070000;
@@ -398,7 +424,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:cameraBearing
+          @attr name com.android.diary:cameraBearing
         */
         public static final int MapAttrs_cameraBearing = 1;
         /**
@@ -412,7 +438,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:cameraTargetLat
+          @attr name com.android.diary:cameraTargetLat
         */
         public static final int MapAttrs_cameraTargetLat = 2;
         /**
@@ -426,7 +452,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:cameraTargetLng
+          @attr name com.android.diary:cameraTargetLng
         */
         public static final int MapAttrs_cameraTargetLng = 3;
         /**
@@ -440,7 +466,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:cameraTilt
+          @attr name com.android.diary:cameraTilt
         */
         public static final int MapAttrs_cameraTilt = 4;
         /**
@@ -454,7 +480,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:cameraZoom
+          @attr name com.android.diary:cameraZoom
         */
         public static final int MapAttrs_cameraZoom = 5;
         /**
@@ -473,7 +499,7 @@ containing a value of this type.
 <tr><td><code>satellite</code></td><td>2</td><td></td></tr>
 <tr><td><code>terrain</code></td><td>3</td><td></td></tr>
 </table>
-          @attr name android:mapType
+          @attr name com.android.diary:mapType
         */
         public static final int MapAttrs_mapType = 0;
         /**
@@ -487,7 +513,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:uiCompass
+          @attr name com.android.diary:uiCompass
         */
         public static final int MapAttrs_uiCompass = 6;
         /**
@@ -501,7 +527,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:uiRotateGestures
+          @attr name com.android.diary:uiRotateGestures
         */
         public static final int MapAttrs_uiRotateGestures = 7;
         /**
@@ -515,7 +541,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:uiScrollGestures
+          @attr name com.android.diary:uiScrollGestures
         */
         public static final int MapAttrs_uiScrollGestures = 8;
         /**
@@ -529,7 +555,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:uiTiltGestures
+          @attr name com.android.diary:uiTiltGestures
         */
         public static final int MapAttrs_uiTiltGestures = 9;
         /**
@@ -543,7 +569,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:uiZoomControls
+          @attr name com.android.diary:uiZoomControls
         */
         public static final int MapAttrs_uiZoomControls = 10;
         /**
@@ -557,7 +583,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:uiZoomGestures
+          @attr name com.android.diary:uiZoomGestures
         */
         public static final int MapAttrs_uiZoomGestures = 11;
         /**
@@ -571,7 +597,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:useViewLifecycle
+          @attr name com.android.diary:useViewLifecycle
         */
         public static final int MapAttrs_useViewLifecycle = 12;
         /**
@@ -585,7 +611,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:zOrderOnTop
+          @attr name com.android.diary:zOrderOnTop
         */
         public static final int MapAttrs_zOrderOnTop = 13;
     };

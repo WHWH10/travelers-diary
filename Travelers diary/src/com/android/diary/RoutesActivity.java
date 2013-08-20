@@ -15,7 +15,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.text.InputType;
@@ -164,11 +163,6 @@ public class RoutesActivity extends ListActivity{
 	
 	private void showRouteOnMap()
 	{
-		SharedPreferences settings = getSharedPreferences(MapActivity.APP_PREFS, 0);
-		SharedPreferences.Editor editor = settings.edit();		
-		editor.putInt(MapActivity.LAST_ROUTE, MapActivity.ROUTES_CTRL);
-		editor.commit();
-		
 		if(this.routes == null || this.routes.size() <= itemSelected)
 		{
 			itemSelected = -1;

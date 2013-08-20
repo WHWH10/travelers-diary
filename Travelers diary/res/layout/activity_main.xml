@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal">
+    
+    <Button 
+        android:id="@+id/main_newRoute"
+        android:width="100dp"
+        android:height="100dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="New Route"/>
+    
+    <Button 
+        android:id="@+id/main_existingRoute"
+        android:width="100dp"
+        android:height="100dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/main_newRoute"
+        android:layout_margin="10dp"
+        android:text="Existing Route"/>
+    
+    <Button 
+        android:id="@+id/main_gallery"
+        android:width="100dp"
+        android:height="100dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/main_newRoute"
+        android:layout_margin="10dp"
+        android:text="Gallery"/>
+    
+    <Button 
+        android:id="@+id/main_settings"
+        android:width="100dp"
+        android:height="100dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/main_existingRoute"
+        android:layout_toRightOf="@id/main_gallery"
+        android:layout_margin="10dp"
+        android:text="Settings"/>
+    
+
+</RelativeLayout>
