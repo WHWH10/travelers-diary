@@ -16,9 +16,10 @@ public class Route {
 	private String description;
 	private Date dateCreated;
 	private Date dateModified;
+	private boolean isImported;
 	
 	public Route(int routeId, String title, String description,
-			Date dateCreated, Date dateModified) 
+			Date dateCreated, Date dateModified, boolean isImported) 
 	{
 		super();
 		this.routeId = routeId;
@@ -26,10 +27,11 @@ public class Route {
 		this.description = description;
 		this.dateCreated = dateCreated;
 		this.dateModified = dateModified;
+		this.isImported = isImported;
 	}
 	
 	public Route(int routeId, String title, String description,
-			String dateCreated, String dateModified) 
+			String dateCreated, String dateModified, boolean isImported) 
 	{
 		super();
 		this.routeId = routeId;
@@ -37,6 +39,7 @@ public class Route {
 		this.description = description;
 		this.setDateCreated(dateCreated);
 		this.setDateModified(dateModified);
+		this.isImported = isImported;
 	}
 
 	public int getRouteId() {
@@ -69,6 +72,16 @@ public class Route {
 
 	public void setDateCreated(Date dateCreated) {
 		this.dateCreated = dateCreated;
+	}
+	
+	public boolean getIsImported()
+	{
+		return this.isImported;
+	}
+	
+	public void setIsImported(boolean isImported)
+	{
+		this.isImported = isImported;
 	}
 	
 	public void setDateCreated(String dateCreated){
@@ -105,6 +118,7 @@ public class Route {
 				cursor.getString(cursor.getColumnIndex(DatabaseHandler.KEY_TITLE)),
 				cursor.getString(cursor.getColumnIndex(DatabaseHandler.KEY_DESCRIPTION)),
 				cursor.getString(cursor.getColumnIndex(DatabaseHandler.KEY_DATE_CREATED)), 
-				cursor.getString(cursor.getColumnIndex(DatabaseHandler.KEY_DATE_MODIFIED)));
+				cursor.getString(cursor.getColumnIndex(DatabaseHandler.KEY_DATE_MODIFIED)),
+				Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(DatabaseHandler.KEY_DATE_MODIFIED))));
 	}
 }

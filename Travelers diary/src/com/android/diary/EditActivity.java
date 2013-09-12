@@ -2,12 +2,11 @@ package com.android.diary;
 
 import com.android.diary.R;
 
-import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 
-public class EditActivity extends Activity{
+public class EditActivity extends BaseActivity{
 	
 //	private static final String LOG_TAG = "EDIT ACTIVITY";
 	

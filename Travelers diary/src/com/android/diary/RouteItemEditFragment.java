@@ -5,8 +5,10 @@ import java.util.List;
 
 import android.app.Fragment;
 import android.content.ContentValues;
+import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,6 +18,8 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
 import com.android.diary.R;
 
 public class RouteItemEditFragment extends Fragment {
@@ -58,7 +62,7 @@ public class RouteItemEditFragment extends Fragment {
 		saveBtn.setOnClickListener(new OnClickListener() {
 			
 			public void onClick(View v) {
-				saveData();
+				saveData();				
 			}
 		});
 		
@@ -125,7 +129,12 @@ public class RouteItemEditFragment extends Fragment {
 		DatabaseHandler db = new DatabaseHandler(getActivity());
 		db.close();
 		
-		try {			
+		if(!isNetworkAvailableWithToast())
+		{
+			return;
+		}
+		
+		try {
 			List<Address> address = geocoder.getFromLocation(this.routeItem.getLatitude(), this.routeItem.getLongitude(), 1);
 			this.routeItem.setAddress(address.get(0));
 			setValues(false);
@@ -151,6 +160,8 @@ public class RouteItemEditFragment extends Fragment {
 		DatabaseHandler db = new DatabaseHandler(getActivity());
 		db.updateRouteItem(cv, getRouteItemId());
 		db.close();
+		
+		Toast.makeText(getActivity(), getString(R.string.ri_edit_saved), Toast.LENGTH_SHORT).show();
 	}
 	
 	/**
@@ -165,5 +176,12 @@ public class RouteItemEditFragment extends Fragment {
 			return;
 		
 		editText.setText(text);		
+	}
+	
+	public boolean isNetworkAvailableWithToast(){
+		ConnectivityManager connectivityManager = (ConnectivityManager)getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+		if(connectivityManager.getActiveNetworkInfo() == null || !connectivityManager.getActiveNetworkInfo().isConnected())
+			Toast.makeText(getActivity(), getString(R.string.warn_dataConnectionUnavailable), Toast.LENGTH_SHORT).show();
+		return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnected();
 	}
 }

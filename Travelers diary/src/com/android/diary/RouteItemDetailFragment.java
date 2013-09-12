@@ -1,6 +1,8 @@
 package com.android.diary;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,21 +17,26 @@ import com.android.diary.R;
 public class RouteItemDetailFragment extends Fragment {
 
 	public static final String ROUTE_ITEM_ID = "routeItemId";
+	private View view;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		if(container == null)
 			return null;
 		
-		View view = inflater.inflate(R.layout.fragment_route_item_details, container, false);
-		
-		setValues(view);
-		
+		view = inflater.inflate(R.layout.fragment_route_item_details, container, false);
+				
 		if(savedInstanceState == null)
 			setHasOptionsMenu(true);
 		return view;
 	}
 	
+	@Override
+	public void onStart() {
+		setValues(view);
+		super.onStart();
+	}
+
 	public static RouteItemDetailFragment newInstance(int routeItemId)
 	{
 		RouteItemDetailFragment fragment = new RouteItemDetailFragment();
@@ -54,12 +61,30 @@ public class RouteItemDetailFragment extends Fragment {
 			intent.putExtra(ROUTE_ITEM_ID, getRouteItemID());
 			startActivity(intent);
 			break;
+		case R.id.menu_deleteRouteItem:
+			createConfirmDialog();
+			break;
 
 		default:
 			break;
 		}
 		return super.onOptionsItemSelected(item);
 	}
+	
+	private void createConfirmDialog()
+    {
+    	new AlertDialog.Builder(getActivity()).setTitle(getString(R.string.dialog_confirmation)).setMessage(getString(R.string.dialog_routeItemDelete))
+		.setIcon(android.R.drawable.ic_dialog_alert)
+		.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+		
+			public void onClick(DialogInterface dialog, int which) {
+				DatabaseHandler db = new DatabaseHandler(getActivity());
+				db.deleteRouteItem(getRouteItemID());
+				db.close();
+				getActivity().finish();
+			}
+		}).setNegativeButton(android.R.string.no, null).show();
+    }
 
 	private int getRouteItemID()
 	{

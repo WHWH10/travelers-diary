@@ -20,10 +20,11 @@ public class RouteItem {
 	private Date dateCreated;
 	private Date dateModified;
 	private Address address;
+	private boolean isImported;
 	
 	public RouteItem(int routeItemId, int routeId, String title,
 			String description, Date dateCreated, Date dateModified,
-			Address address) 
+			Address address, boolean isImported) 
 	{
 		super();
 		this.routeItemId = routeItemId;
@@ -33,11 +34,12 @@ public class RouteItem {
 		this.dateCreated = dateCreated;
 		this.dateModified = dateModified;
 		this.address = address;
+		this.isImported = isImported;
 	}
 	
 	public RouteItem(int routeItemId, int routeId, String title,
 			String description, String dateCreated, String dateModified,
-			Address address) 
+			Address address, boolean isImported) 
 	{
 		super();
 		this.routeItemId = routeItemId;
@@ -47,6 +49,7 @@ public class RouteItem {
 		this.setDateCreated(dateCreated);
 		this.setDateModified(dateModified);
 		this.address = address;
+		this.isImported = isImported;
 	}
 
 	public int getRouteItemId() {
@@ -96,6 +99,16 @@ public class RouteItem {
 			Log.e(LOG_TAG, e.toString());
 			this.dateCreated = new Date();
 		}
+	}
+	
+	public boolean getIsImported()
+	{
+		return this.isImported;
+	}
+	
+	public void setIsImported(boolean isImported)
+	{
+		this.isImported = isImported;
 	}
 
 	public Date getDateModified() {
@@ -147,7 +160,8 @@ public class RouteItem {
 				cursor.getString(cursor.getColumnIndex(DatabaseHandler.KEY_DESCRIPTION)),
 				cursor.getString(cursor.getColumnIndex(DatabaseHandler.KEY_DATE_CREATED)), 
 				cursor.getString(cursor.getColumnIndex(DatabaseHandler.KEY_DATE_MODIFIED)),
-				parseAddress(cursor));
+				parseAddress(cursor),
+				Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(DatabaseHandler.KEY_DATE_MODIFIED))));
 	}
 	
 	public static Address parseAddress(Cursor cursor)

@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:text="New Route"/>
+        android:text="@string/main_ac_newRoute"/>
     
     <Button 
         android:id="@+id/main_existingRoute"
@@ -21,7 +21,8 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/main_newRoute"
         android:layout_margin="10dp"
-        android:text="Existing Route"/>
+        android:onClick="btnExistingRouteClicked"
+        android:text="@string/main_ac_existingRoute"/>
     
     <Button 
         android:id="@+id/main_gallery"
@@ -31,7 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/main_newRoute"
         android:layout_margin="10dp"
-        android:text="Gallery"/>
+        android:text="@string/main_ac_gallery"/>
     
     <Button 
         android:id="@+id/main_settings"
@@ -42,7 +43,6 @@
         android:layout_below="@id/main_existingRoute"
         android:layout_toRightOf="@id/main_gallery"
         android:layout_margin="10dp"
-        android:text="Settings"/>
+        android:text="@string/main_ac_settings"/>
     
-
 </RelativeLayout>

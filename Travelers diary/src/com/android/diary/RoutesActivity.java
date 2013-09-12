@@ -16,8 +16,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.DialogInterface.OnClickListener;
+import android.content.res.Configuration;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.InputType;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.MenuInflater;
@@ -26,20 +32,17 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 
 public class RoutesActivity extends ListActivity{
 	
-//	private static final String LOG_TAG = "ROUTES ACTIVITY";
+	private static final String LOG_TAG = "ROUTES ACTIVITY";
 	private Intent myService;
 
 	private ListView listView;
 	private List<Route> routes;
 	private int itemSelected;
 	private String title;
-	private boolean showRoute;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +52,6 @@ public class RoutesActivity extends ListActivity{
 		this.listView = (ListView) findViewById(android.R.id.list);
 		this.itemSelected = 0;
 		this.title = "";
-		this.showRoute = false;
 		
 		prepareList();
 		
@@ -64,9 +66,7 @@ public class RoutesActivity extends ListActivity{
 		
 		if(this.routes == null || this.routes.isEmpty())
 			return;	
-		
-		String from[] = {"route", "date"};
-		
+				
 		List<Map<String, String>> g = new ArrayList<Map<String, String>>();
 		
 		for (int i = 0; i < this.routes.size(); i++) {
@@ -78,10 +78,12 @@ public class RoutesActivity extends ListActivity{
 				routeTitle = getString(R.string.unnamed);
 			map.put("route", routeTitle);
 			map.put("date", getResources().getString(R.string.date) + ": " + this.routes.get(i).getDateCreated());
+			map.put("routeId", String.valueOf(routes.get(i).getRouteId()));
 			g.add(map);
 		}
-		
-		ListAdapter adapter = new SimpleAdapter(this, g, android.R.layout.two_line_list_item, from, new int[] {android.R.id.text1, android.R.id.text2});
+		DisplayMetrics displayMetrics = new DisplayMetrics();
+		getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+		RouteListAdapter adapter = new RouteListAdapter(this, R.layout.route_list_item, g, displayMetrics, IsOrientationPortrait());
 		setListAdapter(adapter);
 	}
 	
@@ -99,8 +101,13 @@ public class RoutesActivity extends ListActivity{
 			showRouteDetail();
 			break;
 			
+		case R.id.menu_addImage:
+			Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+			intent.setType("image/*");
+			startActivityForResult(intent, 1);
+			break;
+			
 		case R.id.menu_showRouteOnMap:
-			showRoute = true;
 			showRouteOnMap();			
 			break;
 			
@@ -133,6 +140,27 @@ public class RoutesActivity extends ListActivity{
 	}
 
 	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if(resultCode == RESULT_OK)
+		{
+			Log.i(LOG_TAG, getImagePathFromURI(data.getData()));
+			DatabaseHandler db = new DatabaseHandler(this);
+			db.insertImage(routes.get(itemSelected).getRouteId(), 0, getImagePathFromURI(data.getData()));
+			Log.i(LOG_TAG, db.getImageByRouteId(routes.get(itemSelected).getRouteId()));
+			db.close();
+		}
+	}
+	
+	public String getImagePathFromURI(Uri contentUri) {
+        String[] proj = { MediaStore.Images.Media.DATA };
+        Cursor cursor = managedQuery(contentUri, proj, null, null, null);
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
+    }
+
+	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenuInfo menuInfo) {
 		MenuInflater inflater = getMenuInflater();
@@ -150,26 +178,19 @@ public class RoutesActivity extends ListActivity{
 		itemSelected = position;
 		openContextMenu(listView);
 		super.onListItemClick(l, v, position, id);
-	}	
-	
-	@Override
-	public void finish() {		
-		if(showRoute)
-			setResult(itemSelected);
-		else 
-			setResult(0);
-		super.finish();
 	}
 	
 	private void showRouteOnMap()
 	{
 		if(this.routes == null || this.routes.size() <= itemSelected)
 		{
-			itemSelected = -1;
-			this.finish();
+			return;
 		}
 		
 		itemSelected = this.routes.get(itemSelected).getRouteId();
+		Intent intent = new Intent(this, MapActivity.class);
+		intent.putExtra(MapActivity.ROUTE_ID, itemSelected);
+		startActivity(intent);		
 		
 		this.finish();
 	}
@@ -261,5 +282,10 @@ public class RoutesActivity extends ListActivity{
 	        }
 	    }
 	    return false;
-	}   
+	}
+	
+	public boolean IsOrientationPortrait()
+	{
+		return getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
+	}
 }

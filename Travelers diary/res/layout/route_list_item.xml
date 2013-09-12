@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    
+    <ImageView 
+        android:id="@+id/route_item_image"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:scaleType="fitXY"
+        android:contentDescription="@string/no_image"
+		android:adjustViewBounds="true"
+        android:src="@drawable/ic_launcher" />
+    
+    <TextView
+        android:id="@+id/route_item_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/route_item_image"
+        android:text="@string/unnamed" />
+    
+    <TextView
+        android:id="@+id/route_item_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/unknown"
+        android:layout_toRightOf="@id/route_item_image"
+        android:layout_below="@id/route_item_title" />
+
+</RelativeLayout>

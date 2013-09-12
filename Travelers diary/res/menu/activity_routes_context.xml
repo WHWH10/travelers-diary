@@ -7,6 +7,10 @@
         android:title="@string/dialog_details"
         android:orderInCategory="100"
         android:showAsAction="never" />
+    <item android:id="@+id/menu_addImage"
+        android:title="@string/menu_addImage"
+        android:orderInCategory="100"
+        android:showAsAction="never" />
     <item android:id="@+id/menu_deleteRoute"
         android:title="@string/menu_deleteRoute"
         android:orderInCategory="100"
