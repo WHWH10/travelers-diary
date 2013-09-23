@@ -1,4 +1,6 @@
-package com.android.diary;
+package Helpers;
+
+import com.android.diary.Config;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

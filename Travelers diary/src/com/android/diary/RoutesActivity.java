@@ -23,7 +23,6 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.InputType;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.MenuInflater;
@@ -51,13 +50,17 @@ public class RoutesActivity extends ListActivity{
 		
 		this.listView = (ListView) findViewById(android.R.id.list);
 		this.itemSelected = 0;
-		this.title = "";
-		
-		prepareList();
+		this.title = "";	
 		
 		registerForContextMenu(listView);
 	}
 	
+	@Override
+	protected void onStart() {
+		prepareList();
+		super.onStart();
+	}
+
 	private void prepareList()
 	{		
 		DatabaseHandler db = new DatabaseHandler(this);
@@ -121,7 +124,7 @@ public class RoutesActivity extends ListActivity{
 			break;
 			
 		case R.id.menu_stopTracking:
-			if(isMyServiceRunning() && myService != null)
+			if(isLocationProviderServiceRunning() && myService != null)
 			{
 				stopService(myService);
 			}
@@ -129,7 +132,7 @@ public class RoutesActivity extends ListActivity{
 			{
 				myService = new Intent(this, LocationProviderService.class);
 				startService(myService);
-				stopService(myService);			
+				stopService(myService);
 			}
 			break;
 
@@ -144,10 +147,8 @@ public class RoutesActivity extends ListActivity{
 		super.onActivityResult(requestCode, resultCode, data);
 		if(resultCode == RESULT_OK)
 		{
-			Log.i(LOG_TAG, getImagePathFromURI(data.getData()));
 			DatabaseHandler db = new DatabaseHandler(this);
 			db.insertImage(routes.get(itemSelected).getRouteId(), 0, getImagePathFromURI(data.getData()));
-			Log.i(LOG_TAG, db.getImageByRouteId(routes.get(itemSelected).getRouteId()));
 			db.close();
 		}
 	}
@@ -165,6 +166,15 @@ public class RoutesActivity extends ListActivity{
 			ContextMenuInfo menuInfo) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.activity_routes_context, menu);
+		if(isLocationProviderServiceRunning())
+		{
+			menu.findItem(R.id.menu_startTracking).setVisible(false);
+			menu.findItem(R.id.menu_stopTracking).setVisible(true);
+		}
+		else {
+			menu.findItem(R.id.menu_startTracking).setVisible(true);
+			menu.findItem(R.id.menu_stopTracking).setVisible(false);
+		}
 		super.onCreateContextMenu(menu, v, menuInfo);
 	}
 
@@ -229,7 +239,7 @@ public class RoutesActivity extends ListActivity{
 				dialog.cancel();
 			}
 		});
-		dialog.show();		
+		dialog.show();
 	}
 	
 	public void addRoute(View view)
@@ -273,7 +283,7 @@ public class RoutesActivity extends ListActivity{
 		}	
 	}
 	
-	private boolean isMyServiceRunning() {
+	private boolean isLocationProviderServiceRunning() {
 	    ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
 	    for (RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
 	    	

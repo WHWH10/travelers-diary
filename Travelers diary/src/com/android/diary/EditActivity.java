@@ -2,6 +2,7 @@ package com.android.diary;
 
 import com.android.diary.R;
 
+import BaseClasses.BaseActivity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;

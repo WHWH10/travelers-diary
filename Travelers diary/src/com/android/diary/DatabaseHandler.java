@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import Helpers.SharedPreferenceHelper;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -15,6 +16,8 @@ import android.os.Build;
 import android.util.Log;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
+	
+	private Context context;
 	
 	private static final String LOG_TAG = "DATABASE HANDLER";
 	
@@ -54,6 +57,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	public static final String KEY_TAG = "tag";
 	public static final String KEY_IS_IMPORTED = "isImported";
 	public static final String KEY_IMAGE_NAME = "imageName";
+	public static final String KEY_IS_ADDRESS_UPDATED = "isAddressUpdated";
 	
 	private static final String CREATE_ROUTE_TABLE = "CREATE  TABLE IF NOT EXISTS " + TABLE_ROUTE + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL  UNIQUE, " +
 			KEY_TITLE + " TEXT, " + KEY_DESCRIPTION + " TEXT, " + KEY_DATE_CREATED + " DATETIME NOT NULL, " + 
@@ -64,7 +68,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			KEY_DATE_MODIFIED + " DATETIME NOT NULL, " + KEY_COUNTRY + " TEXT, " + KEY_ADMIN_AREA + " TEXT, " + KEY_FEATURE + " TEXT, " +
 			KEY_ALTITUDE + " DOUBLE, " + KEY_LATITUDE + " DOUBLE, " + KEY_LONGITUDE + " DOUBLE, " + KEY_POSTAL_CODE + " TEXT, " + 
 			KEY_ADDRESS_LINE + " TEXT, " + KEY_THOROUGHFARE + " TEXT, " + KEY_SUB_THOROUGHFARE + " TEXT, " + KEY_LOCALE + " TEXT, " + KEY_LOCALITY + " TEXT, " + KEY_IS_IMPORTED + " INTEGER, " +
-			"CONSTRAINT fk_routeItem FOREIGN KEY(" + KEY_ROUTE_ID + ") REFERENCES " + TABLE_ROUTE + "(" + KEY_ID + ") " + "ON DELETE CASCADE ON UPDATE CASCADE" + ")";
+			KEY_IS_ADDRESS_UPDATED + " INTEGER, " + "CONSTRAINT fk_routeItem FOREIGN KEY(" + KEY_ROUTE_ID + ") REFERENCES " + TABLE_ROUTE + "(" + KEY_ID + ") " + "ON DELETE CASCADE ON UPDATE CASCADE" + ")";
 	
 	private static final String CREATE_LOG_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_LOG + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE, " + KEY_DATE_CREATED + 
 			" DATETIME NOT NULL, " + KEY_LOG_MESSAGE + " TEXT, " + KEY_USER + " TEXT, " + KEY_OS + " TEXT, " + KEY_DEVICE + " TEXT, " + KEY_MODEL + " TEXT, " + KEY_PRODUCT + " TEXT, " +  KEY_TAG + " TEXT)";
@@ -74,7 +78,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	
 	public DatabaseHandler(Context context)
 	{		
-		super(context, DATABASE_NAME, null, DATABASE_VERSION);	
+		super(context, DATABASE_NAME, null, DATABASE_VERSION);
+		this.context = context;
 	}
 	
 	@Override
@@ -114,6 +119,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		values.put(KEY_DATE_CREATED, DateFormat.getDateTimeInstance().format(new Date()));
 		values.put(KEY_DATE_MODIFIED, DateFormat.getDateTimeInstance().format(new Date()));
 		values.put(KEY_IS_IMPORTED, 0);
+		values.put(KEY_IS_ADDRESS_UPDATED, 0);
 		
 		SQLiteDatabase db = this.getWritableDatabase();		
 		
@@ -223,7 +229,36 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		Cursor cursor = db.query(TABLE_ROUTE_ITEM, new String[] {KEY_ID, KEY_ROUTE_ID, KEY_TITLE, KEY_DESCRIPTION, 
 				KEY_DATE_CREATED, KEY_DATE_MODIFIED, KEY_ADDRESS_LINE, KEY_ADMIN_AREA, KEY_ALTITUDE,
 				KEY_LATITUDE, KEY_LONGITUDE, KEY_COUNTRY, KEY_FEATURE, KEY_LOCALE, KEY_LOCALITY, KEY_POSTAL_CODE,
-				KEY_THOROUGHFARE, KEY_SUB_THOROUGHFARE, KEY_IS_IMPORTED}, KEY_ROUTE_ID + "=?", new String[]{String.valueOf(routeId)}, null, null, null, null);
+				KEY_THOROUGHFARE, KEY_SUB_THOROUGHFARE, KEY_IS_IMPORTED, KEY_IS_ADDRESS_UPDATED}, KEY_ROUTE_ID + "=?", new String[]{String.valueOf(routeId)}, null, null, null, null);
+				
+		List<RouteItem> list = new ArrayList<RouteItem>();
+		
+		if(cursor.moveToFirst())
+		{
+			do
+			{
+				RouteItem route = RouteItem.parse(cursor);
+				if(route == null)
+					continue;
+				list.add(route);			
+			}
+			while(cursor.moveToNext());
+		}
+		
+		cursor.close();
+		db.close();
+				
+		return list;
+	}
+	
+	public List<RouteItem> getRouteItems_withoutAddresses()
+	{
+		SQLiteDatabase db = this.getReadableDatabase();
+		
+		Cursor cursor = db.query(TABLE_ROUTE_ITEM, new String[] {KEY_ID, KEY_ROUTE_ID, KEY_TITLE, KEY_DESCRIPTION, 
+				KEY_DATE_CREATED, KEY_DATE_MODIFIED, KEY_ADDRESS_LINE, KEY_ADMIN_AREA, KEY_ALTITUDE,
+				KEY_LATITUDE, KEY_LONGITUDE, KEY_COUNTRY, KEY_FEATURE, KEY_LOCALE, KEY_LOCALITY, KEY_POSTAL_CODE,
+				KEY_THOROUGHFARE, KEY_SUB_THOROUGHFARE, KEY_IS_IMPORTED, KEY_IS_ADDRESS_UPDATED}, KEY_IS_ADDRESS_UPDATED + "=?", new String[]{String.valueOf(0)}, null, null, null, null);
 				
 		List<RouteItem> list = new ArrayList<RouteItem>();
 		
@@ -252,7 +287,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		Cursor cursor = db.query(TABLE_ROUTE_ITEM, new String[] {KEY_ID, KEY_ROUTE_ID, KEY_TITLE, KEY_DESCRIPTION, 
 				KEY_DATE_CREATED, KEY_DATE_MODIFIED, KEY_ADDRESS_LINE, KEY_ADMIN_AREA, KEY_ALTITUDE,
 				KEY_LATITUDE, KEY_LONGITUDE, KEY_COUNTRY, KEY_FEATURE, KEY_LOCALE, KEY_LOCALITY, KEY_POSTAL_CODE,
-				KEY_THOROUGHFARE, KEY_SUB_THOROUGHFARE, KEY_IS_IMPORTED}, KEY_ID + "=?", new String[]{String.valueOf(routeItemId)}, null, null, null, null);
+				KEY_THOROUGHFARE, KEY_SUB_THOROUGHFARE, KEY_IS_IMPORTED, KEY_IS_ADDRESS_UPDATED}, KEY_ID + "=?", new String[]{String.valueOf(routeItemId)}, null, null, null, null);
 				
 		RouteItem routeItem = null;
 		
@@ -278,13 +313,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			contentValues.put(KEY_DATE_CREATED, DateFormat.getDateTimeInstance().format(new Date()));
 			contentValues.put(KEY_DATE_MODIFIED, DateFormat.getDateTimeInstance().format(new Date()));
 			contentValues.put(KEY_IS_IMPORTED, 0);
+			contentValues.put(KEY_IS_ADDRESS_UPDATED, 0);
 			db.insertOrThrow(TABLE_ROUTE_ITEM, null, contentValues);
+			
+			SharedPreferenceHelper helper = new SharedPreferenceHelper(context);
+			helper.setAddressUpdateFlag(true);
 			
 		} catch (SQLException e) {
 			Log.e(LOG_TAG, e.toString());
 		} finally {
 			db.close();
-		}		
+		}
 	}
 	
 	public void updateRouteItem(ContentValues contentValues, int routeItemId)

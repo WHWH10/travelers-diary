@@ -1,12 +1,12 @@
 package com.android.diary;
 
-import android.app.Activity;
+import BaseClasses.BaseActivity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import com.android.diary.R;
 
-public class RouteDetailActivity extends Activity {
+public class RouteDetailActivity extends BaseActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

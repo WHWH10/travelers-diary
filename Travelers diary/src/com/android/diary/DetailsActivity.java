@@ -2,12 +2,12 @@ package com.android.diary;
 
 import com.android.diary.R;
 
-import android.app.Activity;
+import BaseClasses.BaseActivity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 
-public class DetailsActivity extends Activity{
+public class DetailsActivity extends BaseActivity{
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

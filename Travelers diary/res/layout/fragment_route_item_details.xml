@@ -65,75 +65,201 @@
             android:layout_height="wrap_content"
             android:text="@string/route_item_detail_address"
             android:textAppearance="?android:attr/textAppearanceMedium" />
+        
+        <LinearLayout 
+            android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal">
+	        
+            <TextView
+	            android:id="@+id/routeItem_det_country_tVTitle"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            android:text="@string/route_item_detail_country"
+	            android:textAppearance="?android:attr/textAppearanceSmall" />
 
-        <TextView
-            android:id="@+id/routeItem_det_country_tV"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/route_item_detail_country"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+	        <TextView
+	            android:id="@+id/routeItem_det_country_tV"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            android:layout_marginLeft="3dp"
+	            android:textAppearance="?android:attr/textAppearanceSmall" />
+	        
+        </LinearLayout>
+        
+         <LinearLayout 
+            android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal">
+             
+             <TextView
+	            android:id="@+id/routeItem_det_adminArea_tVTitle"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            android:text="@string/route_item_detail_admin_area"
+	            android:textAppearance="?android:attr/textAppearanceSmall" />
+             
+             <TextView
+	            android:id="@+id/routeItem_det_adminArea_tV"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            android:layout_marginLeft="3dp"
+	            android:textAppearance="?android:attr/textAppearanceSmall" />
+         </LinearLayout>
 
-        <TextView
-            android:id="@+id/routeItem_det_adminArea_tV"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/route_item_detail_admin_area"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+        <LinearLayout 
+            android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal">
+            
+            <TextView
+	            android:id="@+id/routeItem_det_city_tVTitle"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            android:text="@string/route_item_detail_address_line"
+	            android:textAppearance="?android:attr/textAppearanceSmall" />
+            <TextView
+	            android:id="@+id/routeItem_det_city_tV"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            android:layout_marginLeft="3dp"
+	            android:textAppearance="?android:attr/textAppearanceSmall" />
+            
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/routeItem_det_city_tV"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/route_item_detail_address_line"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+        <LinearLayout 
+            android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal">
+            
+            <TextView
+	            android:id="@+id/routeItem_det_thoroughfare_tVTitle"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            android:text="@string/route_item_detail_thoroughfare"
+	            android:textAppearance="?android:attr/textAppearanceSmall" />
+            
+            <TextView
+	            android:id="@+id/routeItem_det_thoroughfare_tV"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            android:layout_marginLeft="3dp"
+	            android:textAppearance="?android:attr/textAppearanceSmall" />
+            
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/routeItem_det_thoroughfare_tV"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/route_item_detail_thoroughfare"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+        <LinearLayout 
+            android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal">
+            
+            <TextView
+	            android:id="@+id/routeItem_det_subthoroughfare_tVTitle"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            android:text="@string/route_item_detail_subthoroughfare"
+	            android:textAppearance="?android:attr/textAppearanceSmall" />
+            
+            <TextView
+	            android:id="@+id/routeItem_det_subthoroughfare_tV"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            android:layout_marginLeft="3dp"
+	            android:textAppearance="?android:attr/textAppearanceSmall" />
+            
+        </LinearLayout>
+        
+        <LinearLayout 
+            android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal">
+            
+            <TextView
+	            android:id="@+id/routeItem_det_postalCode_tVTitle"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            android:text="@string/route_item_detail_postal_code"
+	            android:textAppearance="?android:attr/textAppearanceSmall" />
+            
+            <TextView
+	            android:id="@+id/routeItem_det_postalCode_tV"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            android:layout_marginLeft="3dp"
+	            android:textAppearance="?android:attr/textAppearanceSmall" />
+            
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/routeItem_det_subthoroughfare_tV"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/route_item_detail_subthoroughfare"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
-
-        <TextView
-            android:id="@+id/routeItem_det_postalCode_tV"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/route_item_detail_postal_code"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
-
-        <TextView
-            android:id="@+id/routeItem_det_feature_tV"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/route_item_detail_feature"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+        <LinearLayout 
+            android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal">
+            
+            <TextView
+	            android:id="@+id/routeItem_det_feature_tVTitle"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            android:text="@string/route_item_detail_feature"
+	            android:textAppearance="?android:attr/textAppearanceSmall" />
+            
+            <TextView
+	            android:id="@+id/routeItem_det_feature_tV"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            android:layout_marginLeft="3dp"
+	            android:textAppearance="?android:attr/textAppearanceSmall" />
+            
+        </LinearLayout>        
 
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="@string/route_item_detail_coordinates"
             android:textAppearance="?android:attr/textAppearanceMedium" />
+        
+        <LinearLayout 
+            android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal">
+            
+            <TextView
+	            android:id="@+id/routeItem_det_coordinatesLat_tVTitle"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            android:text="@string/route_item_detail_latitude"
+	            android:textAppearance="?android:attr/textAppearanceSmall" />
+            
+            <TextView
+	            android:id="@+id/routeItem_det_coordinatesLat_tV"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            android:layout_marginLeft="3dp"
+	            android:textAppearance="?android:attr/textAppearanceSmall" />
+            
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/routeItem_det_coordinatesLat_tV"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/route_item_detail_latitude"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+        <LinearLayout 
+            android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal">
+            
+            <TextView
+	            android:id="@+id/routeItem_det_coordinatesLon_tVTitle"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            android:text="@string/route_item_detail_longitude"
+	            android:textAppearance="?android:attr/textAppearanceSmall" />
+            
+            <TextView
+	            android:id="@+id/routeItem_det_coordinatesLon_tV"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            android:layout_marginLeft="3dp"
+	            android:textAppearance="?android:attr/textAppearanceSmall" />
+            
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/routeItem_det_coordinatesLon_tV"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/route_item_detail_longitude"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+        
     </LinearLayout>
 
 </ScrollView>

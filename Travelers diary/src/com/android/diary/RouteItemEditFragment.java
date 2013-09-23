@@ -3,14 +3,11 @@ package com.android.diary;
 import java.io.IOException;
 import java.util.List;
 
-import android.app.Fragment;
+import BaseClasses.BaseFragment;
 import android.content.ContentValues;
-import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
-import android.net.ConnectivityManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -18,11 +15,10 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.android.diary.R;
 
-public class RouteItemEditFragment extends Fragment {
+public class RouteItemEditFragment extends BaseFragment {
 	
 	private static final String LOG_TAG = "ROUTE ITEM EDIT FRAGMENT";
 	public static final String ROUTE_ITEM_ID = "routeItemId";
@@ -139,7 +135,7 @@ public class RouteItemEditFragment extends Fragment {
 			this.routeItem.setAddress(address.get(0));
 			setValues(false);
 		} catch (IOException e) {
-			Log.e(LOG_TAG, e.toString());
+			LogErrorMessage(LOG_TAG, e.toString());
 		}
 	}
 	
@@ -156,12 +152,13 @@ public class RouteItemEditFragment extends Fragment {
 		cv.put(DatabaseHandler.KEY_SUB_THOROUGHFARE, subthoroughfare.getText().toString());
 		cv.put(DatabaseHandler.KEY_POSTAL_CODE, postalCode.getText().toString());
 		cv.put(DatabaseHandler.KEY_FEATURE, feature.getText().toString());
-				
+		cv.put(DatabaseHandler.KEY_IS_ADDRESS_UPDATED, 1);
+		
 		DatabaseHandler db = new DatabaseHandler(getActivity());
 		db.updateRouteItem(cv, getRouteItemId());
 		db.close();
 		
-		Toast.makeText(getActivity(), getString(R.string.ri_edit_saved), Toast.LENGTH_SHORT).show();
+		ToastMessage(getString(R.string.ri_edit_saved));
 	}
 	
 	/**
@@ -176,12 +173,5 @@ public class RouteItemEditFragment extends Fragment {
 			return;
 		
 		editText.setText(text);		
-	}
-	
-	public boolean isNetworkAvailableWithToast(){
-		ConnectivityManager connectivityManager = (ConnectivityManager)getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-		if(connectivityManager.getActiveNetworkInfo() == null || !connectivityManager.getActiveNetworkInfo().isConnected())
-			Toast.makeText(getActivity(), getString(R.string.warn_dataConnectionUnavailable), Toast.LENGTH_SHORT).show();
-		return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnected();
 	}
 }

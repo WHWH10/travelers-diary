@@ -1,40 +1,38 @@
-package com.android.diary;
+package BaseClasses;
 
+import com.android.diary.R;
+
+import Helpers.MessageHelper;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.net.ConnectivityManager;
-import android.util.Log;
-import android.widget.Toast;
 
 public abstract class BaseActivity extends Activity {
 	
-	public  void LogMessage(String logTag, String message)
+	public void LogMessage(String logTag, String message)
 	{
-		LogToDatabase(message, "", logTag);
-		Log.i(logTag, message);
-	}
+		MessageHelper.LogMessage(this, logTag, message);
+	}	
 	
 	public void LogErrorMessage(String logTag, String message)
 	{
-		LogToDatabase(message, "", logTag);		
-		Log.e(logTag, message);
+		MessageHelper.LogErrorMessage(this, logTag, message);
 	}
 	
 	public void LogWarningMessage(String logTag, String message)
 	{
-		LogToDatabase(message, "", logTag);		
-		Log.w(logTag, message);
+		MessageHelper.LogWarningMessage(this, logTag, message);
 	}
 	
 	public void ToastMessage(String message)
 	{
-		Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+		MessageHelper.ToastMessage(this, message);
 	}
 	
 	public void ToastMessageLong(String message)
 	{
-		Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+		MessageHelper.ToastMessageLong(this, message);
 	}
 	
 	public boolean isNetworkAvailable()
@@ -48,13 +46,6 @@ public abstract class BaseActivity extends Activity {
 		if(connectivityManager.getActiveNetworkInfo() == null || !connectivityManager.getActiveNetworkInfo().isConnected())
 			ToastMessage(getString(R.string.warn_dataConnectionUnavailable));
 		return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnected();
-	}
-	
-	private void LogToDatabase(String message, String user, String tag)
-	{
-		DatabaseHandler db = new DatabaseHandler(this);
-		db.insertLog(message, user, tag);
-		db.close();
 	}
 	
 	public boolean IsOrientationPortrait()

@@ -1,7 +1,7 @@
 package com.android.diary;
 
+import BaseClasses.BaseFragment;
 import android.app.AlertDialog;
-import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.android.diary.R;
 
-public class RouteItemDetailFragment extends Fragment {
+public class RouteItemDetailFragment extends BaseFragment {
 
 	public static final String ROUTE_ITEM_ID = "routeItemId";
 	private View view;
@@ -109,15 +109,15 @@ public class RouteItemDetailFragment extends Fragment {
 			setText(view, R.id.routeItem_det_title_tV, routeItem.getTitle(), true);
 			setText(view, R.id.routeItem_det_description_tV, routeItem.getDescription(), true);
 			setText(view, R.id.routeItem_det_date_tV, routeItem.getDateCreated().toString(), true);
-			setText(view, R.id.routeItem_det_country_tV, routeItem.getAddress().getCountryName(), false);
-			setText(view, R.id.routeItem_det_adminArea_tV, routeItem.getAddress().getAdminArea(), false);
-			setText(view, R.id.routeItem_det_city_tV, routeItem.getAddress().getAddressLine(0), false);
-			setText(view, R.id.routeItem_det_thoroughfare_tV, routeItem.getAddress().getThoroughfare(), false);
-			setText(view, R.id.routeItem_det_subthoroughfare_tV, routeItem.getAddress().getSubThoroughfare(), false);
-			setText(view, R.id.routeItem_det_postalCode_tV, routeItem.getAddress().getPostalCode(), false);
-			setText(view, R.id.routeItem_det_feature_tV, routeItem.getAddress().getFeatureName(), false);
-			setText(view, R.id.routeItem_det_coordinatesLat_tV, String.valueOf(routeItem.getLatitude()), false);
-			setText(view, R.id.routeItem_det_coordinatesLon_tV, String.valueOf(routeItem.getLongitude()), false);
+			setText(view, R.id.routeItem_det_country_tV, routeItem.getAddress().getCountryName(), true);
+			setText(view, R.id.routeItem_det_adminArea_tV, routeItem.getAddress().getAdminArea(), true);
+			setText(view, R.id.routeItem_det_city_tV, routeItem.getAddress().getAddressLine(0), true);
+			setText(view, R.id.routeItem_det_thoroughfare_tV, routeItem.getAddress().getThoroughfare(), true);
+			setText(view, R.id.routeItem_det_subthoroughfare_tV, routeItem.getAddress().getSubThoroughfare(), true);
+			setText(view, R.id.routeItem_det_postalCode_tV, routeItem.getAddress().getPostalCode(), true);
+			setText(view, R.id.routeItem_det_feature_tV, routeItem.getAddress().getFeatureName(), true);
+			setText(view, R.id.routeItem_det_coordinatesLat_tV, String.valueOf(routeItem.getLatitude()), true);
+			setText(view, R.id.routeItem_det_coordinatesLon_tV, String.valueOf(routeItem.getLongitude()), true);
 		}
 		
 		db.close();		

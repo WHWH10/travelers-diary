@@ -116,6 +116,7 @@
     
    	<string name="dialog_set">Set</string>
    	<string name="hint_title">Enter route title here</string>   	
+   	<string name="hint_description">Enter route description here</string>   	
  	
  	
  	<string name="country">Country</string>

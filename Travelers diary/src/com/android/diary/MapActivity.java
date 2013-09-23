@@ -3,6 +3,7 @@ package com.android.diary;
 import java.util.HashMap;
 import java.util.List;
 
+import BaseClasses.BaseActivity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -26,11 +27,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class MapActivity extends BaseActivity {
 
 	private static final String LOG_TAG = "MAP ACTIVITY";
-	public static final String COORDINATES_FILE = "Coordinates.txt"; // File of coordinates
-	public static final String APP_PREFS = "app_prefs";
 	public static final String ROUTE_ID = "route_id";
-	public static final String LAST_ROUTE = "last_route";
-	public static final int ROUTES_REQ_CODE = 1;	
 	
 	private List<RouteItem> routeItems;
 	private GoogleMap mapView;
