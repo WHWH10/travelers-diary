@@ -78,7 +78,7 @@ public class RouteItemDetailFragment extends BaseFragment {
 		.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 		
 			public void onClick(DialogInterface dialog, int which) {
-				DatabaseHandler db = new DatabaseHandler(getActivity());
+				DatabaseHandler db = new DatabaseHandler(getActivity());				
 				db.deleteRouteItem(getRouteItemID());
 				db.close();
 				getActivity().finish();

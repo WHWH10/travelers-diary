@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import Helpers.MessageHelper;
 import Helpers.SharedPreferenceHelper;
 import android.content.ContentValues;
 import android.content.Context;
@@ -13,7 +14,6 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Build;
-import android.util.Log;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 	
@@ -58,6 +58,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	public static final String KEY_IS_IMPORTED = "isImported";
 	public static final String KEY_IMAGE_NAME = "imageName";
 	public static final String KEY_IS_ADDRESS_UPDATED = "isAddressUpdated";
+	public static final String KEY_IS_DEFAULT_ROUTE_IMAGE = "isDefaultRouteImage";
+	public static final String KEY_IS_DEFAULT_ROUTE_ITEM_IMAGE = "isDefaultRouteItemImage";
 	
 	private static final String CREATE_ROUTE_TABLE = "CREATE  TABLE IF NOT EXISTS " + TABLE_ROUTE + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL  UNIQUE, " +
 			KEY_TITLE + " TEXT, " + KEY_DESCRIPTION + " TEXT, " + KEY_DATE_CREATED + " DATETIME NOT NULL, " + 
@@ -74,7 +76,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			" DATETIME NOT NULL, " + KEY_LOG_MESSAGE + " TEXT, " + KEY_USER + " TEXT, " + KEY_OS + " TEXT, " + KEY_DEVICE + " TEXT, " + KEY_MODEL + " TEXT, " + KEY_PRODUCT + " TEXT, " +  KEY_TAG + " TEXT)";
 	
 	private static final String CREATE_IMAGE_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_IMAGE + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE, " + KEY_DATE_CREATED + " DATETIME NOT NULL, "
-			+ KEY_IMAGE_NAME + " TEXT, " + KEY_IS_IMPORTED + " INTEGER, " + KEY_ROUTE_ID + " INTEGER, " + KEY_ROUTE_ITEM_ID + " INTEGER" + ")";
+			+ KEY_IMAGE_NAME + " TEXT, " + KEY_IS_IMPORTED + " INTEGER, " + KEY_ROUTE_ID + " INTEGER, " + KEY_ROUTE_ITEM_ID + " INTEGER, " + KEY_IS_DEFAULT_ROUTE_IMAGE + " INTEGER, " 
+			+ KEY_IS_DEFAULT_ROUTE_ITEM_IMAGE + " INTEGER" + ")";
 	
 	public DatabaseHandler(Context context)
 	{		
@@ -91,22 +94,31 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) 
-	{	
-		db.execSQL(CREATE_ROUTE_TABLE);
-		db.execSQL(CREATE_ROUTE_ITEM_TABLE);	
-		db.execSQL(CREATE_LOG_TABLE);
-		db.execSQL(CREATE_IMAGE_TABLE);
+	{
+		try {
+			db.execSQL(CREATE_ROUTE_TABLE);
+			db.execSQL(CREATE_ROUTE_ITEM_TABLE);	
+			db.execSQL(CREATE_LOG_TABLE);
+			db.execSQL(CREATE_IMAGE_TABLE);
+		} catch (Exception e) {
+			MessageHelper.LogErrorMessage(context, LOG_TAG, e.toString());
+		}
+		
 	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) 
 	{
-		db.execSQL("DROP TABLE IF EXISTS " + TABLE_ROUTE);
-		db.execSQL("DROP TABLE IF EXISTS " + TABLE_ROUTE_ITEM);
-		db.execSQL("DROP TABLE IF EXISTS " + TABLE_LOG);
-		db.execSQL("DROP TABLE IF EXISTS " + TABLE_IMAGE);
-		
-		onCreate(db);
+		try {
+			db.execSQL("DROP TABLE IF EXISTS " + TABLE_ROUTE);
+			db.execSQL("DROP TABLE IF EXISTS " + TABLE_ROUTE_ITEM);
+			db.execSQL("DROP TABLE IF EXISTS " + TABLE_LOG);
+			db.execSQL("DROP TABLE IF EXISTS " + TABLE_IMAGE);
+			
+			onCreate(db);
+		} catch (Exception e) {
+			MessageHelper.LogErrorMessage(context, LOG_TAG, e.toString());
+		}		
 	}
 	
 	public void addLocationInfo(int routeId, double altitude, double latitude, double longitude)
@@ -188,7 +200,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			db.insertOrThrow(TABLE_ROUTE, null, contentValues);
 			
 		} catch (SQLException e) {
-			Log.e(LOG_TAG, e.toString());
+			MessageHelper.LogErrorMessage(context, LOG_TAG, e.toString());
 		} finally {
 			db.close();
 		}		
@@ -208,7 +220,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			db.update(TABLE_ROUTE, contentValues, KEY_ID + "=?", new String[]{String.valueOf(routeId)});
 			
 		} catch (SQLException e) {
-			Log.e(LOG_TAG, e.toString());
+			MessageHelper.LogErrorMessage(context, LOG_TAG, e.toString());
 		} finally {
 			db.close();
 		}
@@ -320,7 +332,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			helper.setAddressUpdateFlag(true);
 			
 		} catch (SQLException e) {
-			Log.e(LOG_TAG, e.toString());
+			MessageHelper.LogErrorMessage(context, LOG_TAG, e.toString());
 		} finally {
 			db.close();
 		}
@@ -340,7 +352,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			db.update(TABLE_ROUTE_ITEM, contentValues, KEY_ID + "=?", new String[]{String.valueOf(routeItemId)});
 			
 		} catch (SQLException e) {
-			Log.e(LOG_TAG, e.toString());
+			MessageHelper.LogErrorMessage(context, LOG_TAG, e.toString());
 		} finally {
 			db.close();
 		}
@@ -401,7 +413,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			db.insertOrThrow(TABLE_LOG, null, contentValues);
 			
 		} catch (SQLException e) {
-			Log.e(LOG_TAG, e.toString());
+			MessageHelper.LogErrorMessage(context, LOG_TAG, e.toString());
 		} finally {
 			db.close();
 		}		
@@ -419,18 +431,82 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			contentValues.put(KEY_ROUTE_ID, routeId);
 			contentValues.put(KEY_ROUTE_ITEM_ID, routeItemId);
 			contentValues.put(KEY_IMAGE_NAME, imagePath);
+			contentValues.put(KEY_IS_DEFAULT_ROUTE_IMAGE, 0);
+			contentValues.put(KEY_IS_DEFAULT_ROUTE_ITEM_IMAGE, 0);
+			
 			db.insertOrThrow(TABLE_IMAGE, null, contentValues);
 			
 		} catch (SQLException e) {
-			Log.e(LOG_TAG, e.toString());
+			MessageHelper.LogErrorMessage(context, LOG_TAG, e.toString());
 		} finally {
 			db.close();
 		}		
 	}
 	
-	public String getImageByRouteId(int routeId)
+	public void insertDefaultImage(int routeId, int routeItemId, String imagePath, boolean isDefaultRouteImage)
+	{		
+		SQLiteDatabase db = this.getWritableDatabase();	
+		
+		try {
+			ContentValues contentValues = new ContentValues();
+			
+			contentValues.put(KEY_IS_IMPORTED, 0);
+			
+			if(isDefaultRouteImage)
+			{
+				contentValues.put(KEY_IS_DEFAULT_ROUTE_IMAGE, 0);
+				db.update(TABLE_IMAGE, contentValues, KEY_ID + "=? AND " + KEY_IS_DEFAULT_ROUTE_IMAGE + " =?" , new String[]{String.valueOf(routeId), "1"});
+			}
+			else {
+				contentValues.put(KEY_IS_DEFAULT_ROUTE_ITEM_IMAGE, 0);
+				db.update(TABLE_IMAGE, contentValues, KEY_ID + "=? AND " + KEY_IS_DEFAULT_ROUTE_ITEM_IMAGE + " =?" , new String[]{String.valueOf(routeId), "1"});
+			}			
+			
+			contentValues.clear();
+			
+			contentValues.put(KEY_DATE_CREATED, DateFormat.getDateTimeInstance().format(new Date()));
+			contentValues.put(KEY_IS_IMPORTED, 0);
+			contentValues.put(KEY_ROUTE_ID, routeId);
+			contentValues.put(KEY_ROUTE_ITEM_ID, routeItemId);			
+			contentValues.put(KEY_IMAGE_NAME, imagePath);
+			
+			if(isDefaultRouteImage)
+				contentValues.put(KEY_IS_DEFAULT_ROUTE_IMAGE, 1);
+			else {
+				contentValues.put(KEY_IS_DEFAULT_ROUTE_ITEM_IMAGE, 1);
+			}
+			
+			db.insertOrThrow(TABLE_IMAGE, null, contentValues);
+			
+		} catch (SQLException e) {
+			MessageHelper.LogErrorMessage(context, LOG_TAG, e.toString());
+		} finally {
+			db.close();
+		}		
+	}
+	
+	public String getDefaultRouteImage(int routeId)
 	{
-		String countQuery = "SELECT * FROM " + TABLE_IMAGE + " WHERE " + KEY_ROUTE_ID + "=" + routeId + " LIMIT 1;";
+		String countQuery = "SELECT * FROM " + TABLE_IMAGE + " WHERE " + KEY_ROUTE_ID + "=" + routeId + " AND " + KEY_IS_DEFAULT_ROUTE_IMAGE + "=1";
+		SQLiteDatabase db = this.getReadableDatabase();
+		
+		Cursor cursor = db.rawQuery(countQuery, null);
+		String image = "";
+		if(cursor.getCount() > 0)
+		{
+			cursor.moveToFirst();
+			image = cursor.getString(cursor.getColumnIndex(KEY_IMAGE_NAME));
+		}
+		
+		cursor.close();
+		db.close();
+		
+		return image;
+	}
+	
+	public String getDefaultRouteItemImage(int routeItemId)
+	{
+		String countQuery = "SELECT * FROM " + TABLE_IMAGE + " WHERE " + KEY_ROUTE_ITEM_ID + "=" + routeItemId + " AND " + KEY_IS_DEFAULT_ROUTE_ITEM_IMAGE + "=1";
 		SQLiteDatabase db = this.getReadableDatabase();
 		
 		Cursor cursor = db.rawQuery(countQuery, null);

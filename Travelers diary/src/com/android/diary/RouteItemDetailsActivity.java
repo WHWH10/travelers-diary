@@ -7,7 +7,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 
-public class DetailsActivity extends BaseActivity{
+public class RouteItemDetailsActivity extends BaseActivity{
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

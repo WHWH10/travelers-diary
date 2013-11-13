@@ -51,7 +51,7 @@ public class MapActivity extends BaseActivity {
 			public void onInfoWindowClick(Marker marker) {
 				if(markerId != null && markerId.get(marker.getId()) != null && markerId.get(marker.getId()) != 0)
 				{
-					Intent intent = new Intent(getApplicationContext(), DetailsActivity.class);
+					Intent intent = new Intent(getApplicationContext(), RouteItemDetailsActivity.class);
 					intent.putExtra(RouteItemDetailFragment.ROUTE_ITEM_ID, markerId.get(marker.getId()));
 					startActivity(intent);
 				}

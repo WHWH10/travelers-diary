@@ -4,4 +4,8 @@
         <ignore path="src/com/android/diary/Route.java" />
         <ignore path="src/com/android/diary/RouteItem.java" />
     </issue>
+    <issue id="ViewConstructor">
+        <ignore path="src/com/android/diary/RouteListAdapter.java" />
+        <ignore path="src/com/android/diary/RouteListItemAdapter.java" />
+    </issue>
 </lint>

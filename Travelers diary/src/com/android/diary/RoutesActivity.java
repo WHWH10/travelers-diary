@@ -43,6 +43,8 @@ public class RoutesActivity extends ListActivity{
 	private int itemSelected;
 	private String title;
 	
+	private final static int REQ_CODE_GET_DEFAULT_IMAGE = 1;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -66,9 +68,6 @@ public class RoutesActivity extends ListActivity{
 		DatabaseHandler db = new DatabaseHandler(this);
 		this.routes = db.getRoutes();
 		db.close();
-		
-		if(this.routes == null || this.routes.isEmpty())
-			return;	
 				
 		List<Map<String, String>> g = new ArrayList<Map<String, String>>();
 		
@@ -79,14 +78,14 @@ public class RoutesActivity extends ListActivity{
 			
 			if(routeTitle == null || routeTitle.isEmpty())
 				routeTitle = getString(R.string.unnamed);
-			map.put("route", routeTitle);
+			map.put("title", routeTitle);
 			map.put("date", getResources().getString(R.string.date) + ": " + this.routes.get(i).getDateCreated());
-			map.put("routeId", String.valueOf(routes.get(i).getRouteId()));
+			map.put("id", String.valueOf(routes.get(i).getRouteId()));
 			g.add(map);
 		}
 		DisplayMetrics displayMetrics = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-		RouteListAdapter adapter = new RouteListAdapter(this, R.layout.route_list_item, g, displayMetrics, IsOrientationPortrait());
+		RouteListAdapter adapter = new RouteListAdapter(this, g, displayMetrics, IsOrientationPortrait());
 		setListAdapter(adapter);
 	}
 	
@@ -104,10 +103,16 @@ public class RoutesActivity extends ListActivity{
 			showRouteDetail();
 			break;
 			
+		case R.id.menu_addCoverImage:
+			Intent imageIntent = new Intent(Intent.ACTION_GET_CONTENT);
+			imageIntent.setType("image/*");
+			startActivityForResult(imageIntent, REQ_CODE_GET_DEFAULT_IMAGE);
+			break;
+			
 		case R.id.menu_addImage:
-			Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-			intent.setType("image/*");
-			startActivityForResult(intent, 1);
+			Intent intent = new Intent(this, MultiPhotoSelectActivity.class);
+			intent.putExtra(MultiPhotoSelectActivity.ROUTE_ID, this.routes.get(itemSelected).getRouteId());
+			startActivity(intent);
 			break;
 			
 		case R.id.menu_showRouteOnMap:
@@ -147,23 +152,27 @@ public class RoutesActivity extends ListActivity{
 		super.onActivityResult(requestCode, resultCode, data);
 		if(resultCode == RESULT_OK)
 		{
-			DatabaseHandler db = new DatabaseHandler(this);
-			db.insertImage(routes.get(itemSelected).getRouteId(), 0, getImagePathFromURI(data.getData()));
-			db.close();
+			if(requestCode == REQ_CODE_GET_DEFAULT_IMAGE)
+			{
+				DatabaseHandler db = new DatabaseHandler(this);
+				db.insertDefaultImage(routes.get(itemSelected).getRouteId(), 0, getImagePathFromURI(data.getData()), true);
+				db.close();
+			}
 		}
 	}
 	
 	public String getImagePathFromURI(Uri contentUri) {
         String[] proj = { MediaStore.Images.Media.DATA };
         Cursor cursor = managedQuery(contentUri, proj, null, null, null);
+        if(cursor == null || cursor.getCount() == 0)
+        	return "";
         int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
         cursor.moveToFirst();
         return cursor.getString(column_index);
     }
 
 	@Override
-	public void onCreateContextMenu(ContextMenu menu, View v,
-			ContextMenuInfo menuInfo) {
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.activity_routes_context, menu);
 		if(isLocationProviderServiceRunning())
@@ -197,12 +206,9 @@ public class RoutesActivity extends ListActivity{
 			return;
 		}
 		
-		itemSelected = this.routes.get(itemSelected).getRouteId();
 		Intent intent = new Intent(this, MapActivity.class);
-		intent.putExtra(MapActivity.ROUTE_ID, itemSelected);
-		startActivity(intent);		
-		
-		this.finish();
+		intent.putExtra(MapActivity.ROUTE_ID, this.routes.get(itemSelected).getRouteId());
+		startActivity(intent);
 	}
 	
 	private void showRouteDetail()
@@ -220,6 +226,8 @@ public class RoutesActivity extends ListActivity{
 		AlertDialog.Builder dialog = new AlertDialog.Builder(this);
 		final EditText editText = new EditText(this);
 		editText.setHint(R.string.hint_title);
+		if(!routes.get(itemSelected).getTitle().isEmpty())
+			editText.setText(routes.get(itemSelected).getTitle());
 		editText.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
 		final InputMethodManager inputMethodManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
 		inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
@@ -240,6 +248,7 @@ public class RoutesActivity extends ListActivity{
 			}
 		});
 		dialog.show();
+		editText.setSelection(editText.getText().length());
 	}
 	
 	public void addRoute(View view)
@@ -269,17 +278,29 @@ public class RoutesActivity extends ListActivity{
 			db.updateRoute(contentValues, this.routes.get(itemSelected).getRouteId());
 			db.close();
 			prepareList();
-		}		
+		}
 	}
+	
+	private void createConfirmDialog()
+    {
+    	new AlertDialog.Builder(this).setTitle(getString(R.string.dialog_confirmation)).setMessage(getString(R.string.dialog_routeDelete))
+		.setIcon(android.R.drawable.ic_dialog_alert)
+		.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+		
+			public void onClick(DialogInterface dialog, int which) {
+				DatabaseHandler db = new DatabaseHandler(getApplicationContext());
+				db.deleteRoute(routes.get(itemSelected).getRouteId());
+				db.close();
+				prepareList();
+			}
+		}).setNegativeButton(android.R.string.no, null).show();
+    }
 	
 	private void deleteRoute()
 	{
 		if(this.routes != null && this.routes.size() > itemSelected)
 		{				
-			DatabaseHandler db = new DatabaseHandler(this);
-			db.deleteRoute(this.routes.get(itemSelected).getRouteId());
-			db.close();
-			prepareList();			
+			createConfirmDialog();		
 		}	
 	}
 	

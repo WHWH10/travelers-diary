@@ -135,6 +135,7 @@ public class RouteItemEditFragment extends BaseFragment {
 			this.routeItem.setAddress(address.get(0));
 			setValues(false);
 		} catch (IOException e) {
+			ToastMessage(getString(R.string.warn_unableToFillLocation));
 			LogErrorMessage(LOG_TAG, e.toString());
 		}
 	}

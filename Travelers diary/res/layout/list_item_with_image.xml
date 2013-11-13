@@ -4,7 +4,7 @@
     android:layout_height="match_parent" >
     
     <ImageView 
-        android:id="@+id/route_item_image"
+        android:id="@+id/list_item_image"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:scaleType="fitXY"
@@ -13,18 +13,18 @@
         android:src="@drawable/ic_launcher" />
     
     <TextView
-        android:id="@+id/route_item_title"
+        android:id="@+id/list_item_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/route_item_image"
+        android:layout_toRightOf="@id/list_item_image"
         android:text="@string/unnamed" />
     
     <TextView
-        android:id="@+id/route_item_date"
+        android:id="@+id/list_item_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/unknown"
-        android:layout_toRightOf="@id/route_item_image"
-        android:layout_below="@id/route_item_title" />
+        android:layout_toRightOf="@id/list_item_image"
+        android:layout_below="@id/list_item_title" />
 
 </RelativeLayout>

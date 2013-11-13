@@ -49,7 +49,7 @@ public class ImageHelper {
 		if(isOrientationPortrait)
 		{
 			int width = (int) (((double)metrics.widthPixels) * Config.IMAGE_SCALE_X);
-			int height = (int) (((double)metrics.heightPixels) * Config.IMAGE_SCALE_Y / 5);
+			int height = (int) (((double)metrics.heightPixels) * Config.IMAGE_SCALE_Y / Config.IMAGE_SCALE_Y_DIVIDER);
 			
 			if (options.outHeight > height || options.outWidth > width) {
 
@@ -65,7 +65,7 @@ public class ImageHelper {
 		}
 		else {
 			int width = (int) (((double)metrics.widthPixels) * Config.IMAGE_SCALE_X);
-			int height = (int) (((double)metrics.heightPixels) * Config.IMAGE_SCALE_Y / 5);
+			int height = (int) (((double)metrics.heightPixels) * Config.IMAGE_SCALE_Y / Config.IMAGE_SCALE_Y_DIVIDER);
 			
 			if (options.outHeight > height || options.outWidth > width) {
 
