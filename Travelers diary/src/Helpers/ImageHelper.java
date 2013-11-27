@@ -1,12 +1,19 @@
 package Helpers;
 
-import com.android.diary.Config;
+import java.io.File;
 
+import com.android.diary.Config;
+import com.android.diary.R;
+
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.DisplayMetrics;
+import android.widget.ImageView;
 
 public class ImageHelper {
+	private static final String LOG_TAG = "IMAGE HELPER";
+	
 	public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
 	    // Raw height and width of image
 	    final int height = options.outHeight;
@@ -80,5 +87,34 @@ public class ImageHelper {
 			}
 		}
 		return inSampleSize;
+	}
+	
+	public static boolean loadImage(String imagePath, ImageView imgView, Context context){
+		try {
+			File file = new File(imagePath);
+			
+			if(file.exists())
+			{
+				DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+								
+				BitmapFactory.Options options = new BitmapFactory.Options();
+				options.inJustDecodeBounds = true;
+			    BitmapFactory.decodeFile(imagePath, options);
+			    
+	    		options.inSampleSize = ImageHelper.calculateInSampleSize(options, displayMetrics.widthPixels, displayMetrics.heightPixels);
+	    		options.inJustDecodeBounds = false;
+
+				imgView.setImageBitmap(BitmapFactory.decodeFile(imagePath, options));
+				return true;
+			}
+			else {
+				imgView.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_launcher));
+				return true;
+			}
+		} catch (Exception e) {
+			MessageHelper.LogErrorMessage(context, LOG_TAG, e.toString());
+		}
+		
+		return false;
 	}
 }

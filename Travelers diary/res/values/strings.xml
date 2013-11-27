@@ -28,6 +28,7 @@
    	<string name="menu_addCoverImage">Add cover image</string>
    	<string name="menu_changeRouteItemTitle">Change title</string>
    	<string name="menu_deleteRouteItem">Delete point</string>
+   	<string name="menu_showGallery">Gallery</string>
     
     <!-- Notification -->
     <string name="notif_tracking_ticker">Tracking started</string>
@@ -95,6 +96,7 @@
  	<string name="warn_locProvider">No location providers available.</string>
  	<string name="warn_dataConnectionUnavailable">Data connection unavailable.</string>
  	<string name="warn_unableToFillLocation">Unable to fill address.</string>
+ 	<string name="warn_noImagesToDisplay">No images to display.</string>
  	
  	<!-- Route item detail fragment -->
  	<string name="route_item_detail_latitude">Latitude:</string>

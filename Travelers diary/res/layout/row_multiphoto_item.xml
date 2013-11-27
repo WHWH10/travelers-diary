@@ -7,6 +7,7 @@
         android:id="@+id/multiphoto_imgView"
         android:layout_width="100dp"
         android:layout_height="100dp"
+        android:onClick="onImageClick"
         android:contentDescription="@string/no_image"
         android:src="@drawable/ic_launcher" />
  
@@ -15,6 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignRight="@+id/multiphoto_imgView"
-        android:layout_centerVertical="true" />
+        android:button="@drawable/custom_checkbox"
+        android:layout_centerVertical="false" />
  
 </RelativeLayout>

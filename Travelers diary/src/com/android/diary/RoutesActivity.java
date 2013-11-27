@@ -35,7 +35,7 @@ import android.widget.ListView;
 
 public class RoutesActivity extends ListActivity{
 	
-	private static final String LOG_TAG = "ROUTES ACTIVITY";
+//	private static final String LOG_TAG = "ROUTES ACTIVITY";
 	private Intent myService;
 
 	private ListView listView;
@@ -52,7 +52,7 @@ public class RoutesActivity extends ListActivity{
 		
 		this.listView = (ListView) findViewById(android.R.id.list);
 		this.itemSelected = 0;
-		this.title = "";	
+		this.title = "";
 		
 		registerForContextMenu(listView);
 	}
@@ -117,6 +117,13 @@ public class RoutesActivity extends ListActivity{
 			
 		case R.id.menu_showRouteOnMap:
 			showRouteOnMap();			
+			break;
+		
+		case R.id.menu_showGallery:
+			Intent galeryIntent = new Intent(this, MultiPhotoSelectActivity.class);
+			galeryIntent.putExtra(MultiPhotoSelectActivity.SHOW_GALLERY, true);
+			galeryIntent.putExtra(MultiPhotoSelectActivity.ROUTE_ID, routes.get(itemSelected).getRouteId());
+			startActivity(galeryIntent);		
 			break;
 			
 		case R.id.menu_startTracking:

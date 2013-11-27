@@ -9,7 +9,7 @@ import android.view.View;
 
 public class MainActivity extends BaseActivity {
 	
-	private static final String LOG_TAG = "MAIN ACTIVITY";
+//	private static final String LOG_TAG = "MAIN ACTIVITY";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -44,5 +44,12 @@ public class MainActivity extends BaseActivity {
 	        }
 	    }
 	    return false;
+	}
+	
+	public void btnGalleryClick(View view)
+	{
+		Intent intent = new Intent(this, MultiPhotoSelectActivity.class);
+		intent.putExtra(MultiPhotoSelectActivity.SHOW_GALLERY, true);
+		startActivity(intent);
 	}
 }

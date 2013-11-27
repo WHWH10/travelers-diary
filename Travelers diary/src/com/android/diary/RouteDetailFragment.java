@@ -124,6 +124,14 @@ public class RouteDetailFragment extends ListFragment {
 			intent.putExtra(MultiPhotoSelectActivity.ROUTE_ITEM_ID, this.routeItems.get(itemSelected).getRouteItemId());
 			startActivity(intent);
 			break;
+			
+		case R.id.menu_showGallery:
+			Intent galeryIntent = new Intent(getActivity(), MultiPhotoSelectActivity.class);
+			galeryIntent.putExtra(MultiPhotoSelectActivity.SHOW_GALLERY, true);
+			galeryIntent.putExtra(MultiPhotoSelectActivity.ROUTE_ID, routeItems.get(itemSelected).getRouteId());
+			galeryIntent.putExtra(MultiPhotoSelectActivity.ROUTE_ITEM_ID, routeItems.get(itemSelected).getRouteItemId());
+			startActivity(galeryIntent);		
+			break;
 
 		default:
 			break;

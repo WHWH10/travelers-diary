@@ -16,6 +16,10 @@
         android:title="@string/menu_addImagesOfRouteItem"
         android:orderInCategory="100"
         android:showAsAction="never" />
+    <item android:id="@+id/menu_showGallery"
+        android:title="@string/menu_showGallery"
+        android:orderInCategory="100"
+        android:showAsAction="never" />
     <item android:id="@+id/menu_deleteRouteItem"
         android:title="@string/menu_deleteRouteItem"
         android:orderInCategory="100"

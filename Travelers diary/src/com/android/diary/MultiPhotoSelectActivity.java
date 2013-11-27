@@ -1,9 +1,12 @@
 package com.android.diary;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import BaseClasses.BaseImageLoader;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -15,12 +18,14 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.GridView;
 import android.widget.ImageView;
- 
+import android.widget.RelativeLayout;
+
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
@@ -35,9 +40,11 @@ public class MultiPhotoSelectActivity extends BaseImageLoader {
     
     private int routeId;
     private int routeItemId;
+    private boolean isGallery;
     
     public static final String ROUTE_ID = "routeId";
     public static final String ROUTE_ITEM_ID = "routeItemId";
+    public static final String SHOW_GALLERY = "galleryView";
  
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,21 +52,16 @@ public class MultiPhotoSelectActivity extends BaseImageLoader {
         setContentView(R.layout.ac_image_grid);
         
         loadData();
+        handleButtonVisibility();
         
         imageLoader.init(ImageLoaderConfiguration.createDefault(this));
         
-        final String[] columns = { MediaStore.Images.Media.DATA, MediaStore.Images.Media._ID };
-        final String orderBy = MediaStore.Images.Media.DATE_TAKEN;
-        Cursor imagecursor = managedQuery(
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns, null,
-                null, orderBy + " DESC");
- 
-        this.imageUrls = new ArrayList<String>();
- 
-        for (int i = 0; i < imagecursor.getCount(); i++) {
-            imagecursor.moveToPosition(i);
-            int dataColumnIndex = imagecursor.getColumnIndex(MediaStore.Images.Media.DATA);
-            imageUrls.add(imagecursor.getString(dataColumnIndex));
+        loadImages();
+        
+        if(imageUrls == null || imageUrls.isEmpty())
+        {
+        	ToastMessage(getString(R.string.warn_noImagesToDisplay));
+        	this.finish();
         }
  
         options = new DisplayImageOptions.Builder()
@@ -69,27 +71,108 @@ public class MultiPhotoSelectActivity extends BaseImageLoader {
             .cacheOnDisc()
             .build();
  
-        imageAdapter = new ImageAdapter(this, imageUrls);
+        imageAdapter = new ImageAdapter(this, imageUrls, isGallery);
  
-        GridView gridView = (GridView) findViewById(R.id.gridview);
-        gridView.setAdapter(imageAdapter);
+        GridView gridView = (GridView) findViewById(R.id.gridview);        
+        gridView.setAdapter(imageAdapter);        
+    }
+    
+    public void onImageClick(View view)
+    {
+    	if(isGallery)
+    	{
+    		Intent intent = new Intent(this, GalleryItemActivity.class);    		
+    		
+    		ImageView imageView = (ImageView)((RelativeLayout) view.getParent()).findViewById(R.id.multiphoto_imgView);
+    		    		
+    		int pos = Integer.parseInt(imageView.getTag().toString());
+    		String filePath = imageUrls.get(pos);
+    		imageUrls.remove(pos);
+    		imageUrls.add(0, filePath);
+    		
+    		String[] array = new String[imageUrls.size()];
+    		imageUrls.toArray(array);
+
+    		intent.putExtra(GalleryItemActivity.KEY_IMAGE_ARRAY, array);
+    		startActivity(intent);
+    	}
+    	else
+    	{
+    		CheckBox checkBox = (CheckBox)((RelativeLayout) view.getParent()).findViewById(R.id.multiphoto_chk);
+        	checkBox.setChecked(!checkBox.isChecked());
+    	}
     }
     
     private void loadData(){
+    	isGallery = false;
+    	
     	Bundle bundle = getIntent().getExtras();
     	if(bundle != null)
         {
         	routeId = bundle.getInt(ROUTE_ID);
         	routeItemId = bundle.getInt(ROUTE_ITEM_ID);
+        	isGallery = bundle.getBoolean(SHOW_GALLERY);
         }
     	else {
 			LogErrorMessage(LOG_TAG, "No data passed!");
 			this.finish();
 		}
     	
-    	if(routeId == 0 && routeItemId == 0){
+    	if(routeId == 0 && routeItemId == 0 && !isGallery){
     		LogErrorMessage(LOG_TAG, "Route and routeItem ids are empty!");
     		this.finish();
+    	}
+    }
+    
+    private void loadImages()
+    {
+    	final String[] columns = { MediaStore.Images.Media.DATA, MediaStore.Images.Media._ID };
+        final String orderBy = MediaStore.Images.Media.DATE_TAKEN;
+        Cursor imagecursor = managedQuery(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns, null,
+                null, orderBy + " DESC");
+ 
+        this.imageUrls = new ArrayList<String>();
+        
+        if(isGallery)
+        	addImagesForGallery(imagecursor);
+        else
+        	addImagesForSelection(imagecursor);        
+    }
+    
+    private void addImagesForGallery(Cursor cursor)
+    {
+    	DatabaseHandler db = new DatabaseHandler(this);    	
+    	List<String> imageList = db.getImagesPath(routeId, routeItemId);    	
+    	db.close();
+    	
+    	String[] images = new String[imageList.size()];
+    	imageList.toArray(images);
+    	    	
+    	Arrays.sort(images);
+    	
+    	for (int i = 0; i < cursor.getCount(); i++) {
+    		cursor.moveToPosition(i);
+            int dataColumnIndex = cursor.getColumnIndex(MediaStore.Images.Media.DATA);
+            
+            if(Arrays.binarySearch(images, cursor.getString(dataColumnIndex)) >= 0)
+            	imageUrls.add(cursor.getString(dataColumnIndex));
+        }
+    }
+    
+    private void addImagesForSelection(Cursor cursor)
+    {
+    	for (int i = 0; i < cursor.getCount(); i++) {
+    		cursor.moveToPosition(i);
+            int dataColumnIndex = cursor.getColumnIndex(MediaStore.Images.Media.DATA);
+            imageUrls.add(cursor.getString(dataColumnIndex));
+        }
+    }
+    
+    private void handleButtonVisibility()
+    {
+    	if(isGallery){
+    		((Button)findViewById(R.id.image_grid_btnAddPhotos)).setVisibility(View.GONE);
     	}
     }
  
@@ -115,8 +198,6 @@ public class MultiPhotoSelectActivity extends BaseImageLoader {
 		} catch (Exception e) {
 			LogErrorMessage(LOG_TAG, e.toString());
 		}
- 
-        
     }
  
     public class ImageAdapter extends BaseAdapter {
@@ -125,12 +206,14 @@ public class MultiPhotoSelectActivity extends BaseImageLoader {
         LayoutInflater mInflater;
         Context mContext;
         SparseBooleanArray mSparseBooleanArray;
+        boolean isGallery;
  
-        public ImageAdapter(Context context, ArrayList<String> imageList) {
+        public ImageAdapter(Context context, ArrayList<String> imageList, boolean isGallery) {
             mContext = context;
             mInflater = LayoutInflater.from(mContext);
             mSparseBooleanArray = new SparseBooleanArray();
             mList = new ArrayList<String>();
+            this.isGallery = isGallery;
             this.mList = imageList;
         }
  
@@ -165,7 +248,9 @@ public class MultiPhotoSelectActivity extends BaseImageLoader {
             }
  
             CheckBox mCheckBox = (CheckBox) convertView.findViewById(R.id.multiphoto_chk);
+            mCheckBox.setVisibility(!isGallery ? View.VISIBLE : View.GONE);
             final ImageView imageView = (ImageView) convertView.findViewById(R.id.multiphoto_imgView);
+            imageView.setTag(position);
  
             imageLoader.displayImage("file://"+imageUrls.get(position), imageView, options, new SimpleImageLoadingListener() {
                 @Override

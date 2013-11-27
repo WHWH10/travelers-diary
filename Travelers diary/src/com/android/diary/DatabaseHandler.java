@@ -14,6 +14,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Build;
+import android.util.Log;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 	
@@ -346,7 +347,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		contentValues.put(KEY_DATE_MODIFIED, DateFormat.getDateTimeInstance().format(new Date()));
 		contentValues.put(KEY_IS_IMPORTED, 0);
 		
-		SQLiteDatabase db = this.getWritableDatabase();	
+		SQLiteDatabase db = this.getWritableDatabase();
 		
 		try {				
 			db.update(TABLE_ROUTE_ITEM, contentValues, KEY_ID + "=?", new String[]{String.valueOf(routeItemId)});
@@ -420,7 +421,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	}
 	
 	public void insertImage(int routeId, int routeItemId, String imagePath)
-	{		
+	{
+		if(checkIfImageExists(routeId, routeItemId, imagePath))
+			return;
+		
+		Log.i(LOG_TAG, "insertas");
 		SQLiteDatabase db = this.getWritableDatabase();	
 		
 		try {
@@ -441,6 +446,27 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		} finally {
 			db.close();
 		}		
+	}
+	
+	private boolean checkIfImageExists(int routeId, int routeItemId, String imagePath)
+	{
+		String query = "SELECT " + KEY_ID + " FROM " + TABLE_IMAGE + " WHERE " + KEY_ROUTE_ID + "=" + routeId + " AND " + KEY_ROUTE_ITEM_ID + "=" + routeItemId + " AND " + KEY_IMAGE_NAME + "='" + imagePath + "'";
+		
+		SQLiteDatabase db = this.getReadableDatabase();
+		
+		Cursor cursor = db.rawQuery(query, null);
+		if(cursor.getCount() > 0)
+		{
+			cursor.close();
+			db.close();
+			
+			return true;
+		}
+
+		cursor.close();
+		db.close();
+		
+		return false;
 	}
 	
 	public void insertDefaultImage(int routeId, int routeItemId, String imagePath, boolean isDefaultRouteImage)
@@ -521,5 +547,36 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		db.close();
 		
 		return image;
+	}
+	
+	public List<String> getImagesPath(int routeId, int routeItemId)
+	{
+		List<String> imagesList = new ArrayList<String>();
+		
+		String query = "SELECT DISTINCT " + KEY_IMAGE_NAME + " FROM " + TABLE_IMAGE;
+		if(routeId > 0 && routeItemId == 0)
+			query += " WHERE " + KEY_ROUTE_ID + " = " + routeId;
+		else if(routeId > 0 && routeItemId > 0)
+			query += " WHERE " + KEY_ROUTE_ID + " = " + routeId + " AND " + KEY_ROUTE_ITEM_ID + " = " + routeItemId;
+		else if(routeId == 0 && routeItemId > 0)
+			query += " WHERE " + KEY_ROUTE_ITEM_ID + " = " + routeItemId;
+		
+		SQLiteDatabase db = this.getReadableDatabase();
+		
+		Cursor cursor = db.rawQuery(query, null);				
+		
+		if(cursor.moveToFirst())
+		{
+			do
+			{
+				imagesList.add(cursor.getString(cursor.getColumnIndex(DatabaseHandler.KEY_IMAGE_NAME)));			
+			}
+			while(cursor.moveToNext());
+		}
+		
+		cursor.close();
+		db.close();
+		
+		return imagesList;
 	}
 }

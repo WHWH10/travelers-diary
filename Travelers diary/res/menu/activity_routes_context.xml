@@ -23,6 +23,10 @@
         android:title="@string/menu_showRouteOnMap"
         android:orderInCategory="100"
         android:showAsAction="never" />
+    <item android:id="@+id/menu_showGallery"
+        android:title="@string/menu_showGallery"
+        android:orderInCategory="100"
+        android:showAsAction="never" />
     <item android:id="@+id/menu_startTracking"
         android:title="@string/menu_startTracking"
         android:orderInCategory="100"

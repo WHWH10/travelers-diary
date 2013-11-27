@@ -26,7 +26,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapActivity extends BaseActivity {
 
-	private static final String LOG_TAG = "MAP ACTIVITY";
+//	private static final String LOG_TAG = "MAP ACTIVITY";
 	public static final String ROUTE_ID = "route_id";
 	
 	private List<RouteItem> routeItems;

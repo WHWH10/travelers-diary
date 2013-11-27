@@ -32,7 +32,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/main_newRoute"
         android:layout_margin="10dp"
-        android:text="@string/main_ac_gallery"/>
+        android:text="@string/main_ac_gallery"
+        android:onClick="btnGalleryClick"/>
     
     <Button 
         android:id="@+id/main_settings"

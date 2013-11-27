@@ -57,6 +57,8 @@
         <activity android:name=".RouteDetailActivity" ></activity>
         <activity android:name=".MapActivity" ></activity>
         <activity android:name=".MultiPhotoSelectActivity" ></activity>
+        <activity android:name=".GalleryItemPager" ></activity>
+        <activity android:name=".GalleryItemActivity" ></activity>
 
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
