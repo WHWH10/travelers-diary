@@ -1,9 +1,14 @@
 package com.android.diary;
 
 import Helpers.ImageHelper;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -23,7 +28,7 @@ public final class GalleryItemFragment extends Fragment
 		bundle.putString(KEY_IMAGE, image);
 		fragment.setArguments(bundle);
 		return fragment;
-	}
+	}	
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -40,4 +45,34 @@ public final class GalleryItemFragment extends Fragment
 		
 		return view;
 	}
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setHasOptionsMenu(true);
+	}
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		inflater.inflate(R.menu.fragment_gallery_item, menu);
+		super.onCreateOptionsMenu(menu, inflater);		
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.menu_shareImg:
+			Intent intent = new Intent(Intent.ACTION_SEND);
+			intent.setType("image/*");
+			intent.putExtra(Intent.EXTRA_STREAM, Uri.parse(image));
+			startActivity(Intent.createChooser(intent, ""));
+			break;
+
+		default:
+			break;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+	
+	
 }
