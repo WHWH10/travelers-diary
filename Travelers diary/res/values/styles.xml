@@ -1,5 +1,14 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="AppTheme" parent="android:Theme.Light" />
+    <style name="AppTheme" parent="android:Theme" />
+    <style name="MainActivityTheme" parent="android:Theme">
+        <item name="android:buttonStyle">@style/MainActivityButton</item>
+        <item name="android:background">#ffffff</item>
+    </style>
+    
+    <style name="MainActivityButton" parent="@android:style/Widget.Button">
+        <item name="android:background">@drawable/main_activity_button</item>
+        <item name="android:layout_margin">10dp</item>
+    </style>
 
 </resources>

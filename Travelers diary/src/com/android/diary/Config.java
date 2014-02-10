@@ -7,5 +7,5 @@ public class Config {
 	public static final double IMAGE_SCALE_Y_DIVIDER = 5;
 	public static final String PREFS_FILE = "TravelersDiary";
 	public static final String UPDATE_ADDRESSES = "updateAddresses";
-	public static final long LOCATION_UPDATE_TIME = 10000;
+	public static final long LOCATION_UPDATE_TIME = 0;
 }

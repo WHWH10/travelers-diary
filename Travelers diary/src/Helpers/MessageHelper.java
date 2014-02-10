@@ -31,7 +31,17 @@ public class MessageHelper {
 		Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
 	}
 	
+	public static void ToastMessage(Context context, CharSequence message)
+	{
+		Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+	}
+	
 	public static void ToastMessageLong(Context context, String message)
+	{
+		Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+	}
+	
+	public static void ToastMessageLong(Context context, CharSequence message)
 	{
 		Toast.makeText(context, message, Toast.LENGTH_LONG).show();
 	}

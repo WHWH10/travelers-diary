@@ -14,7 +14,6 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Build;
-import android.util.Log;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 	
@@ -420,12 +419,34 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		}		
 	}
 	
+	public List<String> selectLog()
+	{
+		SQLiteDatabase db = this.getReadableDatabase();
+		
+		Cursor cursor = db.query(TABLE_LOG, new String[] {KEY_LOG_MESSAGE}, null, null, null, null, null);
+				
+		List<String> list = new ArrayList<String>();
+		
+		if(cursor.moveToFirst())
+		{
+			do
+			{
+				list.add(cursor.getString(cursor.getColumnIndex(KEY_LOG_MESSAGE)));			
+			}
+			while(cursor.moveToNext());
+		}
+		
+		cursor.close();
+		db.close();
+				
+		return list;
+	}
+	
 	public void insertImage(int routeId, int routeItemId, String imagePath)
 	{
 		if(checkIfImageExists(routeId, routeItemId, imagePath))
 			return;
 		
-		Log.i(LOG_TAG, "insertas");
 		SQLiteDatabase db = this.getWritableDatabase();	
 		
 		try {

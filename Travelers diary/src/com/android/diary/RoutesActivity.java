@@ -7,10 +7,8 @@ import java.util.Map;
 
 import com.android.diary.R;
 
-import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.ListActivity;
-import android.app.ActivityManager.RunningServiceInfo;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -136,7 +134,7 @@ public class RoutesActivity extends ListActivity{
 			break;
 			
 		case R.id.menu_stopTracking:
-			if(isLocationProviderServiceRunning() && myService != null)
+			if(MainActivity.isLocationProviderServiceRunning(this) && myService != null)
 			{
 				stopService(myService);
 			}
@@ -182,7 +180,7 @@ public class RoutesActivity extends ListActivity{
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.activity_routes_context, menu);
-		if(isLocationProviderServiceRunning())
+		if(MainActivity.isLocationProviderServiceRunning(this))
 		{
 			menu.findItem(R.id.menu_startTracking).setVisible(false);
 			menu.findItem(R.id.menu_stopTracking).setVisible(true);
@@ -309,17 +307,6 @@ public class RoutesActivity extends ListActivity{
 		{				
 			createConfirmDialog();		
 		}	
-	}
-	
-	private boolean isLocationProviderServiceRunning() {
-	    ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
-	    for (RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-	    	
-	        if ("com.android.diary.LocationProviderService".equals(service.service.getClassName())) {
-	            return true;
-	        }
-	    }
-	    return false;
 	}
 	
 	public boolean IsOrientationPortrait()

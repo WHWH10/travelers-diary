@@ -1,49 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
     android:layout_gravity="center_horizontal">
     
-    <Button 
-        android:id="@+id/main_newRoute"
-        android:width="100dp"
-        android:height="100dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:text="@string/main_ac_newRoute"/>
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        android:layout_weight="0.5"
+        android:weightSum="2">
+        
+        <Button
+            style="?android:attr/borderlessButtonStyle"
+	        android:id="@+id/main_newRoute"
+	        android:layout_width="0dp"
+	        android:layout_height="match_parent"
+	        android:layout_weight="1"
+	        android:text="@string/main_ac_newRoute"
+	        android:onClick="btnNewRouteClicked"/>
     
-    <Button 
-        android:id="@+id/main_existingRoute"
-        android:width="100dp"
-        android:height="100dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/main_newRoute"
-        android:layout_margin="10dp"
-        android:onClick="btnExistingRouteClicked"
-        android:text="@string/main_ac_existingRoute"/>
+    	<Button
+    	    style="?android:attr/borderlessButtonStyle"
+	        android:id="@+id/main_existingRoute"
+	        android:layout_width="0dp"
+	        android:layout_height="match_parent"
+	        android:layout_weight="1"
+	        android:onClick="btnExistingRouteClicked"
+	        android:text="@string/main_ac_existingRoute"/>
+        
+    </LinearLayout>
     
-    <Button 
-        android:id="@+id/main_gallery"
-        android:width="100dp"
-        android:height="100dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/main_newRoute"
-        android:layout_margin="10dp"
-        android:text="@string/main_ac_gallery"
-        android:onClick="btnGalleryClick"/>
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        android:layout_weight="0.5"
+        android:weightSum="2">
     
-    <Button 
-        android:id="@+id/main_settings"
-        android:width="100dp"
-        android:height="100dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/main_existingRoute"
-        android:layout_toRightOf="@id/main_gallery"
-        android:layout_margin="10dp"
-        android:text="@string/main_ac_settings"/>
+        <Button
+            style="?android:attr/borderlessButtonStyle"
+	        android:id="@+id/main_gallery"
+	        android:layout_width="0dp"
+	        android:layout_height="match_parent"
+	        android:layout_weight="1"
+	        android:text="@string/main_ac_gallery"
+	        android:onClick="btnGalleryClick"/>
     
-</RelativeLayout>
+	    <Button
+	        style="?android:attr/borderlessButtonStyle"
+	        android:id="@+id/main_settings"
+	        android:layout_width="0dp"
+	        android:layout_height="match_parent"
+	        android:layout_weight="1"
+	        android:text="@string/main_ac_settings"/>
+        
+    </LinearLayout>
+    
+    
+    
+</LinearLayout>

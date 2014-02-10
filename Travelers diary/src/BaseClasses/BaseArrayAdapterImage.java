@@ -14,10 +14,12 @@ import android.util.DisplayMetrics;
 import android.util.LruCache;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class BaseArrayAdapterImage extends ArrayAdapter<Map<String, String>> {
 	static class RouteListViewHolder {
@@ -78,12 +80,12 @@ public class BaseArrayAdapterImage extends ArrayAdapter<Map<String, String>> {
 			{
 				if(getBitMapFromMemoryCache(img.getName()) != null)
 				{
-					viewHolder.image.setImageBitmap(getBitMapFromMemoryCache(img.getName()));
+					viewHolder.image.setImageBitmap(getBitMapFromMemoryCache(img.getName()));					
 				}
 				else {
 					Bitmap bitmap = ImageHelper.decodeSampledBitmapFromResource(img.getAbsolutePath(), this.displayMetrics, this.isOrientationPortrait);
 					addBitmapToMemoryCache(img.getName(), bitmap, position);
-					viewHolder.image.setImageBitmap(bitmap);
+					viewHolder.image.setImageBitmap(bitmap);					
 				}								
 			}
 			else {
@@ -92,6 +94,13 @@ public class BaseArrayAdapterImage extends ArrayAdapter<Map<String, String>> {
 		}
 		else
 			viewHolder.image.setImageResource(R.drawable.ic_launcher);
+		
+		viewHolder.image.setTag(position);
+		viewHolder.image.setOnClickListener(new OnClickListener() {						
+			public void onClick(View v) {
+				Toast.makeText(getContext(), "image clicked: " + v.getTag(), Toast.LENGTH_SHORT).show();
+			}
+		});
 		
 		return convertView;
 	}

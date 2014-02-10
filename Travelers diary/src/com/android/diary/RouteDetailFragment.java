@@ -187,7 +187,7 @@ public class RouteDetailFragment extends ListFragment {
 		AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
 		final EditText editText = new EditText(getActivity());
 		editText.setHint(R.string.hint_routeItemtitle);
-		if(!routeItems.get(itemSelected).getTitle().isEmpty())
+		if(routeItems.get(itemSelected).getTitle() != null && !routeItems.get(itemSelected).getTitle().isEmpty())
 			editText.setText(routeItems.get(itemSelected).getTitle());
 		editText.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
 		final InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);

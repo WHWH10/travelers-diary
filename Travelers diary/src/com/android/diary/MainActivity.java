@@ -3,11 +3,13 @@ package com.android.diary;
 import BaseClasses.BaseActivity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningServiceInfo;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
 public class MainActivity extends BaseActivity {
+	public static final String KEY_CLOSE_APP = "keyCloseApp";
 	
 //	private static final String LOG_TAG = "MAIN ACTIVITY";
 
@@ -17,12 +19,25 @@ public class MainActivity extends BaseActivity {
 		
 		setContentView(R.layout.activity_main);
 		
+		Bundle bundle = getIntent().getExtras();
+		if(bundle != null){
+			if(bundle.getBoolean(KEY_CLOSE_APP)){
+				if(isLocationProviderServiceRunning(this)){
+					Intent myService = new Intent(this, LocationProviderService.class);
+					startService(myService);
+					stopService(myService);
+				}
+				
+				finish();
+			}
+		}
+		
 		startMainService();
 	}
 	
 	private void startMainService()
 	{
-		if(!isMainServiceRunning())
+		if(!isMainServiceRunning(this))
 		{
 			Intent myService = new Intent(this, MainService.class);
 			startService(myService);
@@ -35,11 +50,28 @@ public class MainActivity extends BaseActivity {
 		startActivity(intent);
 	}
 	
-	private boolean isMainServiceRunning() {
-	    ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+	public void btnNewRouteClicked(View view)
+	{
+		Intent intent = new Intent(this, NewRouteActivity.class);
+		startActivity(intent);
+	}
+	
+	public static boolean isMainServiceRunning(Context context) {
+	    ActivityManager manager = (ActivityManager) context.getSystemService(ACTIVITY_SERVICE);
 	    for (RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
 	    	
 	        if ("com.android.diary.MainService".equals(service.service.getClassName())) {
+	            return true;
+	        }
+	    }
+	    return false;
+	}
+	
+	public static boolean isLocationProviderServiceRunning(Context context) {
+	    ActivityManager manager = (ActivityManager) context.getSystemService(ACTIVITY_SERVICE);
+	    for (RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+	    	
+	        if ("com.android.diary.LocationProviderService".equals(service.service.getClassName())) {
 	            return true;
 	        }
 	    }
