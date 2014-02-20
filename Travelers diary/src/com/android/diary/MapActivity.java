@@ -1,39 +1,56 @@
 package com.android.diary;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import BaseClasses.BaseActivity;
+import Helpers.ILocationListener;
+import Helpers.LocationHelper;
+import Helpers.MessageHelper;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.view.View;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.Window;
+import android.widget.RelativeLayout;
 
 import com.android.diary.R;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 public class MapActivity extends BaseActivity {
 
 //	private static final String LOG_TAG = "MAP ACTIVITY";
 	public static final String ROUTE_ID = "route_id";
+	private static final int MAP_MARKER_CURRENT_LOCATION = R.drawable.map_marker_current_location;
+	private static final int MAP_MARKER_ROUTE_EMPTY = R.drawable.map_marker_grey_small;
+	private static final int MAP_MARKER_ROUTE_FILLED = R.drawable.map_marker_red_small;
 	
 	private List<RouteItem> routeItems;
+	private List<LatLng> trackPoints;
 	private GoogleMap mapView;
 	private HashMap<String, Integer> markerId;
 	private LatLng locMarked;
 	private int routeId;
+	private LocationHelper locationHelper;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -63,6 +80,13 @@ public class MapActivity extends BaseActivity {
 			public void onMapClick(LatLng loc) {
 				locMarked = loc;
 				createConfirmDialog();
+			}
+		});
+        
+        RelativeLayout mapLayout = (RelativeLayout) findViewById(R.id.activity_map_layout);
+        mapLayout.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {			
+			public void onGlobalLayout() {
+				zoomMap();
 			}
 		});
     }
@@ -108,10 +132,6 @@ public class MapActivity extends BaseActivity {
 	private void manageDrawingMarkers()
     {
 		mapView.clear();
-		if(routeItems != null)
-			routeItems.clear();
-		if(markerId != null)
-			markerId.clear();
 		
     	if(getIntent().getExtras() != null)
 		{
@@ -120,16 +140,45 @@ public class MapActivity extends BaseActivity {
     	
     	if(routeId > 0)
 		{
-			DatabaseHandler db = new DatabaseHandler(this);
-			routeItems = db.getRouteItems(routeId);
-			db.close();
-			markerId = new HashMap<String, Integer>(routeItems.size());
+			loadRouteItems();
+			loadTrackPoints();
+			
 			drawLocations();
+			drawTrack();
 		}
     	else {
 			handleStartingPosition();
 		}
     }
+	
+	private void loadRouteItems(){
+		if(routeItems != null)
+			routeItems.clear();
+		if(markerId != null)
+			markerId.clear();
+		
+		DatabaseHandler db = new DatabaseHandler(this);
+		routeItems = db.getRouteItems(routeId);
+		db.close();
+		
+		markerId = new HashMap<String, Integer>(routeItems.size());
+	}
+	
+	private void loadTrackPoints(){
+		if(trackPoints != null)
+			trackPoints.clear();
+		else {
+			trackPoints = new ArrayList<LatLng>();
+		}
+		
+		DatabaseHandler db = new DatabaseHandler(getApplicationContext());
+		List<TrackPoint> points = db.getTrackPoints(routeId);
+		db.close();
+
+		for (TrackPoint trackPoint : points) {
+			trackPoints.add(new LatLng(trackPoint.getLatitude(), trackPoint.getLongitude()));
+		}
+	}
     
     private void createConfirmDialog()
     {
@@ -154,42 +203,105 @@ public class MapActivity extends BaseActivity {
 	
 	private void drawLocations()
 	{
-		if(routeItems == null)
-			return;
-		for(int i = 0; i < routeItems.size(); i++)
-		{
-			drawMarker(routeItems.get(i));
+		if(routeItems != null){
+			for(int i = 0; i < routeItems.size(); i++)
+			{
+				drawMarker(routeItems.get(i));
+			}
+		}
+	}
+	
+	private void drawTrack(){		
+		if(trackPoints != null && trackPoints.size() > 0){
+			PolylineOptions polylineOptions = new PolylineOptions();			
+			polylineOptions.width(Config.MAP_TRACK_LINE_WIDTH);
+			polylineOptions.color(Color.argb(Config.MAP_TRACK_COLOR_ALPHA, Config.MAP_TRACK_COLOR_RED, Config.MAP_TRACK_COLOR_GREEN, Config.MAP_TRACK_COLOR_BLUE));
+						
+			polylineOptions.addAll(trackPoints);
+			mapView.addPolyline(polylineOptions);		
 		}
 	}
 	
 	private void drawMarker(RouteItem item)
-	{
-		this.mapView.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(item.getLatitude(), item.getLongitude()), Config.DEFAULT_ZOOM));
+	{		
 		MarkerOptions markerOptions = new MarkerOptions();
 		markerOptions.position(new LatLng(item.getLatitude(),item.getLongitude()));
 		
-		if(item.getTitle() == null || item.getTitle().isEmpty())
+		if(item.getTitle() == null || item.getTitle().isEmpty()){
 			markerOptions.title(getString(R.string.no_title));
+			markerOptions.icon(BitmapDescriptorFactory.fromResource(MAP_MARKER_ROUTE_EMPTY));
+		}
 		else {
 			markerOptions.title(item.getTitle());
+			markerOptions.icon(BitmapDescriptorFactory.fromResource(MAP_MARKER_ROUTE_FILLED));
 		}
+		
 		if(item.getDescription() != null && !item.getTitle().isEmpty())
 		{
 			markerOptions.snippet(item.getDescription());
 		}
+		
 		if(markerId == null)
 			markerId = new HashMap<String, Integer>(routeItems.size());
+		
 		this.markerId.put(this.mapView.addMarker(markerOptions).getId(), item.getRouteItemId());		
 	}
+		
+	public void btnMyLocationClicked(View view){
+		if(locationHelper == null){
+			locationHelper = new LocationHelper(getApplicationContext());
+			locationHelper.setOnLocationFoundListener(new ILocationListener() {
+				
+				public void locationProviderUnavailable() {
+					ToastMessage(getText(R.string.warn_locProvider));				
+				}
+				
+				public void locationFound(Location location) {
+					drawMarker(new LatLng(location.getLatitude(), location.getLongitude()), MAP_MARKER_CURRENT_LOCATION);
+				}
+			});
+		}			
+		
+		MessageHelper.ToastMessage(getApplicationContext(), getString(R.string.map_my_location));
+		locationHelper.getPoint();
+	}
 	
-//	private void drawMarker(LatLng loc)
-//	{
-//		this.mapView.animateCamera(CameraUpdateFactory.newLatLng(loc));
-//		MarkerOptions markerOptions = new MarkerOptions();
-//		markerOptions.position(loc);
-//		
-//		markerOptions.title(getString(R.string.no_title));
-//		
-//		this.mapView.addMarker(markerOptions);
-//	}
+	private void drawMarker(LatLng loc, int markerResource)
+	{
+		this.mapView.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, Config.MAP_MARKER_ZOOM));
+
+		MarkerOptions markerOptions = new MarkerOptions();
+		markerOptions.position(loc);
+		
+		markerOptions.icon(BitmapDescriptorFactory.fromResource(markerResource));
+		markerOptions.title(getString(R.string.no_title));
+		
+		this.mapView.addMarker(markerOptions);
+	}
+	
+	private boolean zoomMap(){
+		boolean zoomCalculated = false;		
+		LatLngBounds.Builder builder = new LatLngBounds.Builder();
+		
+		if(routeItems != null && routeItems.size() > 0){
+			zoomCalculated = true;
+			for (RouteItem routeItem : routeItems) {
+				builder.include(new LatLng(routeItem.getLatitude(), routeItem.getLongitude()));
+			}
+		}
+		
+		if(trackPoints != null && trackPoints.size() > 0){
+			zoomCalculated = true;
+			for (LatLng trackPoint : trackPoints) {
+				builder.include(trackPoint);
+			}
+		}
+		
+		if(zoomCalculated){
+			CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(builder.build(),Config.MAP_ZOOM_PADDING);
+			mapView.animateCamera(cameraUpdate);
+		}
+		
+		return zoomCalculated;
+	}
 }

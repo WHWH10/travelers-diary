@@ -30,7 +30,17 @@ public abstract class BaseActivity extends Activity {
 		MessageHelper.ToastMessage(this, message);
 	}
 	
+	public void ToastMessage(CharSequence message)
+	{
+		MessageHelper.ToastMessage(this, message);
+	}
+	
 	public void ToastMessageLong(String message)
+	{
+		MessageHelper.ToastMessageLong(this, message);
+	}
+	
+	public void ToastMessageLong(CharSequence message)
 	{
 		MessageHelper.ToastMessageLong(this, message);
 	}

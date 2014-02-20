@@ -118,7 +118,7 @@ public class LocationProviderService extends IntentService{
 				
 				public void locationFound(Location location) {
 					DatabaseHandler db = new DatabaseHandler(getApplicationContext());
-					db.addLocationInfo(routeId, location.getAltitude(), location.getLatitude(), location.getLongitude());
+					db.addTrackPoint(routeId, location.getAltitude(), location.getLatitude(), location.getLongitude());
 					db.close();
 				}
 			});

@@ -7,9 +7,6 @@ import com.android.diary.Config;
 import com.android.diary.R;
 
 import android.content.Context;
-import android.location.GpsSatellite;
-import android.location.GpsStatus;
-import android.location.GpsStatus.Listener;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -17,7 +14,6 @@ import android.location.LocationProvider;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.util.Log;
 
 public class LocationHelper {
 	private static final String LOG_TAG = "LOCATION HELPER";	
@@ -29,32 +25,33 @@ public class LocationHelper {
 		this.context = context;
 		locationManager = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
 		
-		locationManager.addGpsStatusListener(new Listener() {
-			
-			public void onGpsStatusChanged(int event) {
-				switch (event) {
-				case GpsStatus.GPS_EVENT_SATELLITE_STATUS:
-					GpsStatus gpsStatus = locationManager.getGpsStatus(null);
-					Log.i(LOG_TAG, "---------------------");
-					for (GpsSatellite satellite : gpsStatus.getSatellites()) {
-						Log.i(LOG_TAG, satellite.usedInFix() + "");
-					}
-					
-					break;
-				case GpsStatus.GPS_EVENT_FIRST_FIX:
-					GpsStatus gpsStatuss = locationManager.getGpsStatus(null);
-					Log.i(LOG_TAG, "---------------------");
-					for (GpsSatellite satellite : gpsStatuss.getSatellites()) {
-						Log.i(LOG_TAG, satellite.usedInFix() + "");
-					}
-					
-					break;
-
-				default:
-					break;
-				}				
-			}
-		});
+//		locationManager.addGpsStatusListener(new Listener() {
+//			
+//			public void onGpsStatusChanged(int event) {
+//				switch (event) {
+//				case GpsStatus.GPS_EVENT_SATELLITE_STATUS:
+//					GpsStatus gpsStatus = locationManager.getGpsStatus(null);
+//					Log.i(LOG_TAG, "---------------------");
+//					for (GpsSatellite satellite : gpsStatus.getSatellites()) {
+//						Log.i(LOG_TAG, satellite.usedInFix() + "");
+//					}
+//					
+//					break;
+//				case GpsStatus.GPS_EVENT_FIRST_FIX:
+//					GpsStatus gpsStatuss = locationManager.getGpsStatus(null);
+//					Log.i(LOG_TAG, "---------------------");
+//					for (GpsSatellite satellite : gpsStatuss.getSatellites()) {
+//						Log.i(LOG_TAG, satellite.usedInFix() + "");
+//					}
+//					
+//					break;
+//
+//				default:
+//					break;
+//				}				
+//			}
+//		});
+		
 		locationListeners = new ArrayList<ILocationListener>();
 	}
 	
@@ -101,14 +98,12 @@ public class LocationHelper {
 		{
 			if(locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER))
 			{
-				MessageHelper.ToastMessage(context, "Locating network");
 				locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, Config.LOCATION_UPDATE_TIME, 0, locationListener);
 				return;
 			}
 		}
 		if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
 		{
-			MessageHelper.ToastMessage(context, "Locating gps");
 			locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, Config.LOCATION_UPDATE_TIME, 0, locationListener);
 		}
 		else
@@ -120,7 +115,6 @@ public class LocationHelper {
 	private void initiateLocationTrackingUptades(){		
 		if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
 		{
-			MessageHelper.ToastMessage(context, "Locating gps");
 			locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, Config.LOCATION_UPDATE_TIME, 0, locationTrackingListener);
 		}
 		else
@@ -165,8 +159,7 @@ public class LocationHelper {
 				}
 				else
 				{
-					MessageHelper.LogMessage(context, LOG_TAG, LocationManager.NETWORK_PROVIDER + " enabled. Network unavailable.");
-					
+					MessageHelper.LogMessage(context, LOG_TAG, LocationManager.NETWORK_PROVIDER + " enabled. Network unavailable.");					
 					if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
 					{
 						stopLocating();
@@ -221,16 +214,15 @@ public class LocationHelper {
 				else
 				{
 					MessageHelper.ToastMessageLong(context, context.getText(R.string.notif_prov_title));
-					MessageHelper.LogMessage(context, LOG_TAG, "No providers available.");
+					MessageHelper.LogMessage(context, LOG_TAG, context.getText(R.string.notif_prov_title));
 					throwLocationProvidersUnvailable();
 				}
 			}
 		}	
 		
 		public void onLocationChanged(Location location) {
-			throwLocationFound(location);
-			MessageHelper.LogMessage(context, LOG_TAG, "Point added");
-    		MessageHelper.ToastMessage(context, "Point added");
+			throwLocationFound(location);    		
+    		stopLocating();
 		}
 	};
 	
@@ -271,7 +263,6 @@ public class LocationHelper {
 		
 		public void onLocationChanged(Location location) {
 			throwLocationFound(location);
-    		MessageHelper.ToastMessage(context, "Point added");
 		}
 	};
 

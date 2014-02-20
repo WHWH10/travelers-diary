@@ -4,6 +4,7 @@
     
     <!-- MapActivity -->
     <string name="no_title">No title</string>
+    <string name="map_my_location">Getting your location</string>
     
     <!-- Main Activity -->
     <string name="main_ac_newRoute">New route</string>

@@ -131,6 +131,8 @@ public class RoutesActivity extends ListActivity{
 			myService = new Intent(this, LocationProviderService.class);
 			myService.putExtra(LocationProviderService.ROUTE_ID, this.routes.get(itemSelected).getRouteId());
 			startService(myService);
+			openOptionsMenu();
+			closeOptionsMenu();
 			break;
 			
 		case R.id.menu_stopTracking:
@@ -143,6 +145,8 @@ public class RoutesActivity extends ListActivity{
 				myService = new Intent(this, LocationProviderService.class);
 				startService(myService);
 				stopService(myService);
+				openOptionsMenu();
+				closeOptionsMenu();
 			}
 			break;
 
@@ -190,11 +194,6 @@ public class RoutesActivity extends ListActivity{
 			menu.findItem(R.id.menu_stopTracking).setVisible(false);
 		}
 		super.onCreateContextMenu(menu, v, menuInfo);
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		return super.onOptionsItemSelected(item);
 	}
 
 	@Override
@@ -267,6 +266,8 @@ public class RoutesActivity extends ListActivity{
 			DatabaseHandler db = new DatabaseHandler(this);
 			db.insertRoute(contentValues);
 			db.close();
+			
+			et.setText("");
 			
 			prepareList();
 		}

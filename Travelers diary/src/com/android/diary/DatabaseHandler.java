@@ -26,7 +26,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private static final String TABLE_ROUTE = "Route";
 	private static final String TABLE_ROUTE_ITEM = "RouteItem";
 	private static final String TABLE_LOG = "Log";
-	private static final String TABLE_IMAGE = "IMAGE";
+	private static final String TABLE_IMAGE = "Image";
+	private static final String TABLE_TRACK_POINT = "TrackPoint";
 	
 	public static final String KEY_ID = "id";
 	public static final String KEY_ROUTE_ID = "routeId";
@@ -61,7 +62,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	public static final String KEY_IS_DEFAULT_ROUTE_IMAGE = "isDefaultRouteImage";
 	public static final String KEY_IS_DEFAULT_ROUTE_ITEM_IMAGE = "isDefaultRouteItemImage";
 	
-	private static final String CREATE_ROUTE_TABLE = "CREATE  TABLE IF NOT EXISTS " + TABLE_ROUTE + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL  UNIQUE, " +
+	private static final String CREATE_ROUTE_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_ROUTE + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL  UNIQUE, " +
 			KEY_TITLE + " TEXT, " + KEY_DESCRIPTION + " TEXT, " + KEY_DATE_CREATED + " DATETIME NOT NULL, " + 
 			KEY_DATE_MODIFIED + " DATETIME NOT NULL, " + KEY_IS_IMPORTED + " INTEGER" + ")";
 	
@@ -78,6 +79,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private static final String CREATE_IMAGE_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_IMAGE + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE, " + KEY_DATE_CREATED + " DATETIME NOT NULL, "
 			+ KEY_IMAGE_NAME + " TEXT, " + KEY_IS_IMPORTED + " INTEGER, " + KEY_ROUTE_ID + " INTEGER, " + KEY_ROUTE_ITEM_ID + " INTEGER, " + KEY_IS_DEFAULT_ROUTE_IMAGE + " INTEGER, " 
 			+ KEY_IS_DEFAULT_ROUTE_ITEM_IMAGE + " INTEGER" + ")";
+	
+	private static final String CREATE_TRACK_POINT_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_TRACK_POINT + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL  UNIQUE, " +
+			KEY_ALTITUDE + " DOUBLE, " + KEY_LATITUDE + " DOUBLE, " + KEY_LONGITUDE + " DOUBLE, " + KEY_DATE_CREATED + " DATETIME NOT NULL, " + KEY_ROUTE_ID + " INTEGER, " + KEY_IS_IMPORTED + " INTEGER" + ")";
 	
 	public DatabaseHandler(Context context)
 	{		
@@ -100,10 +104,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			db.execSQL(CREATE_ROUTE_ITEM_TABLE);	
 			db.execSQL(CREATE_LOG_TABLE);
 			db.execSQL(CREATE_IMAGE_TABLE);
+			db.execSQL(CREATE_TRACK_POINT_TABLE);
 		} catch (Exception e) {
 			MessageHelper.LogErrorMessage(context, LOG_TAG, e.toString());
-		}
-		
+		}		
 	}
 
 	@Override
@@ -114,6 +118,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			db.execSQL("DROP TABLE IF EXISTS " + TABLE_ROUTE_ITEM);
 			db.execSQL("DROP TABLE IF EXISTS " + TABLE_LOG);
 			db.execSQL("DROP TABLE IF EXISTS " + TABLE_IMAGE);
+			db.execSQL("DROP TABLE IF EXISTS " + TABLE_TRACK_POINT);
 			
 			onCreate(db);
 		} catch (Exception e) {
@@ -599,5 +604,50 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		db.close();
 		
 		return imagesList;
+	}
+	
+	public void addTrackPoint(int routeId, double altitude, double latitude, double longitude)
+	{
+		ContentValues values = new ContentValues();
+		values.put(KEY_ROUTE_ID, routeId);
+		values.put(KEY_ALTITUDE, altitude);
+		values.put(KEY_LATITUDE, latitude);
+		values.put(KEY_LONGITUDE, longitude);
+		values.put(KEY_DATE_CREATED, DateFormat.getDateTimeInstance().format(new Date()));
+		values.put(KEY_IS_IMPORTED, 0);
+		
+		SQLiteDatabase db = this.getWritableDatabase();		
+		
+		db.insertOrThrow(TABLE_TRACK_POINT, null, values);
+		db.close();
+	}
+	
+	public List<TrackPoint> getTrackPoints(int routeId)
+	{
+		SQLiteDatabase db = this.getReadableDatabase();
+		
+		Cursor cursor = db.query(TABLE_TRACK_POINT, new String[] {KEY_ID, KEY_ROUTE_ID, KEY_DATE_CREATED, KEY_ALTITUDE,
+				KEY_LATITUDE, KEY_LONGITUDE, KEY_IS_IMPORTED}, KEY_ROUTE_ID + "=?", new String[]{String.valueOf(routeId)}, null, null, null, null);
+				
+		List<TrackPoint> list = new ArrayList<TrackPoint>();
+
+		if(cursor == null)
+			return null;
+
+		if(cursor.moveToFirst())
+		{
+			do
+			{
+				TrackPoint point = TrackPoint.parse(cursor);
+				if(point == null)
+					continue;
+				list.add(point);
+			}
+			while(cursor.moveToNext());
+		}
+		
+		cursor.close();
+		db.close();
+		return list;
 	}
 }

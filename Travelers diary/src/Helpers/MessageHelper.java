@@ -14,6 +14,12 @@ public class MessageHelper {
 		Log.i(logTag, message);
 	}
 	
+	public static void LogMessage(Context context, String logTag, CharSequence message)
+	{
+		LogToDatabase(context, String.valueOf(message), "", logTag);
+		Log.i(logTag, String.valueOf(message));
+	}
+	
 	public static void LogErrorMessage(Context context, String logTag, String message)
 	{
 		LogToDatabase(context, message, "", logTag);		
