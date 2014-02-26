@@ -298,10 +298,31 @@ public class MapActivity extends BaseActivity {
 		}
 		
 		if(zoomCalculated){
-			CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(builder.build(),Config.MAP_ZOOM_PADDING);
+			CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(adjustBoundsForMaxZoomLevel(builder.build()),Config.MAP_ZOOM_PADDING);
 			mapView.animateCamera(cameraUpdate);
 		}
 		
 		return zoomCalculated;
+	}
+	
+	private LatLngBounds adjustBoundsForMaxZoomLevel(LatLngBounds bounds) {
+		LatLng sw = bounds.southwest;
+		LatLng ne = bounds.northeast;
+		double deltaLat = Math.abs(sw.latitude - ne.latitude);
+		double deltaLon = Math.abs(sw.longitude - ne.longitude);
+		
+		final double zoomN = 0.005; // minimum zoom coefficient
+		if (deltaLat < zoomN) {
+			sw = new LatLng(sw.latitude - (zoomN - deltaLat / 2), sw.longitude);
+		    ne = new LatLng(ne.latitude + (zoomN - deltaLat / 2), ne.longitude);
+		    bounds = new LatLngBounds(sw, ne);
+		}
+		else if (deltaLon < zoomN) {
+			sw = new LatLng(sw.latitude, sw.longitude - (zoomN - deltaLon / 2));
+		    ne = new LatLng(ne.latitude, ne.longitude + (zoomN - deltaLon / 2));
+		    bounds = new LatLngBounds(sw, ne);
+		}
+	
+		return bounds;
 	}
 }

@@ -12,19 +12,26 @@
 		android:adjustViewBounds="true"
         android:src="@drawable/ic_launcher" />
     
-    <TextView
-        android:id="@+id/list_item_title"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/list_item_image"
-        android:text="@string/unnamed" />
+        android:layout_height="fill_parent"
+        android:gravity="center_vertical"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@id/list_item_image" >
     
-    <TextView
-        android:id="@+id/list_item_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/unknown"
-        android:layout_toRightOf="@id/list_item_image"
-        android:layout_below="@id/list_item_title" />
+	    <TextView
+	        android:id="@+id/list_item_title"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/unnamed" />
+	    
+	    <TextView
+	        android:id="@+id/list_item_date"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/unknown" />    
+    </LinearLayout>
 
 </RelativeLayout>

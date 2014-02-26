@@ -1,12 +1,17 @@
 package com.android.diary;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.android.diary.R;
 
+import Helpers.IImageClickListener;
+import Helpers.ImageHelper;
+import Helpers.MessageHelper;
+import Helpers.SharedPreferenceHelper;
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.ContentValues;
@@ -15,11 +20,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.DialogInterface.OnClickListener;
 import android.content.res.Configuration;
-import android.database.Cursor;
-import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.InputType;
+import android.text.format.DateFormat;
 import android.util.DisplayMetrics;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -57,8 +62,29 @@ public class RoutesActivity extends ListActivity{
 	
 	@Override
 	protected void onStart() {
+		saveImages();
 		prepareList();
 		super.onStart();
+	}
+	
+	private void saveImages(){
+		SharedPreferenceHelper sharedPreferenceHelper = new SharedPreferenceHelper(getApplicationContext());
+		long time = sharedPreferenceHelper.getCameraStartTime();
+		
+		if(time != 0){
+			List<String> images = ImageHelper.getImagePathsByDate(time, getApplicationContext());
+			if(images.size() > 0){
+				if(routes != null){
+					DatabaseHandler db = new DatabaseHandler(getApplicationContext());
+					int routeId = routes.get(itemSelected).getRouteId();
+					for (String image : images) {
+						db.insertImage(routeId, 0, image);
+					}
+				}
+			}
+			
+			sharedPreferenceHelper.removeValue(Config.CAMERA_START_TIME);
+		}
 	}
 
 	private void prepareList()
@@ -77,13 +103,25 @@ public class RoutesActivity extends ListActivity{
 			if(routeTitle == null || routeTitle.isEmpty())
 				routeTitle = getString(R.string.unnamed);
 			map.put("title", routeTitle);
-			map.put("date", getResources().getString(R.string.date) + ": " + this.routes.get(i).getDateCreated());
+			map.put("date", getResources().getString(R.string.date) + ": " + 
+						DateFormat.getDateFormat(getApplicationContext()).format(this.routes.get(i).getDateCreated()) + " " + 
+						DateFormat.getTimeFormat(getApplicationContext()).format(this.routes.get(i).getDateCreated()));
 			map.put("id", String.valueOf(routes.get(i).getRouteId()));
 			g.add(map);
 		}
 		DisplayMetrics displayMetrics = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 		RouteListAdapter adapter = new RouteListAdapter(this, g, displayMetrics, IsOrientationPortrait());
+		adapter.setOnImageClickListener(new IImageClickListener() {
+			
+			public void imageClicked(int id) {
+				itemSelected = id;
+				Intent imageIntent = new Intent(Intent.ACTION_GET_CONTENT);
+				imageIntent.setType("image/*");
+				startActivityForResult(imageIntent, REQ_CODE_GET_DEFAULT_IMAGE);
+			}
+		});
+		
 		setListAdapter(adapter);
 	}
 	
@@ -101,10 +139,13 @@ public class RoutesActivity extends ListActivity{
 			showRouteDetail();
 			break;
 			
-		case R.id.menu_addCoverImage:
-			Intent imageIntent = new Intent(Intent.ACTION_GET_CONTENT);
-			imageIntent.setType("image/*");
-			startActivityForResult(imageIntent, REQ_CODE_GET_DEFAULT_IMAGE);
+		case R.id.menu_takePicture:
+			Intent takePictureIntent = new Intent(MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA);
+			
+			SharedPreferenceHelper sharedPreferenceHelper = new SharedPreferenceHelper(getApplicationContext());
+			sharedPreferenceHelper.setCameraStartTime(new Date().getTime());
+			
+			startActivity(takePictureIntent);
 			break;
 			
 		case R.id.menu_addImage:
@@ -131,8 +172,6 @@ public class RoutesActivity extends ListActivity{
 			myService = new Intent(this, LocationProviderService.class);
 			myService.putExtra(LocationProviderService.ROUTE_ID, this.routes.get(itemSelected).getRouteId());
 			startService(myService);
-			openOptionsMenu();
-			closeOptionsMenu();
 			break;
 			
 		case R.id.menu_stopTracking:
@@ -145,8 +184,6 @@ public class RoutesActivity extends ListActivity{
 				myService = new Intent(this, LocationProviderService.class);
 				startService(myService);
 				stopService(myService);
-				openOptionsMenu();
-				closeOptionsMenu();
 			}
 			break;
 
@@ -164,21 +201,24 @@ public class RoutesActivity extends ListActivity{
 			if(requestCode == REQ_CODE_GET_DEFAULT_IMAGE)
 			{
 				DatabaseHandler db = new DatabaseHandler(this);
-				db.insertDefaultImage(routes.get(itemSelected).getRouteId(), 0, getImagePathFromURI(data.getData()), true);
+				String imagePath;
+				if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+					imagePath = ImageHelper.getPathFromUriKitKat(getApplicationContext(), data.getData());
+				}
+				else {
+					imagePath = ImageHelper.getImagePathFromURI(getApplicationContext(), data.getData());
+				}
+				
+				if(imagePath == null){
+					MessageHelper.ToastMessage(getApplicationContext(), getString(R.string.warn_imageNotAdded));
+					return;
+				}
+				
+				db.insertDefaultImage(routes.get(itemSelected).getRouteId(), 0, imagePath, true);
 				db.close();
 			}
 		}
 	}
-	
-	public String getImagePathFromURI(Uri contentUri) {
-        String[] proj = { MediaStore.Images.Media.DATA };
-        Cursor cursor = managedQuery(contentUri, proj, null, null, null);
-        if(cursor == null || cursor.getCount() == 0)
-        	return "";
-        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        cursor.moveToFirst();
-        return cursor.getString(column_index);
-    }
 
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
@@ -268,7 +308,8 @@ public class RoutesActivity extends ListActivity{
 			db.close();
 			
 			et.setText("");
-			
+			InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
 			prepareList();
 		}
 	}

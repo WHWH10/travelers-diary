@@ -26,8 +26,8 @@
    	<string name="menu_shareImg">Share</string>
    	<string name="menu_addPointToRoute">Add point</string>
    	<string name="menu_addImagesOfRoute">Add images of route</string>
+   	<string name="menu_takePicture">Take picture</string>
    	<string name="menu_addImagesOfRouteItem">Add images</string>
-   	<string name="menu_addCoverImage">Add cover image</string>
    	<string name="menu_changeRouteItemTitle">Change title</string>
    	<string name="menu_deleteRouteItem">Delete point</string>
    	<string name="menu_showGallery">Gallery</string>
@@ -76,8 +76,7 @@
     <string name="ri_edit_address_line">City:</string>
     <string name="ri_edit_thoroughfare">Street:</string>
     <string name="ri_edit_subthoroughfare">Sub street:</string>
- 	
- 	
+ 	 	
  	<!-- Routes activity -->
  	<string name="routes_title">Route title</string>
  	<string name="routes_title_hint">Enter route title here</string>
@@ -100,6 +99,7 @@
  	<string name="warn_dataConnectionUnavailable">Data connection unavailable.</string>
  	<string name="warn_unableToFillLocation">Unable to fill address.</string>
  	<string name="warn_noImagesToDisplay">No images to display.</string>
+ 	<string name="warn_imageNotAdded">Image can not be added.</string>
  	
  	<!-- Route item detail fragment -->
  	<string name="route_item_detail_latitude">Latitude:</string>
@@ -132,8 +132,7 @@
    	<string name="hint_title">Enter route title here</string>   	
    	<string name="hint_routeItemtitle">Enter point title here</string>   	
    	<string name="hint_description">Enter route description here</string>   	
- 	
- 	
+ 	 	
  	<string name="country">Country</string>
  	<string name="city">City</string>
  	<string name="street">Street</string>
@@ -143,5 +142,4 @@
  	
  	<string name="error_indexOutOfBounds">Error occurred.</string>
  	<string name="error_indexOutOfBounds_Log">Index out of bound.</string>
-
 </resources>

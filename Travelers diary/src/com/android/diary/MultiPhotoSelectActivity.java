@@ -128,9 +128,8 @@ public class MultiPhotoSelectActivity extends BaseImageLoader {
     {
     	final String[] columns = { MediaStore.Images.Media.DATA, MediaStore.Images.Media._ID };
         final String orderBy = MediaStore.Images.Media.DATE_TAKEN;
-        Cursor imagecursor = managedQuery(
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns, null,
-                null, orderBy + " DESC");
+        
+        Cursor imagecursor = getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns, null, null, orderBy + " DESC");
  
         this.imageUrls = new ArrayList<String>();
         
@@ -146,7 +145,7 @@ public class MultiPhotoSelectActivity extends BaseImageLoader {
     	List<String> imageList = db.getImagesPath(routeId, routeItemId);    	
     	db.close();
     	
-    	String[] images = new String[imageList.size()];
+    	String[] images = new String[imageList.size()];    	
     	imageList.toArray(images);
     	    	
     	Arrays.sort(images);

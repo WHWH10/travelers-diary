@@ -1,12 +1,14 @@
 package BaseClasses;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import com.android.diary.DatabaseHandler;
 import com.android.diary.R;
 
+import Helpers.IImageClickListener;
 import Helpers.ImageHelper;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -19,7 +21,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class BaseArrayAdapterImage extends ArrayAdapter<Map<String, String>> {
 	static class RouteListViewHolder {
@@ -33,6 +34,7 @@ public class BaseArrayAdapterImage extends ArrayAdapter<Map<String, String>> {
 	private final DisplayMetrics displayMetrics;
 	private boolean isOrientationPortrait;
 	private LruCache<String, Bitmap> memoryCache;
+	private List<IImageClickListener> imageClickListeners;
 	
 	public BaseArrayAdapterImage(Context context, List<Map<String, String>> values, DisplayMetrics displayMetrics, boolean isOrientationPortrait) {
 		super(context, R.layout.list_item_with_image, values);
@@ -40,6 +42,8 @@ public class BaseArrayAdapterImage extends ArrayAdapter<Map<String, String>> {
 		this.values = values;
 		this.displayMetrics = displayMetrics;
 		this.isOrientationPortrait = isOrientationPortrait;
+		
+		imageClickListeners = new ArrayList<IImageClickListener>();
 		
 		this.memoryCache = new LruCache<String, Bitmap>((int) (Runtime.getRuntime().maxMemory() / 1024 / 8)){
 			@Override
@@ -73,10 +77,10 @@ public class BaseArrayAdapterImage extends ArrayAdapter<Map<String, String>> {
 		viewHolder.date.setText(values.get(position).get("date"));
 		
 		String imagePath = getImagePathFromDatabase(position);
-		if(imagePath != "")
+		if(imagePath != null && imagePath != "")
 		{
 			File img = new File(imagePath);
-			if(img.exists())
+			if(img != null && img.exists())
 			{
 				if(getBitMapFromMemoryCache(img.getName()) != null)
 				{
@@ -98,7 +102,7 @@ public class BaseArrayAdapterImage extends ArrayAdapter<Map<String, String>> {
 		viewHolder.image.setTag(position);
 		viewHolder.image.setOnClickListener(new OnClickListener() {						
 			public void onClick(View v) {
-				Toast.makeText(getContext(), "image clicked: " + v.getTag(), Toast.LENGTH_SHORT).show();
+				throwLocationFound(Integer.parseInt(v.getTag().toString()));
 			}
 		});
 		
@@ -144,5 +148,15 @@ public class BaseArrayAdapterImage extends ArrayAdapter<Map<String, String>> {
 	
 	private Bitmap getBitMapFromMemoryCache(String key){
 		return this.memoryCache.get(key);
+	}
+	
+	public void setOnImageClickListener(IImageClickListener imageClickListener){
+		imageClickListeners.add(imageClickListener);
+	}
+	
+	private void throwLocationFound(int id){
+		for (IImageClickListener listener : imageClickListeners) {
+			listener.imageClicked(id);
+		}
 	}
 }

@@ -8,8 +8,8 @@
         android:title="@string/dialog_details"
         android:orderInCategory="100"
         android:showAsAction="never" />
-    <item android:id="@+id/menu_addCoverImage"
-        android:title="@string/menu_addCoverImage"
+    <item android:id="@+id/menu_takePicture"
+        android:title="@string/menu_takePicture"
         android:orderInCategory="100"
         android:showAsAction="never" />
     <item android:id="@+id/menu_addImage"

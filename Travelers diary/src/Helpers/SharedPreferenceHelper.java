@@ -26,4 +26,22 @@ public class SharedPreferenceHelper {
 		SharedPreferences sharedPreferences = context.getSharedPreferences(Config.PREFS_FILE, PREFERENCE_MODE);
 		return sharedPreferences.getBoolean(Config.UPDATE_ADDRESSES, true);
 	}
+	
+	public void setCameraStartTime(long time) {
+		SharedPreferences.Editor editor = context.getSharedPreferences(Config.PREFS_FILE, PREFERENCE_MODE).edit();
+		editor.putLong(Config.CAMERA_START_TIME, time);
+		editor.commit();
+	}
+	
+	public long getCameraStartTime() {
+		SharedPreferences sharedPreferences = context.getSharedPreferences(Config.PREFS_FILE, PREFERENCE_MODE);
+		long time = sharedPreferences.getLong(Config.CAMERA_START_TIME, 0);				
+		return time;
+	}
+	
+	public void removeValue(String key){
+		SharedPreferences.Editor editor = context.getSharedPreferences(Config.PREFS_FILE, PREFERENCE_MODE).edit();
+		editor.remove(key);
+		editor.commit();
+	}
 }

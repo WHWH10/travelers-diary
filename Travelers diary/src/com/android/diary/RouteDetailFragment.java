@@ -1,10 +1,15 @@
 package com.android.diary;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import Helpers.IImageClickListener;
+import Helpers.ImageHelper;
+import Helpers.MessageHelper;
+import Helpers.SharedPreferenceHelper;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ListFragment;
@@ -14,11 +19,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.DialogInterface.OnClickListener;
 import android.content.res.Configuration;
-import android.database.Cursor;
-import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.InputType;
+import android.text.format.DateFormat;
 import android.util.DisplayMetrics;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -79,8 +84,30 @@ public class RouteDetailFragment extends ListFragment {
 	
 	@Override
 	public void onStart() {
+		saveImages();
 		prepareList();
 		super.onStart();
+	}
+	
+	private void saveImages(){
+		SharedPreferenceHelper sharedPreferenceHelper = new SharedPreferenceHelper(getActivity());
+		long time = sharedPreferenceHelper.getCameraStartTime();
+		
+		if(time != 0){
+			List<String> images = ImageHelper.getImagePathsByDate(time, getActivity());
+			if(images.size() > 0){
+				if(routeItems != null){
+					DatabaseHandler db = new DatabaseHandler(getActivity());
+					int routeId = routeItems.get(itemSelected).getRouteId();
+					int routeItemId = routeItems.get(itemSelected).getRouteItemId();
+					for (String image : images) {
+						db.insertImage(routeId, routeItemId, image);
+					}
+				}
+			}
+			
+			sharedPreferenceHelper.removeValue(Config.CAMERA_START_TIME);
+		}
 	}
 
 	@Override
@@ -112,10 +139,13 @@ public class RouteDetailFragment extends ListFragment {
 			showRouteItemDetail();
 			break;
 			
-		case R.id.menu_addCoverImage:
-			Intent imageIntent = new Intent(Intent.ACTION_GET_CONTENT);
-			imageIntent.setType("image/*");
-			startActivityForResult(imageIntent, REQ_CODE_GET_DEFAULT_IMAGE);
+		case R.id.menu_takePicture:
+			Intent takePictureIntent = new Intent(MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA);
+			
+			SharedPreferenceHelper sharedPreferenceHelper = new SharedPreferenceHelper(getActivity());
+			sharedPreferenceHelper.setCameraStartTime(new Date().getTime());
+			
+			startActivity(takePictureIntent);
 			break;
 			
 		case R.id.menu_addImage:
@@ -155,13 +185,27 @@ public class RouteDetailFragment extends ListFragment {
 			if(routeItemTitle == null || routeItemTitle.isEmpty())
 				routeItemTitle = getString(R.string.unnamed);
 			map.put("title", routeItemTitle);
-			map.put("date", getResources().getString(R.string.date) + ": " + this.routeItems.get(i).getDateCreated());
+			map.put("date", getResources().getString(R.string.date) + ": " + 
+					DateFormat.getDateFormat(getActivity()).format(this.routeItems.get(i).getDateCreated()) + " " + 
+					DateFormat.getTimeFormat(getActivity()).format(this.routeItems.get(i).getDateCreated()));
 			map.put("id", String.valueOf(routeItems.get(i).getRouteItemId()));
 			g.add(map);
 		}
 		DisplayMetrics displayMetrics = new DisplayMetrics();
 		getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 		RouteListItemAdapter adapter = new RouteListItemAdapter(getActivity(), g, displayMetrics, IsOrientationPortrait());
+		
+		adapter.setOnImageClickListener(new IImageClickListener() {
+			
+			public void imageClicked(int id) {
+				itemSelected = id;
+				
+				Intent imageIntent = new Intent(Intent.ACTION_GET_CONTENT);
+				imageIntent.setType("image/*");
+				startActivityForResult(imageIntent, REQ_CODE_GET_DEFAULT_IMAGE);
+			}
+		});
+		
 		setListAdapter(adapter);
 	}
 
@@ -279,8 +323,9 @@ public class RouteDetailFragment extends ListFragment {
 		tvDescription.setText(route.getDescription());
 
 		TextView dateCreaded = (TextView) view.findViewById(R.id.route_det_created_textView);
-		dateCreaded.setText(route.getDateCreated().toString());
-	}
+		dateCreaded.setText(DateFormat.getDateFormat(getActivity()).format(route.getDateCreated()) + " " + 
+				DateFormat.getTimeFormat(getActivity()).format(route.getDateCreated()));
+	}		
 	
 	private void changeRouteTitlePressed()
 	{
@@ -388,19 +433,24 @@ public class RouteDetailFragment extends ListFragment {
 			if(requestCode == REQ_CODE_GET_DEFAULT_IMAGE)
 			{
 				DatabaseHandler db = new DatabaseHandler(getActivity());
-				db.insertDefaultImage(routeItems.get(itemSelected).getRouteId(), routeItems.get(itemSelected).getRouteItemId(), getImagePathFromURI(data.getData()), false);
+				String imagePath;
+				if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+					imagePath = ImageHelper.getPathFromUriKitKat(getActivity(), data.getData());
+				}
+				else {
+					imagePath = ImageHelper.getImagePathFromURI(getActivity(), data.getData());
+				}
+				
+				if(imagePath == null){
+					MessageHelper.ToastMessage(getActivity(), getString(R.string.warn_imageNotAdded));
+					return;
+				}
+				
+				db.insertDefaultImage(routeItems.get(itemSelected).getRouteId(), routeItems.get(itemSelected).getRouteItemId(), imagePath, false);
 				db.close();
 			}
 		}
 	}
-	
-	public String getImagePathFromURI(Uri contentUri) {
-        String[] proj = { MediaStore.Images.Media.DATA };
-        Cursor cursor = getActivity().managedQuery(contentUri, proj, null, null, null);
-        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        cursor.moveToFirst();
-        return cursor.getString(column_index);
-    }
 	
 	public boolean IsOrientationPortrait()
 	{

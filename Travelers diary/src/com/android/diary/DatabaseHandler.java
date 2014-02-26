@@ -409,7 +409,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			contentValues.put(KEY_LOG_MESSAGE, message);
 			contentValues.put(KEY_USER, user);
 			contentValues.put(KEY_DATE_CREATED, DateFormat.getDateTimeInstance().format(new Date()));
-			contentValues.put(KEY_OS, Build.VERSION.SDK);
+			contentValues.put(KEY_OS, Build.VERSION.SDK_INT);
 			contentValues.put(KEY_MODEL, Build.MODEL);
 			contentValues.put(KEY_PRODUCT, Build.PRODUCT);
 			contentValues.put(KEY_DEVICE, Build.DEVICE);
@@ -507,11 +507,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			if(isDefaultRouteImage)
 			{
 				contentValues.put(KEY_IS_DEFAULT_ROUTE_IMAGE, 0);
-				db.update(TABLE_IMAGE, contentValues, KEY_ID + "=? AND " + KEY_IS_DEFAULT_ROUTE_IMAGE + " =?" , new String[]{String.valueOf(routeId), "1"});
+				db.update(TABLE_IMAGE, contentValues, KEY_ROUTE_ID + "=? AND " + KEY_IS_DEFAULT_ROUTE_IMAGE + " =?" , new String[]{String.valueOf(routeId), "1"});
 			}
 			else {
 				contentValues.put(KEY_IS_DEFAULT_ROUTE_ITEM_IMAGE, 0);
-				db.update(TABLE_IMAGE, contentValues, KEY_ID + "=? AND " + KEY_IS_DEFAULT_ROUTE_ITEM_IMAGE + " =?" , new String[]{String.valueOf(routeId), "1"});
+				db.update(TABLE_IMAGE, contentValues, KEY_ROUTE_ITEM_ID + "=? AND " + KEY_IS_DEFAULT_ROUTE_ITEM_IMAGE + " =?" , new String[]{String.valueOf(routeItemId), "1"});
 			}			
 			
 			contentValues.clear();

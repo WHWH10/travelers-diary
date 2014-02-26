@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <lint>
+    <issue id="NewApi">
+        <ignore path="src/Helpers/ImageHelper.java" />
+        <ignore path="src/com/android/diary/RoutesActivity.java" />
+    </issue>
     <issue id="SimpleDateFormat">
         <ignore path="src/com/android/diary/Route.java" />
         <ignore path="src/com/android/diary/RouteItem.java" />

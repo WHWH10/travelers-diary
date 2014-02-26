@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -108,7 +109,8 @@ public class RouteItemDetailFragment extends BaseFragment {
 			
 			setText(view, R.id.routeItem_det_title_tV, routeItem.getTitle(), true);
 			setText(view, R.id.routeItem_det_description_tV, routeItem.getDescription(), true);
-			setText(view, R.id.routeItem_det_date_tV, routeItem.getDateCreated().toString(), true);
+			setText(view, R.id.routeItem_det_date_tV, DateFormat.getDateFormat(getActivity()).format(routeItem.getDateCreated()) + " " + 
+					DateFormat.getTimeFormat(getActivity()).format(routeItem.getDateCreated()), true);
 			setText(view, R.id.routeItem_det_country_tV, routeItem.getAddress().getCountryName(), true);
 			setText(view, R.id.routeItem_det_adminArea_tV, routeItem.getAddress().getAdminArea(), true);
 			setText(view, R.id.routeItem_det_city_tV, routeItem.getAddress().getAddressLine(0), true);
