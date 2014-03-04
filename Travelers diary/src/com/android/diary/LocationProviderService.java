@@ -36,7 +36,30 @@ public class LocationProviderService extends IntentService{
 	protected void onHandleIntent(Intent intent) {	
 		if(routeId == 0)
 			return;
-		while(!stop){}
+		
+		Thread thread = new Thread(){
+
+			@Override
+			public void run() {
+				while(!stop){
+					try {
+						sleep(Config.SERVICE_SLEEP_TIME);
+					} catch (InterruptedException e) {
+						MessageHelper.LogErrorMessage(getApplicationContext(), LOG_TAG, e.getMessage());
+						notifyOnError(getString(R.string.notif_prov_serviceStopped));
+					}
+				}
+				super.run();
+			}			
+		};
+		
+		thread.start();
+		try {
+			thread.join();
+		} catch (InterruptedException e) {
+			MessageHelper.LogErrorMessage(getApplicationContext(), LOG_TAG, e.getMessage());
+			notifyOnError(getString(R.string.notif_prov_serviceStopped));
+		}
 	}
 
 	@Override
@@ -97,23 +120,7 @@ public class LocationProviderService extends IntentService{
 			locationHelper.setOnLocationFoundListener(new ILocationListener() {
 				
 				public void locationProviderUnavailable() {
-					String ns = Context.NOTIFICATION_SERVICE;
-					NotificationManager mNotificationManager = (NotificationManager) getSystemService(ns);
-					Context context = getApplicationContext();
-					NotificationCompat.Builder notification = new NotificationCompat.Builder(context);
-					
-					Intent notificationIntent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-					PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
-					notification.setSmallIcon(android.R.drawable.stat_sys_warning)
-					.setContentTitle(getText(R.string.notif_prov_title_gps))
-					.setContentText(getText(R.string.notif_tracking_text))
-					.setContentIntent(pendingIntent)
-					.setWhen(System.currentTimeMillis())
-					.setTicker(getText(R.string.notif_prov_ticker))
-					.setAutoCancel(true)
-					.setDefaults(Notification.DEFAULT_ALL);
-					
-					mNotificationManager.notify(1, notification.build());
+					notifyOnError(getString(R.string.notif_prov_title_gps));
 				}
 				
 				public void locationFound(Location location) {
@@ -129,6 +136,26 @@ public class LocationProviderService extends IntentService{
 			MessageHelper.ToastMessageLong(getApplicationContext(), getApplicationContext().getText(R.string.notif_prov_title_gps));
 			stopSelf();
 		}				
+	}
+	
+	private void notifyOnError(String message){
+		String ns = Context.NOTIFICATION_SERVICE;
+		NotificationManager mNotificationManager = (NotificationManager) getSystemService(ns);
+		Context context = getApplicationContext();
+		NotificationCompat.Builder notification = new NotificationCompat.Builder(context);
+		
+		Intent notificationIntent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+		PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
+		notification.setSmallIcon(android.R.drawable.stat_sys_warning)
+		.setContentTitle(message)
+		.setContentText(getText(R.string.notif_tracking_text))
+		.setContentIntent(pendingIntent)
+		.setWhen(System.currentTimeMillis())
+		.setTicker(getText(R.string.notif_prov_ticker))
+		.setAutoCancel(true)
+		.setDefaults(Notification.DEFAULT_ALL);
+		
+		mNotificationManager.notify(1, notification.build());
 	}
 
 	@Override

@@ -16,4 +16,5 @@ public class Config {
 	public static final int MAP_TRACK_COLOR_ALPHA = 128;
 	public static final float MAP_TRACK_LINE_WIDTH = 12f;
 	public static final int MAP_ZOOM_PADDING = 150;
+	public static final long SERVICE_SLEEP_TIME = 1000;
 }

@@ -40,6 +40,7 @@
  	<string name="notif_prov_title">Location providers are unavailable</string>
  	<string name="notif_prov_title_gps">GPS provider is unavailable</string>
  	<string name="notif_prov_text">Select to change location settings</string>
+ 	<string name="notif_prov_serviceStopped">Please restart location tracking. Something went wrong.</string>
  	
  	<!-- Dialog --> 	
     <string name="dialog_details">Details</string>
