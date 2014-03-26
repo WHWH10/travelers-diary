@@ -5,12 +5,11 @@ import java.util.Map;
 
 import BaseClasses.BaseArrayAdapterImage;
 import android.content.Context;
-import android.util.DisplayMetrics;
 
 public class RouteListAdapter extends BaseArrayAdapterImage {	
 
-	public RouteListAdapter(Context context, List<Map<String, String>> values, DisplayMetrics displayMetrics, boolean isOrientationPortrait) {
-		super(context, values, displayMetrics, isOrientationPortrait);
+	public RouteListAdapter(Context context, List<Map<String, String>> values) {
+		super(context, values);
 	}
 	
 	@Override

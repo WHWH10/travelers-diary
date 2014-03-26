@@ -25,7 +25,6 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.InputType;
 import android.text.format.DateFormat;
-import android.util.DisplayMetrics;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.MenuInflater;
@@ -109,9 +108,8 @@ public class RoutesActivity extends ListActivity{
 			map.put("id", String.valueOf(routes.get(i).getRouteId()));
 			g.add(map);
 		}
-		DisplayMetrics displayMetrics = new DisplayMetrics();
-		getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-		RouteListAdapter adapter = new RouteListAdapter(this, g, displayMetrics, IsOrientationPortrait());
+		
+		RouteListAdapter adapter = new RouteListAdapter(this, g);
 		adapter.setOnImageClickListener(new IImageClickListener() {
 			
 			public void imageClicked(int id) {

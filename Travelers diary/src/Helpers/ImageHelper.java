@@ -99,6 +99,34 @@ public class ImageHelper {
 		return inSampleSize;
 	}
 	
+	public static Bitmap loadImage(String imagePath, Context context){
+		try {
+			File file = new File(imagePath);
+			
+			if(file.exists())
+			{
+				DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+								
+				BitmapFactory.Options options = new BitmapFactory.Options();
+				options.inJustDecodeBounds = true;
+			    BitmapFactory.decodeFile(imagePath, options);
+			    
+	    		options.inSampleSize = ImageHelper.calculateInSampleSize(options, displayMetrics.widthPixels/2, displayMetrics.heightPixels/2);
+	    		options.inJustDecodeBounds = false;	    		
+
+	    		return BitmapFactory.decodeFile(imagePath, options);
+			}
+			else {
+				
+				return BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher);
+			}
+		} catch (Exception e) {
+			MessageHelper.LogErrorMessage(context, LOG_TAG, e.toString());
+		}
+		
+		return BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher);
+	}
+	
 	public static boolean loadImage(String imagePath, ImageView imgView, Context context){
 		try {
 			File file = new File(imagePath);

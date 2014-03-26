@@ -8,11 +8,12 @@ import java.util.Map;
 import com.android.diary.DatabaseHandler;
 import com.android.diary.R;
 
+import Helpers.AsyncDrawable;
+import Helpers.BitmapWorkerTask;
 import Helpers.IImageClickListener;
-import Helpers.ImageHelper;
+import Helpers.IImageLoadedListener;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.util.DisplayMetrics;
 import android.util.LruCache;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,17 +32,13 @@ public class BaseArrayAdapterImage extends ArrayAdapter<Map<String, String>> {
 	
 	protected final Context context;
 	protected final List<Map<String, String>> values;
-	private final DisplayMetrics displayMetrics;
-	private boolean isOrientationPortrait;
 	private LruCache<String, Bitmap> memoryCache;
 	private List<IImageClickListener> imageClickListeners;
 	
-	public BaseArrayAdapterImage(Context context, List<Map<String, String>> values, DisplayMetrics displayMetrics, boolean isOrientationPortrait) {
+	public BaseArrayAdapterImage(Context context, List<Map<String, String>> values) {
 		super(context, R.layout.list_item_with_image, values);
 		this.context = context;
 		this.values = values;
-		this.displayMetrics = displayMetrics;
-		this.isOrientationPortrait = isOrientationPortrait;
 		
 		imageClickListeners = new ArrayList<IImageClickListener>();
 		
@@ -55,7 +52,7 @@ public class BaseArrayAdapterImage extends ArrayAdapter<Map<String, String>> {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		RouteListViewHolder viewHolder;
+		final RouteListViewHolder viewHolder;
 		
 		if(convertView == null || convertView.getTag() == null)
 		{
@@ -79,7 +76,7 @@ public class BaseArrayAdapterImage extends ArrayAdapter<Map<String, String>> {
 		String imagePath = getImagePathFromDatabase(position);
 		if(imagePath != null && imagePath != "")
 		{
-			File img = new File(imagePath);
+			final File img = new File(imagePath);
 			if(img != null && img.exists())
 			{
 				if(getBitMapFromMemoryCache(img.getName()) != null)
@@ -87,10 +84,20 @@ public class BaseArrayAdapterImage extends ArrayAdapter<Map<String, String>> {
 					viewHolder.image.setImageBitmap(getBitMapFromMemoryCache(img.getName()));					
 				}
 				else {
-					Bitmap bitmap = ImageHelper.decodeSampledBitmapFromResource(img.getAbsolutePath(), this.displayMetrics, this.isOrientationPortrait);
-					addBitmapToMemoryCache(img.getName(), bitmap, position);
-					viewHolder.image.setImageBitmap(bitmap);					
-				}								
+					if (BitmapWorkerTask.cancelPotentialWork(img.getAbsolutePath(), viewHolder.image)) {
+						final BitmapWorkerTask task = new BitmapWorkerTask(this.context, viewHolder.image, position, img.getName(), true);
+						final AsyncDrawable asyncDrawable = new AsyncDrawable(context.getResources(), null, task);
+						viewHolder.image.setImageDrawable(asyncDrawable);
+						task.setOnImageLoadedListener(new IImageLoadedListener() {
+							
+							public void imageLoaded(String imageName, Bitmap bitmap, int position) {
+								addBitmapToMemoryCache(imageName, bitmap, position);
+							}
+						});
+						
+						task.execute(img.getAbsolutePath());		
+					}
+				}							
 			}
 			else {
 				viewHolder.image.setImageResource(R.drawable.ic_launcher);
@@ -102,12 +109,12 @@ public class BaseArrayAdapterImage extends ArrayAdapter<Map<String, String>> {
 		viewHolder.image.setTag(position);
 		viewHolder.image.setOnClickListener(new OnClickListener() {						
 			public void onClick(View v) {
-				throwLocationFound(Integer.parseInt(v.getTag().toString()));
+				throwImageClicked(Integer.parseInt(v.getTag().toString()));
 			}
 		});
 		
 		return convertView;
-	}
+	}	
 	
 	protected String getImagePathFromDatabase(int position){
 		DatabaseHandler db = new DatabaseHandler(this.context);
@@ -154,7 +161,7 @@ public class BaseArrayAdapterImage extends ArrayAdapter<Map<String, String>> {
 		imageClickListeners.add(imageClickListener);
 	}
 	
-	private void throwLocationFound(int id){
+	private void throwImageClicked(int id){
 		for (IImageClickListener listener : imageClickListeners) {
 			listener.imageClicked(id);
 		}

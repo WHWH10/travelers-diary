@@ -1,6 +1,7 @@
 package com.android.diary;
 
-import Helpers.ImageHelper;
+import Helpers.AsyncDrawable;
+import Helpers.BitmapWorkerTask;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -36,7 +37,13 @@ public final class GalleryItemFragment extends Fragment
 		
 		image = getArguments() == null ? "" : getArguments().getString(KEY_IMAGE);
 		
-		ImageHelper.loadImage(image, imageView, getActivity());
+		if (BitmapWorkerTask.cancelPotentialWork(image, imageView)) {
+			final BitmapWorkerTask task = new BitmapWorkerTask(getActivity(), imageView, false);
+			final AsyncDrawable asyncDrawable = new AsyncDrawable(getActivity().getResources(), null, task);
+			imageView.setImageDrawable(asyncDrawable);
+			
+			task.execute(image);		
+		}
 		
 		View view = inflater.inflate(R.layout.gallery_item_fragment, container, false);
 		LinearLayout layout = (LinearLayout)view.findViewById(R.id.galleryItemLayout);
@@ -73,6 +80,4 @@ public final class GalleryItemFragment extends Fragment
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
-	
 }

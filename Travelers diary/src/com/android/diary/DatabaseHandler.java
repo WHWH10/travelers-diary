@@ -149,7 +149,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getReadableDatabase();
 		
 		Cursor cursor = db.query(TABLE_ROUTE, new String[] {KEY_ID, KEY_TITLE, KEY_DESCRIPTION, 
-				KEY_DATE_CREATED, KEY_DATE_MODIFIED, KEY_IS_IMPORTED}, null, null, null, null, KEY_DATE_CREATED + " DESC", null);
+				KEY_DATE_CREATED, KEY_DATE_MODIFIED, KEY_IS_IMPORTED}, null, null, null, null, KEY_ID + " DESC", null);
 		
 		List<Route> list = new ArrayList<Route>();
 		
