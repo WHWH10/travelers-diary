@@ -4,4 +4,8 @@
         android:icon="@android:drawable/ic_menu_share"
         android:title="@string/menu_shareImg"
         android:showAsAction="ifRoom" />
+    <item android:id="@+id/menu_deleteImg"
+        android:icon="@android:drawable/ic_menu_delete"
+        android:title="@string/menu_deleteImg"
+        android:showAsAction="ifRoom" />
 </menu>

@@ -24,6 +24,7 @@
    	<string name="menu_edit">Edit</string>
    	<string name="menu_delete">Delete</string>
    	<string name="menu_shareImg">Share</string>
+   	<string name="menu_deleteImg">Delete</string>
    	<string name="menu_addPointToRoute">Add point</string>
    	<string name="menu_addImagesOfRoute">Add images of route</string>
    	<string name="menu_takePicture">Take picture</string>

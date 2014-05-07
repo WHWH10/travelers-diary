@@ -86,14 +86,22 @@ public class MultiPhotoSelectActivity extends BaseImageLoader {
     		ImageView imageView = (ImageView)((RelativeLayout) view.getParent()).findViewById(R.id.multiphoto_imgView);
     		    		
     		int pos = Integer.parseInt(imageView.getTag().toString());
-    		String filePath = imageUrls.get(pos);
-    		imageUrls.remove(pos);
-    		imageUrls.add(0, filePath);
     		
     		String[] array = new String[imageUrls.size()];
-    		imageUrls.toArray(array);
+    		int couner = 0;
+    		for (int i = pos; i < imageUrls.size(); i++) {
+				array[couner] = imageUrls.get(i);
+				couner++;
+			}
+    		
+    		for (int i = 0; i < pos; i++) {
+				array[couner] = imageUrls.get(i);
+				couner++;
+			}
 
     		intent.putExtra(GalleryItemActivity.KEY_IMAGE_ARRAY, array);
+    		intent.putExtra(GalleryItemActivity.KEY_ROUTE_ID, routeId);
+    		intent.putExtra(GalleryItemActivity.KEY_ROUTE_ITEM_ID, routeItemId);
     		startActivity(intent);
     	}
     	else

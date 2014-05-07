@@ -606,6 +606,23 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		return imagesList;
 	}
 	
+	public void deleteImage(String imageName, int routeId, int routeItemId)
+	{
+		SQLiteDatabase db = this.getWritableDatabase();
+		
+		if(routeId > 0 && routeItemId > 0)		
+			db.delete(TABLE_IMAGE, KEY_IMAGE_NAME + "=? AND " + KEY_ROUTE_ID + "=? AND " + KEY_ROUTE_ITEM_ID + "=?", new String[]{imageName, String.valueOf(routeId), String.valueOf(routeItemId)});
+		else if(routeId > 0 && routeItemId == 0)
+			db.delete(TABLE_IMAGE, KEY_IMAGE_NAME + "=? AND " + KEY_ROUTE_ID + "=?", new String[]{imageName, String.valueOf(routeId)});
+		else if(routeId == 0 && routeItemId > 0)
+			db.delete(TABLE_IMAGE, KEY_IMAGE_NAME + "=? AND " + KEY_ROUTE_ITEM_ID + "=?", new String[]{imageName, String.valueOf(routeItemId)});
+		else if(routeId == 0 && routeItemId == 0)
+			db.delete(TABLE_IMAGE, KEY_IMAGE_NAME + "=?", new String[]{imageName});
+		
+		
+		db.close();
+	}
+	
 	public void addTrackPoint(int routeId, double altitude, double latitude, double longitude)
 	{
 		ContentValues values = new ContentValues();
