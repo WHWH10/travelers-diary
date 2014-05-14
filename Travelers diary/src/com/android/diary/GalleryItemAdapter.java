@@ -57,17 +57,7 @@ public class GalleryItemAdapter extends FragmentStatePagerAdapter {
 
 	@Override
 	public int getItemPosition(Object object) {
-		int returnVal = POSITION_NONE;
-		GalleryItemFragment fragment = (GalleryItemFragment)object;
-		String image = fragment.getImage();
-		for (int i = 0; i < images.length; i++) {
-			if(images[i] == image){
-				returnVal = i;
-				break;
-			}				
-		}
-
-		return returnVal;
+		return POSITION_NONE;
 	}
 
 	@Override

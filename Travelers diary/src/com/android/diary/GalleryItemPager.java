@@ -17,7 +17,6 @@ public class GalleryItemPager extends Fragment {
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
 		View view = inflater.inflate(R.layout.gallery_item, container,  false);
 		
 		viewPager = (ViewPager) view.findViewById(R.id.galleryItemPager);

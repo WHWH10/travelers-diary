@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import Helpers.AsyncDrawable;
 import Helpers.BitmapWorkerTask;
 import Helpers.IImageDeletedListener;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -63,7 +65,7 @@ public final class GalleryItemFragment extends Fragment
 		LinearLayout layout = (LinearLayout)view.findViewById(R.id.galleryItemLayout);
 		
 		layout.addView(imageView);
-		
+		setHasOptionsMenu(true);
 		return view;
 	}
 	
@@ -75,12 +77,6 @@ public final class GalleryItemFragment extends Fragment
 		for (IImageDeletedListener listener : this.listeners) {
 			listener.imageDeleted(imageName);
 		}
-	}
-	
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setHasOptionsMenu(true);
 	}
 
 	@Override
@@ -100,11 +96,7 @@ public final class GalleryItemFragment extends Fragment
 			break;
 		
 		case R.id.menu_deleteImg:
-			DatabaseHandler db = new DatabaseHandler(getActivity());
-			db.deleteImage(image, routeId, routeItemId);
-			db.close();
-			
-			notifyImageDeleted(image);
+			createConfirmDialog();
 			break;
 
 		default:
@@ -112,6 +104,22 @@ public final class GalleryItemFragment extends Fragment
 		}
 		return super.onOptionsItemSelected(item);
 	}
+	
+	private void createConfirmDialog()
+    {
+    	new AlertDialog.Builder(getActivity()).setTitle(getString(R.string.dialog_confirmation)).setMessage(getString(R.string.dialog_routeDelete))
+		.setIcon(android.R.drawable.ic_dialog_alert)
+		.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+		
+			public void onClick(DialogInterface dialog, int which) {
+				DatabaseHandler db = new DatabaseHandler(getActivity());
+				db.deleteImage(image, routeId, routeItemId);
+				db.close();
+				
+				notifyImageDeleted(image);
+			}
+		}).setNegativeButton(android.R.string.no, null).show();
+    }
 	
 	public String getImage(){
 		return image;
