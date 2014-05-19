@@ -55,8 +55,14 @@ public class MultiPhotoSelectActivity extends BaseImageLoader {
         handleButtonVisibility();
         
         imageLoader.init(ImageLoaderConfiguration.createDefault(this));
-        
-        loadImages();
+    }
+    
+    @Override
+	protected void onStart() {
+		
+		super.onStart();
+		
+		loadImages();
         
         if(imageUrls == null || imageUrls.isEmpty())
         {
@@ -75,9 +81,9 @@ public class MultiPhotoSelectActivity extends BaseImageLoader {
  
         GridView gridView = (GridView) findViewById(R.id.gridview);        
         gridView.setAdapter(imageAdapter);        
-    }
-    
-    public void onImageClick(View view)
+	}
+
+	public void onImageClick(View view)
     {
     	if(isGallery)
     	{

@@ -1,6 +1,15 @@
 package com.android.diary;
 
 public class Config {
+	
+	/*---- WebService configuration ----*/
+	
+	public static final String WEBSERVICE_NAMESPACE = "http://travelersDiary.com/";
+	public static final String WEBSERVICE_URL = "http://192.168.0.105/Services/AndroidService.asmx";
+	public static final String WEBSERVICE_METHOD_LOG_IMPORT = "ImportLog";
+	
+	/*----------------------------------*/
+	
 	public static final int DEFAULT_ZOOM = 14;
 	public static final double IMAGE_SCALE_X = 0.3;
 	public static final double IMAGE_SCALE_Y = 0.3;

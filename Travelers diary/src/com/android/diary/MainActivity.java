@@ -8,10 +8,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-public class MainActivity extends BaseActivity {
-	public static final String KEY_CLOSE_APP = "keyCloseApp";
-	
+public class MainActivity extends BaseActivity{
 //	private static final String LOG_TAG = "MAIN ACTIVITY";
+	public static final String KEY_CLOSE_APP = "keyCloseApp";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -34,24 +33,20 @@ public class MainActivity extends BaseActivity {
 		
 		startMainService();
 	}
-	
-	private void startMainService()
-	{
-		if(!isMainServiceRunning(this))
-		{
+
+	private void startMainService()	{
+		if(!isMainServiceRunning(this)){
 			Intent myService = new Intent(this, MainService.class);
 			startService(myService);
 		}
 	}
 	
-	public void btnExistingRouteClicked(View view)
-	{
+	public void btnExistingRouteClicked(View view){
 		Intent intent = new Intent(this, RoutesActivity.class);
 		startActivity(intent);
 	}
 	
-	public void btnNewRouteClicked(View view)
-	{
+	public void btnNewRouteClicked(View view){
 		Intent intent = new Intent(this, NewRouteActivity.class);
 		startActivity(intent);
 	}
@@ -78,10 +73,15 @@ public class MainActivity extends BaseActivity {
 	    return false;
 	}
 	
-	public void btnGalleryClick(View view)
-	{
+	public void btnGalleryClick(View view){
 		Intent intent = new Intent(this, MultiPhotoSelectActivity.class);
 		intent.putExtra(MultiPhotoSelectActivity.SHOW_GALLERY, true);
+		startActivity(intent);
+	}
+	
+	public void btnSettingsClick(View view){
+		Intent intent = new Intent(this, LogInActivity.class);
+		intent.putExtra(LogInActivity.LOG_OUT_TAG, true);
 		startActivity(intent);
 	}
 }

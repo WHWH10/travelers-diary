@@ -424,6 +424,43 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		}		
 	}
 	
+	public void deleteLog(int logId){
+		SQLiteDatabase db = this.getWritableDatabase();
+		try {
+			db.delete(TABLE_LOG, KEY_ID + "=?", new String[]{String.valueOf(logId)});
+		} catch (SQLException e) {
+			MessageHelper.LogErrorMessage(context, LOG_TAG, e.toString());
+		} finally {
+			db.close();
+		}	
+	}
+	
+	public List<CustomLog> getLog(){
+		SQLiteDatabase db = this.getReadableDatabase();
+		
+		Cursor cursor = db.query(TABLE_LOG, new String[] {KEY_ID, KEY_OS, KEY_MODEL, KEY_DEVICE, 
+				KEY_PRODUCT, KEY_LOG_MESSAGE, KEY_TAG, KEY_USER, KEY_DATE_CREATED}, null, null, null, null, null);
+				
+		List<CustomLog> list = new ArrayList<CustomLog>();
+		
+		if(cursor.moveToFirst())
+		{
+			do
+			{
+				CustomLog customLog = CustomLog.parse(cursor);
+				if(customLog == null)
+					continue;
+				list.add(customLog);			
+			}
+			while(cursor.moveToNext());
+		}
+		
+		cursor.close();
+		db.close();
+				
+		return list;
+	}
+	
 	public List<String> selectLog()
 	{
 		SQLiteDatabase db = this.getReadableDatabase();

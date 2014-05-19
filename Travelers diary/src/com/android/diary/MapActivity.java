@@ -8,9 +8,7 @@ import BaseClasses.BaseActivity;
 import Helpers.ILocationListener;
 import Helpers.LocationHelper;
 import Helpers.MessageHelper;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -51,13 +49,16 @@ public class MapActivity extends BaseActivity {
 	private LatLng locMarked;
 	private int routeId;
 	private LocationHelper locationHelper;
+	private boolean isAddNewLocationClicked;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
         requestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);                
-        setContentView(R.layout.activity_map);        
+        setContentView(R.layout.activity_map);
+        
+        this.isAddNewLocationClicked = false;
         
         isNetworkAvailableWithToast();
         
@@ -78,8 +79,16 @@ public class MapActivity extends BaseActivity {
         mapView.setOnMapClickListener(new OnMapClickListener() {
 			
 			public void onMapClick(LatLng loc) {
-				locMarked = loc;
-				createConfirmDialog();
+				if(isAddNewLocationClicked){
+					locMarked = loc;
+					isAddNewLocationClicked = false;
+					
+					DatabaseHandler db = new DatabaseHandler(getApplicationContext());
+					db.addLocationInfo(routeId, 0, locMarked.latitude, locMarked.longitude);				
+					db.close();
+					
+					manageDrawingMarkers();
+				}				
 			}
 		});
         
@@ -179,23 +188,7 @@ public class MapActivity extends BaseActivity {
 			trackPoints.add(new LatLng(trackPoint.getLatitude(), trackPoint.getLongitude()));
 		}
 	}
-    
-    private void createConfirmDialog()
-    {
-    	new AlertDialog.Builder(this).setTitle(getString(R.string.dialog_confirmation)).setMessage(getString(R.string.dialog_mapAddPoint))
-		.setIcon(android.R.drawable.ic_dialog_alert)
-		.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-		
-			public void onClick(DialogInterface dialog, int which) {
-				DatabaseHandler db = new DatabaseHandler(getApplicationContext());
-				db.addLocationInfo(routeId, 0, locMarked.latitude, locMarked.longitude);				
-				db.close();
-				
-				manageDrawingMarkers();
-			}
-		}).setNegativeButton(android.R.string.no, null).show();
-    }
-	
+    	
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
@@ -253,7 +246,7 @@ public class MapActivity extends BaseActivity {
 			locationHelper.setOnLocationFoundListener(new ILocationListener() {
 				
 				public void locationProviderUnavailable() {
-					ToastMessage(getText(R.string.warn_locProvider));				
+					ToastMessage(getText(R.string.warn_locProvider));
 				}
 				
 				public void locationFound(Location location) {
@@ -264,6 +257,11 @@ public class MapActivity extends BaseActivity {
 		
 		MessageHelper.ToastMessage(getApplicationContext(), getString(R.string.map_my_location));
 		locationHelper.getPoint();
+	}
+	
+	public void btnAddLocationClicked(View view){
+		this.isAddNewLocationClicked = true;
+		MessageHelper.ToastMessage(getApplicationContext(), getString(R.string.map_add_location_msg));
 	}
 	
 	private void drawMarker(LatLng loc, int markerResource)

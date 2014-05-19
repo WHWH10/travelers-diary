@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import Helpers.SharedPreferenceHelper;
+import Helpers.WebServiceHelper;
 import android.app.IntentService;
 import android.content.ContentValues;
 import android.content.Context;
@@ -24,15 +25,16 @@ public class MainService extends IntentService {
 	@Override
 	protected void onHandleIntent(Intent intent) {
 		startAddressFillService();
+		
+		WebServiceHelper webServiceHelper = new WebServiceHelper(getApplicationContext());
+		webServiceHelper.execute("");
 	}
 	
 	private void startAddressFillService()
 	{
 		SharedPreferenceHelper helper = new SharedPreferenceHelper(this);
-		if(helper.getAddressUpdateFlag())
-		{
-			if(isNetworkAvailable())
-			{
+		if(helper.getAddressUpdateFlag()){
+			if(isNetworkAvailable()){
 				fillAddresses();
 				helper.setAddressUpdateFlag(false);
 			}				
@@ -72,7 +74,6 @@ public class MainService extends IntentService {
 		cv.put(DatabaseHandler.KEY_FEATURE, routeItem.getAddress().getFeatureName());
 
 		db.updateRouteItem(cv, routeItem.getRouteItemId());
-		Log.i(LOG_TAG, "updated");
 	}
 
 	public boolean isNetworkAvailable() {
