@@ -60,7 +60,7 @@ public class MapActivity extends BaseActivity {
         
         this.isAddNewLocationClicked = false;
         
-        isNetworkAvailableWithToast();
+        Globals.isNetworkAvailableWithToast(getApplicationContext());
         
         mapView = ((MapFragment) getFragmentManager().findFragmentById(R.id.mapView)).getMap();
                 

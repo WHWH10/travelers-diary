@@ -125,8 +125,7 @@ public class RouteItemEditFragment extends BaseFragment {
 		DatabaseHandler db = new DatabaseHandler(getActivity());
 		db.close();
 		
-		if(!isNetworkAvailableWithToast())
-		{
+		if(!Globals.isNetworkAvailableWithToast(getActivity().getApplicationContext()))		{
 			return;
 		}
 		

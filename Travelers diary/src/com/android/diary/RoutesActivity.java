@@ -19,7 +19,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.DialogInterface.OnClickListener;
-import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -347,10 +346,5 @@ public class RoutesActivity extends ListActivity{
 		{				
 			createConfirmDialog();		
 		}	
-	}
-	
-	public boolean IsOrientationPortrait()
-	{
-		return getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
 	}
 }

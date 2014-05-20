@@ -6,8 +6,10 @@ import android.content.IntentSender.SendIntentException;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
@@ -17,12 +19,13 @@ import Helpers.MessageHelper;
 
 public class LogInActivity extends Activity implements ConnectionCallbacks, OnConnectionFailedListener {
 	private static final int RC_SIGN_IN = 0;
-	public static final String LOG_OUT_TAG = "logOutTag";
 	
 	private GoogleApiClient googleApiClient;
 	private boolean signInClicked;
 	private boolean intentInProgress;
 	private ConnectionResult connectionResult;
+	
+	private SignInButton signInButton;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {		
@@ -36,21 +39,37 @@ public class LogInActivity extends Activity implements ConnectionCallbacks, OnCo
 		.addApi(Plus.API)
 		.addScope(Plus.SCOPE_PLUS_LOGIN)
 		.build();
-				
-		findViewById(R.id.google_plus_sign_in_button).setOnClickListener(new OnClickListener() {			
+		
+		signInButton = (SignInButton)findViewById(R.id.google_plus_sign_in_button);
+		if(googleApiClient.isConnected()){
+			setGooglePlusButtonText(signInButton, getString(R.string.login_btn_log_out));
+		}else{
+			setGooglePlusButtonText(signInButton, getString(R.string.login_btn_log_in));
+		}
+		
+		signInButton.setOnClickListener(new OnClickListener() {			
 			public void onClick(View v) {
 				if(!googleApiClient.isConnected()){
 					signInClicked = true;
 					resolveSignInError();
 				}else if(googleApiClient.isConnected()){
-					Plus.AccountApi.clearDefaultAccount(googleApiClient);
-					googleApiClient.disconnect();
-					googleApiClient.connect();
+					logOut();
 				}
 			}
 		});
 	}
 
+	private void setGooglePlusButtonText(SignInButton signInButton, String buttonText) {
+	    for (int i = 0; i < signInButton.getChildCount(); i++) {
+	        View v = signInButton.getChildAt(i);
+	        if (v instanceof TextView) {
+	            TextView mTextView = (TextView) v;
+	            mTextView.setText(buttonText);
+	            return;
+	        }
+	    }
+	}
+	
 	@Override
 	protected void onStart() {
 		super.onStart();
@@ -89,17 +108,12 @@ public class LogInActivity extends Activity implements ConnectionCallbacks, OnCo
 	}
 
 	public void onConnected(Bundle connectionHint) {
-//		if(isLogOutNeeded() && !signInClicked){
-//			logOut();
-//		}
-		
+		setGooglePlusButtonText(signInButton, getString(R.string.login_btn_log_out));
 		signInClicked = false;
 		MessageHelper.ToastMessage(getApplicationContext(), "Connected: " + Plus.AccountApi.getAccountName(googleApiClient));
 		
 		BaseApplication baseApplication = (BaseApplication) getApplicationContext();
-		baseApplication.setUserName(Plus.AccountApi.getAccountName(googleApiClient));
-		
-		finish();		
+		baseApplication.setUsername(Plus.AccountApi.getAccountName(googleApiClient));		
 	}
 
 	public void onConnectionSuspended(int cause) {
@@ -118,19 +132,11 @@ public class LogInActivity extends Activity implements ConnectionCallbacks, OnCo
 		}
 	}
 	
-	private boolean isLogOutNeeded(){
-		Bundle bundle = getIntent().getExtras();
-		if(bundle != null){
-			return bundle.getBoolean(LOG_OUT_TAG, false);
-		}
-		
-		return false;
-	}
-	
 	private void logOut(){
 		BaseApplication baseApplication = (BaseApplication) getApplicationContext();
-		baseApplication.setUserName(null);
+		baseApplication.setUsername(null);
 		if(googleApiClient.isConnected()){
+			setGooglePlusButtonText(signInButton, getString(R.string.login_btn_log_in));
 			Plus.AccountApi.clearDefaultAccount(googleApiClient);
 			googleApiClient.disconnect();
 			googleApiClient.connect();

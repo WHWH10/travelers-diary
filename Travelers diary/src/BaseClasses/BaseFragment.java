@@ -2,11 +2,9 @@ package BaseClasses;
 
 import Helpers.MessageHelper;
 import android.app.Fragment;
-import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
 
-import com.android.diary.BaseApplication;
+import com.android.diary.Globals;
 import com.android.diary.LogInActivity;
 import com.android.diary.R;
 
@@ -19,7 +17,8 @@ public class BaseFragment extends Fragment {
 	}
 	
 	private void checkAuthentication(){
-		if(!((BaseApplication)getActivity().getApplicationContext()).isUserLoggedIn()){
+		if(!Globals.isUserLoggedIn(getActivity().getApplicationContext())){
+			ToastMessage(getString(R.string.warn_pleaseLogIn));
 			Intent intent = new Intent(getActivity().getApplicationContext(), LogInActivity.class);
 			startActivity(intent);
 		}
@@ -38,22 +37,10 @@ public class BaseFragment extends Fragment {
 	}
 	
 	public void ToastMessage(String message){
-		MessageHelper.ToastMessage(getActivity(), message);
+		MessageHelper.ToastMessage(getActivity().getApplicationContext(), message);
 	}
 	
 	public void ToastMessageLong(String message){
-		MessageHelper.ToastMessageLong(getActivity(), message);
-	}
-	
-	public boolean isNetworkAvailable(){
-		ConnectivityManager connectivityManager = (ConnectivityManager)getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-		return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnected();
-	}
-	
-	public boolean isNetworkAvailableWithToast(){
-		ConnectivityManager connectivityManager = (ConnectivityManager)getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-		if(connectivityManager.getActiveNetworkInfo() == null || !connectivityManager.getActiveNetworkInfo().isConnected())
-			ToastMessage(getString(R.string.warn_dataConnectionUnavailable));
-		return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnected();
+		MessageHelper.ToastMessageLong(getActivity().getApplicationContext(), message);
 	}
 }

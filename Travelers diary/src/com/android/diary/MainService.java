@@ -7,11 +7,9 @@ import Helpers.SharedPreferenceHelper;
 import Helpers.WebServiceHelper;
 import android.app.IntentService;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
-import android.net.ConnectivityManager;
 import android.util.Log;
 
 public class MainService extends IntentService {
@@ -34,7 +32,7 @@ public class MainService extends IntentService {
 	{
 		SharedPreferenceHelper helper = new SharedPreferenceHelper(this);
 		if(helper.getAddressUpdateFlag()){
-			if(isNetworkAvailable()){
+			if(Globals.isNetworkAvailable(getApplicationContext())){
 				fillAddresses();
 				helper.setAddressUpdateFlag(false);
 			}				
@@ -74,10 +72,5 @@ public class MainService extends IntentService {
 		cv.put(DatabaseHandler.KEY_FEATURE, routeItem.getAddress().getFeatureName());
 
 		db.updateRouteItem(cv, routeItem.getRouteItemId());
-	}
-
-	public boolean isNetworkAvailable() {
-		ConnectivityManager connectivityManager = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
-		return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnected();
 	}
 }

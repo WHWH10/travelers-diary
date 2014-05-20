@@ -1,19 +1,31 @@
 package com.android.diary;
 
+import Helpers.SharedPreferenceHelper;
 import android.app.Application;
 
 public class BaseApplication extends Application {
-	private String userName;
+	private String username;
 
-	public String getUserName() {
-		return userName;
+	public String getUsername() {		
+		return username;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setUsername(String username) {
+		this.username = username;
+		SharedPreferenceHelper sharedPreferenceHelper = new SharedPreferenceHelper(this);
+		sharedPreferenceHelper.setAuthenticationUsername(username);
 	}
 	
 	public boolean isUserLoggedIn(){
-		return this.userName != null && this.userName != "";
+		return this.username != null && this.username != "";
+	}
+
+	@Override
+	public void onCreate() {
+		super.onCreate();
+		
+		if(username == null || username == ""){
+			username = new SharedPreferenceHelper(this).getAuthenticationUsername();
+		}
 	}
 }

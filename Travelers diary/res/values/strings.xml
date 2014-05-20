@@ -48,6 +48,7 @@
     <string name="dialog_details">Details</string>
     <string name="dialog_edit">Edit</string>
     <string name="dialog_cancel">Cancel</string>
+    <string name="dialog_set">Set</string>
     <string name="dialog_addInfo">Add Info</string>
     <string name="dialog_confirmation">Confirmation</string>
     <string name="dialog_routeItemDelete">Are you sure you want to delete this point?</string>
@@ -96,12 +97,17 @@
  	<string name="route_detail_title_hint">Enter title here</string>
  	<string name="route_detail_description_hint">Enter description here</string>
  	
+ 	<!-- Login activity -->
+ 	<string name="login_btn_log_in">Log in</string>
+ 	<string name="login_btn_log_out">Log out</string>
+ 	
  	<!-- Messages -->
  	<string name="warn_locProvider">No location providers available.</string>
  	<string name="warn_dataConnectionUnavailable">Data connection unavailable.</string>
  	<string name="warn_unableToFillLocation">Unable to fill address.</string>
  	<string name="warn_noImagesToDisplay">No images to display.</string>
  	<string name="warn_imageNotAdded">Image can not be added.</string>
+ 	<string name="warn_pleaseLogIn">User authentication required</string>
  	
  	<!-- Route item detail fragment -->
  	<string name="route_item_detail_latitude">Latitude:</string>
@@ -130,7 +136,6 @@
     <string name="date">Date</string>
     <string name="edit">Edit</string>
     
-   	<string name="dialog_set">Set</string>
    	<string name="hint_title">Enter route title here</string>   	
    	<string name="hint_routeItemtitle">Enter point title here</string>   	
    	<string name="hint_description">Enter route description here</string>   	

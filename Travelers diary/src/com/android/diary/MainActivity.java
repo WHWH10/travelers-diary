@@ -30,7 +30,7 @@ public class MainActivity extends BaseActivity{
 				finish();
 			}
 		}
-		
+
 		startMainService();
 	}
 
@@ -81,7 +81,6 @@ public class MainActivity extends BaseActivity{
 	
 	public void btnSettingsClick(View view){
 		Intent intent = new Intent(this, LogInActivity.class);
-		intent.putExtra(LogInActivity.LOG_OUT_TAG, true);
 		startActivity(intent);
 	}
 }

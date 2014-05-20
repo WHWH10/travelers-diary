@@ -3,8 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:layout_gravity="center_vertical"
-    android:gravity="center_vertical" >
+    android:layout_gravity="center"
+    android:gravity="center" >
     
     <com.google.android.gms.common.SignInButton
 	    android:id="@+id/google_plus_sign_in_button"

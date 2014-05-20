@@ -378,7 +378,7 @@ containing a value of this type.
         [CHAR LIMIT=70] 
          */
         public static final int auth_client_using_bad_version_title=0x7f070014;
-        public static final int city=0x7f070086;
+        public static final int city=0x7f070089;
         /**  Button in confirmation dialog to enable Google Play services.  Clicking it
         will direct user to application settings of Google Play services where they
         can enable it [CHAR LIMIT=40] 
@@ -450,29 +450,33 @@ containing a value of this type.
         /**  Long form sign-in button text [CHAR LIMIT=30] 
          */
         public static final int common_signin_button_text_long=0x7f070013;
-        public static final int country=0x7f070085;
-        public static final int date=0x7f07007f;
-        public static final int dialog_addInfo=0x7f070041;
+        public static final int country=0x7f070088;
+        public static final int date=0x7f070083;
+        public static final int dialog_addInfo=0x7f070042;
         public static final int dialog_cancel=0x7f070040;
-        public static final int dialog_confirmation=0x7f070042;
+        public static final int dialog_confirmation=0x7f070043;
         /**  Dialog 
          */
         public static final int dialog_details=0x7f07003e;
         public static final int dialog_edit=0x7f07003f;
-        public static final int dialog_routeDelete=0x7f070044;
-        public static final int dialog_routeItemDelete=0x7f070043;
-        public static final int dialog_set=0x7f070081;
-        public static final int edit=0x7f070080;
-        public static final int error_indexOutOfBounds=0x7f07008b;
-        public static final int error_indexOutOfBounds_Log=0x7f07008c;
-        public static final int feature=0x7f070089;
-        public static final int hint_description=0x7f070084;
-        public static final int hint_routeItemtitle=0x7f070083;
-        public static final int hint_title=0x7f070082;
-        public static final int house_number=0x7f07008a;
+        public static final int dialog_routeDelete=0x7f070045;
+        public static final int dialog_routeItemDelete=0x7f070044;
+        public static final int dialog_set=0x7f070041;
+        public static final int edit=0x7f070084;
+        public static final int error_indexOutOfBounds=0x7f07008e;
+        public static final int error_indexOutOfBounds_Log=0x7f07008f;
+        public static final int feature=0x7f07008c;
+        public static final int hint_description=0x7f070087;
+        public static final int hint_routeItemtitle=0x7f070086;
+        public static final int hint_title=0x7f070085;
+        public static final int house_number=0x7f07008d;
         /**  Location client code resources (prefix with location_client) 
          */
         public static final int location_client_powered_by_google=0x7f07001a;
+        /**  Login activity 
+         */
+        public static final int login_btn_log_in=0x7f070067;
+        public static final int login_btn_log_out=0x7f070068;
         public static final int main_ac_existingRoute=0x7f070020;
         public static final int main_ac_gallery=0x7f070021;
         /**  Main Activity 
@@ -504,9 +508,9 @@ containing a value of this type.
         public static final int menu_takePicture=0x7f070031;
         /**  MultiPhotoSelect activity 
          */
-        public static final int multi_photo_select_add_selected_photos=0x7f07005e;
-        public static final int multi_photo_select_success=0x7f07005f;
-        public static final int no_image=0x7f07007c;
+        public static final int multi_photo_select_add_selected_photos=0x7f07005f;
+        public static final int multi_photo_select_success=0x7f070060;
+        public static final int no_image=0x7f070080;
         /**  MapActivity 
          */
         public static final int no_title=0x7f07001c;
@@ -520,75 +524,76 @@ containing a value of this type.
          */
         public static final int notif_tracking_ticker=0x7f070036;
         public static final int notif_tracking_title=0x7f070037;
-        public static final int postal_code=0x7f070088;
-        public static final int ri_edit_address=0x7f070048;
-        public static final int ri_edit_address_line=0x7f070058;
-        public static final int ri_edit_address_line_hint=0x7f07004f;
-        public static final int ri_edit_admin_area=0x7f070055;
-        public static final int ri_edit_admin_area_hint=0x7f07004c;
-        public static final int ri_edit_autoFillAddress=0x7f070047;
-        public static final int ri_edit_country=0x7f070054;
-        public static final int ri_edit_coutry_hint=0x7f07004b;
-        public static final int ri_edit_desc_hint=0x7f07004a;
-        public static final int ri_edit_description=0x7f070053;
-        public static final int ri_edit_feature=0x7f070056;
-        public static final int ri_edit_feature_hint=0x7f07004d;
-        public static final int ri_edit_postal_code=0x7f070057;
-        public static final int ri_edit_postal_hint=0x7f07004e;
+        public static final int postal_code=0x7f07008b;
+        public static final int ri_edit_address=0x7f070049;
+        public static final int ri_edit_address_line=0x7f070059;
+        public static final int ri_edit_address_line_hint=0x7f070050;
+        public static final int ri_edit_admin_area=0x7f070056;
+        public static final int ri_edit_admin_area_hint=0x7f07004d;
+        public static final int ri_edit_autoFillAddress=0x7f070048;
+        public static final int ri_edit_country=0x7f070055;
+        public static final int ri_edit_coutry_hint=0x7f07004c;
+        public static final int ri_edit_desc_hint=0x7f07004b;
+        public static final int ri_edit_description=0x7f070054;
+        public static final int ri_edit_feature=0x7f070057;
+        public static final int ri_edit_feature_hint=0x7f07004e;
+        public static final int ri_edit_postal_code=0x7f070058;
+        public static final int ri_edit_postal_hint=0x7f07004f;
         /**  Edit route item activity 
          */
-        public static final int ri_edit_save=0x7f070045;
-        public static final int ri_edit_saved=0x7f070046;
-        public static final int ri_edit_subthoroughfare=0x7f07005a;
-        public static final int ri_edit_subthoroughfare_hint=0x7f070051;
-        public static final int ri_edit_thoroughfare=0x7f070059;
-        public static final int ri_edit_thoroughfare_hint=0x7f070050;
-        public static final int ri_edit_title=0x7f070052;
-        public static final int ri_edit_title_hint=0x7f070049;
-        public static final int route=0x7f07007e;
-        public static final int route_detail_bntSave=0x7f070063;
-        public static final int route_detail_created=0x7f070062;
-        public static final int route_detail_description=0x7f070061;
-        public static final int route_detail_description_hint=0x7f070065;
+        public static final int ri_edit_save=0x7f070046;
+        public static final int ri_edit_saved=0x7f070047;
+        public static final int ri_edit_subthoroughfare=0x7f07005b;
+        public static final int ri_edit_subthoroughfare_hint=0x7f070052;
+        public static final int ri_edit_thoroughfare=0x7f07005a;
+        public static final int ri_edit_thoroughfare_hint=0x7f070051;
+        public static final int ri_edit_title=0x7f070053;
+        public static final int ri_edit_title_hint=0x7f07004a;
+        public static final int route=0x7f070082;
+        public static final int route_detail_bntSave=0x7f070064;
+        public static final int route_detail_created=0x7f070063;
+        public static final int route_detail_description=0x7f070062;
+        public static final int route_detail_description_hint=0x7f070066;
         /**  Route detail fragment 
          */
-        public static final int route_detail_title=0x7f070060;
-        public static final int route_detail_title_hint=0x7f070064;
-        public static final int route_item_detail_address=0x7f07006e;
-        public static final int route_item_detail_address_line=0x7f070077;
-        public static final int route_item_detail_admin_area=0x7f070074;
-        public static final int route_item_detail_coordinates=0x7f07006f;
-        public static final int route_item_detail_country=0x7f070073;
-        public static final int route_item_detail_date=0x7f070072;
-        public static final int route_item_detail_description=0x7f070071;
-        public static final int route_item_detail_feature=0x7f070075;
+        public static final int route_detail_title=0x7f070061;
+        public static final int route_detail_title_hint=0x7f070065;
+        public static final int route_item_detail_address=0x7f070072;
+        public static final int route_item_detail_address_line=0x7f07007b;
+        public static final int route_item_detail_admin_area=0x7f070078;
+        public static final int route_item_detail_coordinates=0x7f070073;
+        public static final int route_item_detail_country=0x7f070077;
+        public static final int route_item_detail_date=0x7f070076;
+        public static final int route_item_detail_description=0x7f070075;
+        public static final int route_item_detail_feature=0x7f070079;
         /**  Route item detail fragment 
          */
-        public static final int route_item_detail_latitude=0x7f07006b;
-        public static final int route_item_detail_longitude=0x7f07006c;
-        public static final int route_item_detail_postal_code=0x7f070076;
-        public static final int route_item_detail_route_title=0x7f07006d;
-        public static final int route_item_detail_subthoroughfare=0x7f070079;
-        public static final int route_item_detail_thoroughfare=0x7f070078;
-        public static final int route_item_detail_title=0x7f070070;
-        public static final int routes=0x7f07007d;
-        public static final int routes_add_button=0x7f07005d;
+        public static final int route_item_detail_latitude=0x7f07006f;
+        public static final int route_item_detail_longitude=0x7f070070;
+        public static final int route_item_detail_postal_code=0x7f07007a;
+        public static final int route_item_detail_route_title=0x7f070071;
+        public static final int route_item_detail_subthoroughfare=0x7f07007d;
+        public static final int route_item_detail_thoroughfare=0x7f07007c;
+        public static final int route_item_detail_title=0x7f070074;
+        public static final int routes=0x7f070081;
+        public static final int routes_add_button=0x7f07005e;
         /**  Routes activity 
          */
-        public static final int routes_title=0x7f07005b;
-        public static final int routes_title_hint=0x7f07005c;
-        public static final int street=0x7f070087;
+        public static final int routes_title=0x7f07005c;
+        public static final int routes_title_hint=0x7f07005d;
+        public static final int street=0x7f07008a;
         /**  Other 
          */
-        public static final int unknown=0x7f07007a;
-        public static final int unnamed=0x7f07007b;
-        public static final int warn_dataConnectionUnavailable=0x7f070067;
-        public static final int warn_imageNotAdded=0x7f07006a;
+        public static final int unknown=0x7f07007e;
+        public static final int unnamed=0x7f07007f;
+        public static final int warn_dataConnectionUnavailable=0x7f07006a;
+        public static final int warn_imageNotAdded=0x7f07006d;
         /**  Messages 
          */
-        public static final int warn_locProvider=0x7f070066;
-        public static final int warn_noImagesToDisplay=0x7f070069;
-        public static final int warn_unableToFillLocation=0x7f070068;
+        public static final int warn_locProvider=0x7f070069;
+        public static final int warn_noImagesToDisplay=0x7f07006c;
+        public static final int warn_pleaseLogIn=0x7f07006e;
+        public static final int warn_unableToFillLocation=0x7f07006b;
     }
     public static final class style {
         public static final int AppTheme=0x7f0a0000;
