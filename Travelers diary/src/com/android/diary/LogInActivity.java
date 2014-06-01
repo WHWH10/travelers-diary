@@ -8,6 +8,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
 
+import com.facebook.Session;
+import com.facebook.model.GraphUser;
+import com.facebook.widget.LoginButton;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -24,8 +27,10 @@ public class LogInActivity extends Activity implements ConnectionCallbacks, OnCo
 	private boolean signInClicked;
 	private boolean intentInProgress;
 	private ConnectionResult connectionResult;
+	private GraphUser user;
 	
 	private SignInButton signInButton;
+	private LoginButton loginButton;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {		
@@ -57,6 +62,23 @@ public class LogInActivity extends Activity implements ConnectionCallbacks, OnCo
 				}
 			}
 		});
+		
+		loginButton = (LoginButton) findViewById(R.id.fb_login_button);
+		loginButton.setReadPermissions("email");
+        loginButton.setUserInfoChangedCallback(new LoginButton.UserInfoChangedCallback() {
+            @Override
+            public void onUserInfoFetched(GraphUser user) {
+            	LogInActivity.this.user = user;
+            	if(LogInActivity.this.user != null){
+            		BaseApplication baseApplication = (BaseApplication) getApplicationContext();
+            		baseApplication.setUserInfo(user.getProperty("email").toString(), user.getName(), LoginType.Facebook);
+            		MessageHelper.ToastMessage(getApplicationContext(), "Connected: " + user.getProperty("email").toString() + " " + user.getName());
+            	}else {
+            		BaseApplication baseApplication = (BaseApplication) getApplicationContext();
+            		baseApplication.removeUserInfo(LoginType.Facebook);
+            	}
+            }
+        });
 	}
 
 	private void setGooglePlusButtonText(SignInButton signInButton, String buttonText) {
@@ -85,6 +107,9 @@ public class LogInActivity extends Activity implements ConnectionCallbacks, OnCo
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		Session.getActiveSession().onActivityResult(this, requestCode, resultCode, data);
+		
 		if(requestCode == RC_SIGN_IN){
 			if(resultCode != RESULT_OK){
 				signInClicked = false;
@@ -110,10 +135,10 @@ public class LogInActivity extends Activity implements ConnectionCallbacks, OnCo
 	public void onConnected(Bundle connectionHint) {
 		setGooglePlusButtonText(signInButton, getString(R.string.login_btn_log_out));
 		signInClicked = false;
-		MessageHelper.ToastMessage(getApplicationContext(), "Connected: " + Plus.AccountApi.getAccountName(googleApiClient));
+		MessageHelper.ToastMessage(getApplicationContext(), "Connected: " + Plus.AccountApi.getAccountName(googleApiClient) + " " + Plus.PeopleApi.getCurrentPerson(googleApiClient).getDisplayName());
 		
 		BaseApplication baseApplication = (BaseApplication) getApplicationContext();
-		baseApplication.setUsername(Plus.AccountApi.getAccountName(googleApiClient));		
+		baseApplication.setUserInfo(Plus.AccountApi.getAccountName(googleApiClient), Plus.PeopleApi.getCurrentPerson(googleApiClient).getDisplayName(), LoginType.GooglePlus);
 	}
 
 	public void onConnectionSuspended(int cause) {
@@ -134,7 +159,7 @@ public class LogInActivity extends Activity implements ConnectionCallbacks, OnCo
 	
 	private void logOut(){
 		BaseApplication baseApplication = (BaseApplication) getApplicationContext();
-		baseApplication.setUsername(null);
+		baseApplication.removeUserInfo(LoginType.GooglePlus);
 		if(googleApiClient.isConnected()){
 			setGooglePlusButtonText(signInButton, getString(R.string.login_btn_log_in));
 			Plus.AccountApi.clearDefaultAccount(googleApiClient);

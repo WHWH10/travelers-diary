@@ -1,11 +1,12 @@
 <resources>
 	<!-- App main values -->
     <string name="app_name">Traveler\'s diary</string>
+    <string name="app_id">624978847578365</string>
     
     <!-- MapActivity -->
     <string name="no_title">No title</string>
     <string name="map_my_location">Getting your location</string>
-    <string name="map_add_location_msg">Select location to add</string>
+    <string name="map_add_location_msg">Select a location to add</string>
     
     <!-- Main Activity -->
     <string name="main_ac_newRoute">New route</string>

@@ -1,6 +1,11 @@
 package Helpers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.android.diary.Config;
+import com.android.diary.LoginInfo;
+import com.android.diary.LoginType;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -43,12 +48,42 @@ public class SharedPreferenceHelper {
 		editor.commit();
 	}
 	
-	public void setAuthenticationUsername(String username){
-		editor.putString(Config.AUTHENTICATION_USERNAME, username);
-		editor.commit();
+	public void setAuthenticationData(List<LoginInfo> loginInfos){
+		if(loginInfos != null){
+			String info = "";
+			
+			for (int i = 0; i < loginInfos.size(); i++) {
+				if(i == 0)
+					info += loginInfos.get(i).toString();
+				else {
+					info += ";" + loginInfos.get(i).toString();
+				}
+			}
+			
+			editor.putString(Config.AUTHENTICATION_DATA, info);
+			editor.commit();
+		}
+		else {
+			editor.putString(Config.AUTHENTICATION_DATA, null);
+			editor.commit();
+		}
 	}
 	
-	public String getAuthenticationUsername(){
-		return sharedPreferences.getString(Config.AUTHENTICATION_USERNAME, null);
+	public List<LoginInfo> getAuthenticationData(){
+		String info = sharedPreferences.getString(Config.AUTHENTICATION_DATA, null);
+		
+		if(info == null || info == "")
+			return null;
+		else {
+			List<LoginInfo> loginInfos = new ArrayList<LoginInfo>();
+			
+			String[] values = info.split(";");
+			
+			for (int i = 0; i < values.length; i+=3) {
+				loginInfos.add(new LoginInfo(values[i], values[i+1], LoginType.parse(values[i+2])));
+			}
+			
+			return loginInfos;
+		}
 	}
 }

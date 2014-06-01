@@ -1,31 +1,88 @@
 package com.android.diary;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import Helpers.SharedPreferenceHelper;
 import android.app.Application;
 
 public class BaseApplication extends Application {
-	private String username;
+	private List<LoginInfo> logIns;
 
-	public String getUsername() {		
-		return username;
+	public String getUsername() {
+		if(logIns != null && logIns.size() > 0){
+			return logIns.get(0).getDisplayName();
+		}
+		
+		return null;
 	}
-
-	public void setUsername(String username) {
-		this.username = username;
+	
+	public LoginInfo getUserInfo(LoginType loginType){
+		if(logIns == null || logIns.size() == 0)
+			return null;
+		else {
+			if(loginType == null){
+				return logIns.get(0);
+			}else {
+				for (int i = 0; i < logIns.size(); i++) {
+					if(logIns.get(i).getLoginType() == loginType)
+						return logIns.get(i);
+				}
+				
+				return logIns.get(0);
+			}
+		}		
+	}
+	
+	public void removeUserInfo(LoginType loginType){
+		if(logIns != null){
+			for (int i = 0; i < logIns.size(); i++) {
+				if(logIns.get(i).getLoginType() == loginType)
+					logIns.remove(i);
+			}
+		}
+	}
+	
+	public void setUserInfo(String email, String displayName, LoginType loginType){
+		if(logIns == null){
+			logIns = new ArrayList<LoginInfo>();
+			
+			logIns.add(new LoginInfo(email, displayName, loginType));
+		}
+		else {
+			if(logIns.size() == 0)
+				logIns.add(new LoginInfo(email, displayName, loginType));
+			else{
+				boolean added = false;
+				
+				for (int i = 0; i < logIns.size(); i++) {
+					if(logIns.get(i).getLoginType() == loginType){
+						return;
+					}
+				}
+				
+				if(!added){
+					logIns.add(new LoginInfo(email, displayName, loginType));
+				}
+			}
+		}
+		
 		SharedPreferenceHelper sharedPreferenceHelper = new SharedPreferenceHelper(this);
-		sharedPreferenceHelper.setAuthenticationUsername(username);
+		sharedPreferenceHelper.setAuthenticationData(logIns);
 	}
 	
 	public boolean isUserLoggedIn(){
-		return this.username != null && this.username != "";
+		return this.logIns != null && this.logIns.size() > 0;
 	}
 
 	@Override
 	public void onCreate() {
 		super.onCreate();
 		
-		if(username == null || username == ""){
-			username = new SharedPreferenceHelper(this).getAuthenticationUsername();
+		logIns = new ArrayList<LoginInfo>();
+		
+		if(logIns == null || logIns.size() == 0){
+			logIns = new SharedPreferenceHelper(this).getAuthenticationData();
 		}
 	}
 }

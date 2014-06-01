@@ -12,6 +12,7 @@ import org.ksoap2.transport.HttpTransportSE;
 import com.android.diary.Config;
 import com.android.diary.CustomLog;
 import com.android.diary.DatabaseHandler;
+import com.android.diary.Globals;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -27,7 +28,10 @@ public class WebServiceHelper extends AsyncTask<String, Void, Void>{
 
 	@Override
 	protected Void doInBackground(String... params) {
-		importLog();
+		if(Globals.isNetworkAvailable(context)){
+			importLog();
+		}
+		
 		return null;
 	}
 	

@@ -30,7 +30,7 @@ public class MainActivity extends BaseActivity{
 				finish();
 			}
 		}
-
+		
 		startMainService();
 	}
 

@@ -12,7 +12,7 @@ public class Config {
 	public static final String PREFS_FILE = "TravelersDiary";
 	public static final String UPDATE_ADDRESSES = "updateAddresses";
 	public static final String CAMERA_START_TIME = "cameraStartTime";
-	public static final String AUTHENTICATION_USERNAME = "authtenticationUsername";
+	public static final String AUTHENTICATION_DATA = "authtenticationData";
 	/*----------------------------------*/
 	
 	/*-------- Map configuration -------*/	
