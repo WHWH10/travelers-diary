@@ -28,12 +28,9 @@ public class RouteItemEditFragment extends BaseFragment {
 	private EditText title;
 	private EditText description;
 	private EditText country;
-	private EditText adminArea;
-	private EditText feature;
 	private EditText postalCode;
-	private EditText thoroughfare;
-	private EditText subthoroughfare;
-	private EditText addressLine;
+	private EditText street;
+	private EditText city;
 	private Button autofillBtn;
 	private Button saveBtn;
 
@@ -65,8 +62,7 @@ public class RouteItemEditFragment extends BaseFragment {
 		return view;
 	}
 	
-	public static RouteItemEditFragment newInstance(int routeItemId)
-	{
+	public static RouteItemEditFragment newInstance(int routeItemId){
 		RouteItemEditFragment fragment = new RouteItemEditFragment();
 		
 		Bundle args = new Bundle();
@@ -75,52 +71,40 @@ public class RouteItemEditFragment extends BaseFragment {
 		return fragment;
 	}
 
-	private int getRouteItemId()
-	{
+	private int getRouteItemId(){
 		if(getArguments() == null)
 			return 0;
 		return getArguments().getInt(ROUTE_ITEM_ID, 0);
 	}
 	
-	private void initControls(View view)
-	{
+	private void initControls(View view){
 		title = (EditText) view.findViewById(R.id.ri_edit_title);
 		description = (EditText) view.findViewById(R.id.ri_edit_description);
 		country = (EditText) view.findViewById(R.id.ri_edit_country);
-		adminArea = (EditText) view.findViewById(R.id.ri_edit_adminArea_et);
-		feature = (EditText) view.findViewById(R.id.ri_edit_feature);
 		postalCode = (EditText) view.findViewById(R.id.ri_edit_postal);
-		thoroughfare = (EditText) view.findViewById(R.id.ri_edit_thoroughfare);
-		subthoroughfare = (EditText) view.findViewById(R.id.ri_edit_subthoroughfare_et);
-		addressLine = (EditText) view.findViewById(R.id.ri_edit_addressLine);
+		street = (EditText) view.findViewById(R.id.ri_edit_street);
+		city = (EditText) view.findViewById(R.id.ri_edit_city);
 		
 	}
 	
-	private void setValues(boolean fromDB)
-	{
-		if(fromDB)
-		{
+	private void setValues(boolean fromDB){
+		if(fromDB){
 			DatabaseHandler db = new DatabaseHandler(getActivity());
 			this.routeItem = db.getRouteItem(getRouteItemId());
 			db.close();
 		}
 		
-		if(routeItem != null)
-		{			
+		if(routeItem != null){
 			setText(title, routeItem.getTitle());
 			setText(description, routeItem.getDescription());
 			setText(country, routeItem.getAddress().getCountryName());
-			setText(adminArea, routeItem.getAddress().getAdminArea());
-			setText(addressLine, routeItem.getAddress().getAddressLine(0));
-			setText(thoroughfare, routeItem.getAddress().getThoroughfare());
-			setText(subthoroughfare, routeItem.getAddress().getSubThoroughfare());
+			setText(city, routeItem.getAddress().getLocality());
+			setText(street, routeItem.getAddress().getAddressLine(0));
 			setText(postalCode, routeItem.getAddress().getPostalCode());
-			setText(feature, routeItem.getAddress().getFeatureName());
 		}		
 	}
 	
-	private void autofillPressed()
-	{
+	private void autofillPressed(){
 		Geocoder geocoder = new Geocoder(getActivity());
 		DatabaseHandler db = new DatabaseHandler(getActivity());
 		db.close();
@@ -131,6 +115,7 @@ public class RouteItemEditFragment extends BaseFragment {
 		
 		try {
 			List<Address> address = geocoder.getFromLocation(this.routeItem.getLatitude(), this.routeItem.getLongitude(), 1);
+
 			this.routeItem.setAddress(address.get(0));
 			setValues(false);
 		} catch (IOException e) {
@@ -139,19 +124,21 @@ public class RouteItemEditFragment extends BaseFragment {
 		}
 	}
 	
-	private void saveData()
-	{
+	private void saveData() {
 		ContentValues cv = new ContentValues();
 		
 		cv.put(DatabaseHandler.KEY_TITLE, title.getText().toString());
 		cv.put(DatabaseHandler.KEY_DESCRIPTION, description.getText().toString());
 		cv.put(DatabaseHandler.KEY_COUNTRY, country.getText().toString());
-		cv.put(DatabaseHandler.KEY_ADDRESS_LINE, addressLine.getText().toString());
-		cv.put(DatabaseHandler.KEY_ADMIN_AREA, addressLine.getText().toString());
-		cv.put(DatabaseHandler.KEY_THOROUGHFARE, thoroughfare.getText().toString());
-		cv.put(DatabaseHandler.KEY_SUB_THOROUGHFARE, subthoroughfare.getText().toString());
+		cv.put(DatabaseHandler.KEY_COUNTRY_CODE, routeItem.getAddress().getCountryCode());
+		cv.put(DatabaseHandler.KEY_ADDRESS_LINE, street.getText().toString());
+		cv.put(DatabaseHandler.KEY_ADMIN_AREA, routeItem.getAddress().getAdminArea());
+		cv.put(DatabaseHandler.KEY_THOROUGHFARE, routeItem.getAddress().getSubThoroughfare());
+		cv.put(DatabaseHandler.KEY_SUB_THOROUGHFARE, routeItem.getAddress().getSubThoroughfare());
 		cv.put(DatabaseHandler.KEY_POSTAL_CODE, postalCode.getText().toString());
-		cv.put(DatabaseHandler.KEY_FEATURE, feature.getText().toString());
+		cv.put(DatabaseHandler.KEY_FEATURE, routeItem.getAddress().getFeatureName());
+		cv.put(DatabaseHandler.KEY_LOCALITY, city.getText().toString());
+		cv.put(DatabaseHandler.KEY_LOCALE, routeItem.getAddress().getLocale().getLanguage());
 		cv.put(DatabaseHandler.KEY_IS_ADDRESS_UPDATED, 1);
 		
 		DatabaseHandler db = new DatabaseHandler(getActivity());
@@ -167,8 +154,7 @@ public class RouteItemEditFragment extends BaseFragment {
 	 * @param eTId - editText Id (R number)
 	 * @param text - text to set on the editText
 	 */
-	private void setText(EditText editText, String text)
-	{
+	private void setText(EditText editText, String text){
 		if(editText == null || text == null || text.isEmpty())
 			return;
 		

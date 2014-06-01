@@ -86,26 +86,6 @@
 	            android:textAppearance="?android:attr/textAppearanceSmall" />
 	        
         </LinearLayout>
-        
-         <LinearLayout 
-            android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:orientation="horizontal">
-             
-             <TextView
-	            android:id="@+id/routeItem_det_adminArea_tVTitle"
-	            android:layout_width="fill_parent"
-	            android:layout_height="wrap_content"
-	            android:text="@string/route_item_detail_admin_area"
-	            android:textAppearance="?android:attr/textAppearanceSmall" />
-             
-             <TextView
-	            android:id="@+id/routeItem_det_adminArea_tV"
-	            android:layout_width="fill_parent"
-	            android:layout_height="wrap_content"
-	            android:layout_marginLeft="3dp"
-	            android:textAppearance="?android:attr/textAppearanceSmall" />
-         </LinearLayout>
 
         <LinearLayout 
             android:layout_width="wrap_content"
@@ -116,7 +96,7 @@
 	            android:id="@+id/routeItem_det_city_tVTitle"
 	            android:layout_width="fill_parent"
 	            android:layout_height="wrap_content"
-	            android:text="@string/route_item_detail_address_line"
+	            android:text="@string/route_item_detail_city"
 	            android:textAppearance="?android:attr/textAppearanceSmall" />
             <TextView
 	            android:id="@+id/routeItem_det_city_tV"
@@ -133,35 +113,14 @@
 	        android:orientation="horizontal">
             
             <TextView
-	            android:id="@+id/routeItem_det_thoroughfare_tVTitle"
+	            android:id="@+id/routeItem_det_street_tVTitle"
 	            android:layout_width="fill_parent"
 	            android:layout_height="wrap_content"
-	            android:text="@string/route_item_detail_thoroughfare"
+	            android:text="@string/route_item_detail_street"
 	            android:textAppearance="?android:attr/textAppearanceSmall" />
             
             <TextView
-	            android:id="@+id/routeItem_det_thoroughfare_tV"
-	            android:layout_width="fill_parent"
-	            android:layout_height="wrap_content"
-	            android:layout_marginLeft="3dp"
-	            android:textAppearance="?android:attr/textAppearanceSmall" />
-            
-        </LinearLayout>
-
-        <LinearLayout 
-            android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:orientation="horizontal">
-            
-            <TextView
-	            android:id="@+id/routeItem_det_subthoroughfare_tVTitle"
-	            android:layout_width="fill_parent"
-	            android:layout_height="wrap_content"
-	            android:text="@string/route_item_detail_subthoroughfare"
-	            android:textAppearance="?android:attr/textAppearanceSmall" />
-            
-            <TextView
-	            android:id="@+id/routeItem_det_subthoroughfare_tV"
+	            android:id="@+id/routeItem_det_street_tV"
 	            android:layout_width="fill_parent"
 	            android:layout_height="wrap_content"
 	            android:layout_marginLeft="3dp"
@@ -189,27 +148,6 @@
 	            android:textAppearance="?android:attr/textAppearanceSmall" />
             
         </LinearLayout>
-
-        <LinearLayout 
-            android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:orientation="horizontal">
-            
-            <TextView
-	            android:id="@+id/routeItem_det_feature_tVTitle"
-	            android:layout_width="fill_parent"
-	            android:layout_height="wrap_content"
-	            android:text="@string/route_item_detail_feature"
-	            android:textAppearance="?android:attr/textAppearanceSmall" />
-            
-            <TextView
-	            android:id="@+id/routeItem_det_feature_tV"
-	            android:layout_width="fill_parent"
-	            android:layout_height="wrap_content"
-	            android:layout_marginLeft="3dp"
-	            android:textAppearance="?android:attr/textAppearanceSmall" />
-            
-        </LinearLayout>        
 
         <TextView
             android:layout_width="fill_parent"

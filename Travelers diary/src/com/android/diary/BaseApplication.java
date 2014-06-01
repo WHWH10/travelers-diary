@@ -11,7 +11,7 @@ public class BaseApplication extends Application {
 
 	public String getUsername() {
 		if(logIns != null && logIns.size() > 0){
-			return logIns.get(0).getDisplayName();
+			return logIns.get(0).getEmail();
 		}
 		
 		return null;

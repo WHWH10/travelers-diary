@@ -64,22 +64,14 @@
     <string name="ri_edit_title_hint">Enter title here</string>
  	<string name="ri_edit_desc_hint">Enter description here</string>
     <string name="ri_edit_coutry_hint">Enter country here</string>
-    <string name="ri_edit_admin_area_hint">Enter administrative area here</string>
-    <string name="ri_edit_feature_hint">Enter feature here</string>
     <string name="ri_edit_postal_hint">Enter postal code here</string>
- 	<string name="ri_edit_address_line_hint">Enter city here</string>
- 	<string name="ri_edit_thoroughfare_hint">Enter street here</string>
- 	<string name="ri_edit_subthoroughfare_hint">Enter house number here</string> 	
+ 	<string name="ri_edit_city_hint">Enter city here</string>
+ 	<string name="ri_edit_street_hint">Enter street here</string>
  	
  	<string name="ri_edit_title">Title</string>
  	<string name="ri_edit_description">Description</string> 		
     <string name="ri_edit_country">Country:</string>
-    <string name="ri_edit_admin_area">Administrative area:</string>
-    <string name="ri_edit_feature">Feature:</string>
     <string name="ri_edit_postal_code">Postal code:</string>
-    <string name="ri_edit_address_line">City:</string>
-    <string name="ri_edit_thoroughfare">Street:</string>
-    <string name="ri_edit_subthoroughfare">Sub street:</string>
  	 	
  	<!-- Routes activity -->
  	<string name="routes_title">Route title</string>
@@ -120,12 +112,9 @@
     <string name="route_item_detail_description">Description</string>
     <string name="route_item_detail_date">Date</string>
     <string name="route_item_detail_country">Country:</string>
-    <string name="route_item_detail_admin_area">Administrative area:</string>
-    <string name="route_item_detail_feature">Feature:</string>
     <string name="route_item_detail_postal_code">Postal code:</string>
-    <string name="route_item_detail_address_line">City:</string>
-    <string name="route_item_detail_thoroughfare">Street:</string>
-    <string name="route_item_detail_subthoroughfare">Sub street:</string>
+    <string name="route_item_detail_city">City:</string>
+    <string name="route_item_detail_street">Street:</string>
     
  	<!-- Other -->
     <string name="unknown">Unknown</string>

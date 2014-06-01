@@ -167,8 +167,7 @@ public class RouteItem {
 	public static Address parseAddress(Cursor cursor)
 	{
 		String locale = cursor.getString(cursor.getColumnIndex(DatabaseHandler.KEY_LOCALE));
-		if(locale == null || locale.length() == 0)
-		{
+		if(locale == null || locale.length() == 0){
 			locale = "en";
 		}
 
@@ -183,6 +182,7 @@ public class RouteItem {
 		address.setThoroughfare(cursor.getString(cursor.getColumnIndex(DatabaseHandler.KEY_THOROUGHFARE)));
 		address.setSubThoroughfare(cursor.getString(cursor.getColumnIndex(DatabaseHandler.KEY_SUB_THOROUGHFARE)));
 		address.setLocality(cursor.getString(cursor.getColumnIndex(DatabaseHandler.KEY_LOCALITY)));
+		address.setCountryCode(cursor.getString(cursor.getColumnIndex(DatabaseHandler.KEY_COUNTRY_CODE)));
 		
 		return address;
 	}

@@ -64,12 +64,15 @@ public class MainService extends IntentService {
 		cv.put(DatabaseHandler.KEY_TITLE, routeItem.getTitle());
 		cv.put(DatabaseHandler.KEY_DESCRIPTION, routeItem.getDescription());
 		cv.put(DatabaseHandler.KEY_COUNTRY, routeItem.getAddress().getCountryName());
+		cv.put(DatabaseHandler.KEY_COUNTRY_CODE, routeItem.getAddress().getCountryCode());
 		cv.put(DatabaseHandler.KEY_ADDRESS_LINE, routeItem.getAddress().getAddressLine(0));
 		cv.put(DatabaseHandler.KEY_ADMIN_AREA, routeItem.getAddress().getAdminArea());
 		cv.put(DatabaseHandler.KEY_THOROUGHFARE, routeItem.getAddress().getThoroughfare());
 		cv.put(DatabaseHandler.KEY_SUB_THOROUGHFARE, routeItem.getAddress().getSubThoroughfare());
 		cv.put(DatabaseHandler.KEY_POSTAL_CODE, routeItem.getAddress().getPostalCode());
 		cv.put(DatabaseHandler.KEY_FEATURE, routeItem.getAddress().getFeatureName());
+		cv.put(DatabaseHandler.KEY_LOCALITY, routeItem.getAddress().getLocality());
+		cv.put(DatabaseHandler.KEY_LOCALE, routeItem.getAddress().getLocale().getLanguage());
 
 		db.updateRouteItem(cv, routeItem.getRouteItemId());
 	}

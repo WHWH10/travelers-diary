@@ -108,7 +108,9 @@ public class LogInActivity extends Activity implements ConnectionCallbacks, OnCo
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		Session.getActiveSession().onActivityResult(this, requestCode, resultCode, data);
+		
+		if(data != null)
+			Session.getActiveSession().onActivityResult(this, requestCode, resultCode, data);
 		
 		if(requestCode == RC_SIGN_IN){
 			if(resultCode != RESULT_OK){

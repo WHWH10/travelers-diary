@@ -5,7 +5,9 @@ public class Config {
 	/*---- WebService configuration ----*/	
 	public static final String WEBSERVICE_NAMESPACE = "http://travelersDiary.com/";
 	public static final String WEBSERVICE_URL = "http://192.168.0.110/Services/AndroidService.asmx";
-	public static final String WEBSERVICE_METHOD_LOG_IMPORT = "ImportLog";	
+	public static final String WEBSERVICE_METHOD_LOG_IMPORT = "ImportLog";
+	public static final String WEBSERVICE_METHOD_ROUTE_IMPORT = "ImportRoute";
+	public static final String WEBSERVICE_METHOD_ROUTE_ITEM_IMPORT = "ImportRouteItem";
 	/*----------------------------------*/
 	
 	/* Shared preferences configuration */	

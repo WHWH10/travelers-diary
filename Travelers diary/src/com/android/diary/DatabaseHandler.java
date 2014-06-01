@@ -38,6 +38,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	public static final String KEY_DATE_CREATED = "dateCreated";
 	public static final String KEY_DATE_MODIFIED = "dateModified";
 	public static final String KEY_COUNTRY = "country";
+	public static final String KEY_COUNTRY_CODE = "countryCode";
 	public static final String KEY_ADMIN_AREA = "adminArea";
 	public static final String KEY_FEATURE = "feature";
 	public static final String KEY_ALTITUDE = "altitude";
@@ -68,7 +69,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	
 	private static final String CREATE_ROUTE_ITEM_TABLE = "CREATE  TABLE IF NOT EXISTS " + TABLE_ROUTE_ITEM + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL  UNIQUE, " +
 			KEY_ROUTE_ID + " INTEGER NOT NULL, " + KEY_TITLE + " TEXT, " + KEY_DESCRIPTION + " TEXT, " + KEY_DATE_CREATED + " DATETIME NOT NULL, " +
-			KEY_DATE_MODIFIED + " DATETIME NOT NULL, " + KEY_COUNTRY + " TEXT, " + KEY_ADMIN_AREA + " TEXT, " + KEY_FEATURE + " TEXT, " +
+			KEY_DATE_MODIFIED + " DATETIME NOT NULL, " + KEY_COUNTRY + " TEXT, " + KEY_COUNTRY_CODE + " TEXT, " + KEY_ADMIN_AREA + " TEXT, " + KEY_FEATURE + " TEXT, " +
 			KEY_ALTITUDE + " DOUBLE, " + KEY_LATITUDE + " DOUBLE, " + KEY_LONGITUDE + " DOUBLE, " + KEY_POSTAL_CODE + " TEXT, " + 
 			KEY_ADDRESS_LINE + " TEXT, " + KEY_THOROUGHFARE + " TEXT, " + KEY_SUB_THOROUGHFARE + " TEXT, " + KEY_LOCALE + " TEXT, " + KEY_LOCALITY + " TEXT, " + KEY_IS_IMPORTED + " INTEGER, " +
 			KEY_IS_ADDRESS_UPDATED + " INTEGER, " + "CONSTRAINT fk_routeItem FOREIGN KEY(" + KEY_ROUTE_ID + ") REFERENCES " + TABLE_ROUTE + "(" + KEY_ID + ") " + "ON DELETE CASCADE ON UPDATE CASCADE" + ")";
@@ -83,8 +84,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private static final String CREATE_TRACK_POINT_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_TRACK_POINT + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL  UNIQUE, " +
 			KEY_ALTITUDE + " DOUBLE, " + KEY_LATITUDE + " DOUBLE, " + KEY_LONGITUDE + " DOUBLE, " + KEY_DATE_CREATED + " DATETIME NOT NULL, " + KEY_ROUTE_ID + " INTEGER, " + KEY_IS_IMPORTED + " INTEGER" + ")";
 	
-	public DatabaseHandler(Context context)
-	{		
+	public DatabaseHandler(Context context)	{
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 		this.context = context;
 	}
@@ -137,6 +137,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		values.put(KEY_DATE_MODIFIED, DateFormat.getDateTimeInstance().format(new Date()));
 		values.put(KEY_IS_IMPORTED, 0);
 		values.put(KEY_IS_ADDRESS_UPDATED, 0);
+		
+		SharedPreferenceHelper sharedPreferenceHelper = new SharedPreferenceHelper(context);
+		sharedPreferenceHelper.setAddressUpdateFlag(true);
 		
 		SQLiteDatabase db = this.getWritableDatabase();		
 		
@@ -211,8 +214,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		}		
 	}
 	
-	public void updateRoute(ContentValues contentValues, int routeId)
-	{
+	public void updateRoute(ContentValues contentValues, int routeId){
 		if(contentValues == null)
 			return;
 		
@@ -228,32 +230,43 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			MessageHelper.LogErrorMessage(context, LOG_TAG, e.toString());
 		} finally {
 			db.close();
-		}
-		
+		}		
 	}
 	
-	public void deleteRoute(int routeId)
-	{
+	public void setRouteImported(int routeId){
+		ContentValues contentValues = new ContentValues();
+		contentValues.put(KEY_IS_IMPORTED, 1);
+		
+		SQLiteDatabase db = this.getWritableDatabase();	
+		
+		try {				
+			db.update(TABLE_ROUTE, contentValues, KEY_ID + "=?", new String[]{String.valueOf(routeId)});
+			
+		} catch (SQLException e) {
+			MessageHelper.LogErrorMessage(context, LOG_TAG, e.toString());
+		} finally {
+			db.close();
+		}		
+	}
+	
+	public void deleteRoute(int routeId){
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.delete(TABLE_ROUTE, KEY_ID + "=?", new String[]{String.valueOf(routeId)});
 		db.close();
 	}
 	
-	public List<RouteItem> getRouteItems(int routeId)
-	{
+	public List<RouteItem> getRouteItems(int routeId){
 		SQLiteDatabase db = this.getReadableDatabase();
 		
 		Cursor cursor = db.query(TABLE_ROUTE_ITEM, new String[] {KEY_ID, KEY_ROUTE_ID, KEY_TITLE, KEY_DESCRIPTION, 
 				KEY_DATE_CREATED, KEY_DATE_MODIFIED, KEY_ADDRESS_LINE, KEY_ADMIN_AREA, KEY_ALTITUDE,
-				KEY_LATITUDE, KEY_LONGITUDE, KEY_COUNTRY, KEY_FEATURE, KEY_LOCALE, KEY_LOCALITY, KEY_POSTAL_CODE,
+				KEY_LATITUDE, KEY_LONGITUDE, KEY_COUNTRY, KEY_COUNTRY_CODE, KEY_FEATURE, KEY_LOCALE, KEY_LOCALITY, KEY_POSTAL_CODE,
 				KEY_THOROUGHFARE, KEY_SUB_THOROUGHFARE, KEY_IS_IMPORTED, KEY_IS_ADDRESS_UPDATED}, KEY_ROUTE_ID + "=?", new String[]{String.valueOf(routeId)}, null, null, null, null);
 				
 		List<RouteItem> list = new ArrayList<RouteItem>();
 		
-		if(cursor.moveToFirst())
-		{
-			do
-			{
+		if(cursor.moveToFirst()){
+			do{
 				RouteItem route = RouteItem.parse(cursor);
 				if(route == null)
 					continue;
@@ -274,7 +287,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		
 		Cursor cursor = db.query(TABLE_ROUTE_ITEM, new String[] {KEY_ID, KEY_ROUTE_ID, KEY_TITLE, KEY_DESCRIPTION, 
 				KEY_DATE_CREATED, KEY_DATE_MODIFIED, KEY_ADDRESS_LINE, KEY_ADMIN_AREA, KEY_ALTITUDE,
-				KEY_LATITUDE, KEY_LONGITUDE, KEY_COUNTRY, KEY_FEATURE, KEY_LOCALE, KEY_LOCALITY, KEY_POSTAL_CODE,
+				KEY_LATITUDE, KEY_LONGITUDE, KEY_COUNTRY, KEY_COUNTRY_CODE, KEY_FEATURE, KEY_LOCALE, KEY_LOCALITY, KEY_POSTAL_CODE,
 				KEY_THOROUGHFARE, KEY_SUB_THOROUGHFARE, KEY_IS_IMPORTED, KEY_IS_ADDRESS_UPDATED}, KEY_IS_ADDRESS_UPDATED + "=?", new String[]{String.valueOf(0)}, null, null, null, null);
 				
 		List<RouteItem> list = new ArrayList<RouteItem>();
@@ -303,7 +316,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		
 		Cursor cursor = db.query(TABLE_ROUTE_ITEM, new String[] {KEY_ID, KEY_ROUTE_ID, KEY_TITLE, KEY_DESCRIPTION, 
 				KEY_DATE_CREATED, KEY_DATE_MODIFIED, KEY_ADDRESS_LINE, KEY_ADMIN_AREA, KEY_ALTITUDE,
-				KEY_LATITUDE, KEY_LONGITUDE, KEY_COUNTRY, KEY_FEATURE, KEY_LOCALE, KEY_LOCALITY, KEY_POSTAL_CODE,
+				KEY_LATITUDE, KEY_LONGITUDE, KEY_COUNTRY, KEY_COUNTRY_CODE, KEY_FEATURE, KEY_LOCALE, KEY_LOCALITY, KEY_POSTAL_CODE,
 				KEY_THOROUGHFARE, KEY_SUB_THOROUGHFARE, KEY_IS_IMPORTED, KEY_IS_ADDRESS_UPDATED}, KEY_ID + "=?", new String[]{String.valueOf(routeItemId)}, null, null, null, null);
 				
 		RouteItem routeItem = null;
@@ -343,8 +356,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		}
 	}
 	
-	public void updateRouteItem(ContentValues contentValues, int routeItemId)
-	{
+	public void updateRouteItem(ContentValues contentValues, int routeItemId){
 		if(contentValues == null)
 			return;
 		
@@ -360,12 +372,26 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			MessageHelper.LogErrorMessage(context, LOG_TAG, e.toString());
 		} finally {
 			db.close();
-		}
-		
+		}		
 	}
 	
-	public void deleteRouteItem(int routeItemId)
-	{
+	public void setRouteItemImported(int routeItemId){
+		ContentValues contentValues = new ContentValues();
+		contentValues.put(KEY_IS_IMPORTED, 1);
+		
+		SQLiteDatabase db = this.getWritableDatabase();	
+		
+		try {				
+			db.update(TABLE_ROUTE_ITEM, contentValues, KEY_ID + "=?", new String[]{String.valueOf(routeItemId)});
+			
+		} catch (SQLException e) {
+			MessageHelper.LogErrorMessage(context, LOG_TAG, e.toString());
+		} finally {
+			db.close();
+		}		
+	}
+	
+	public void deleteRouteItem(int routeItemId){
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.delete(TABLE_ROUTE_ITEM, KEY_ID + "=?", new String[]{String.valueOf(routeItemId)});
 		db.close();

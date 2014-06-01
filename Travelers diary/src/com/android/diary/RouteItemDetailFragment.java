@@ -112,12 +112,9 @@ public class RouteItemDetailFragment extends BaseFragment {
 			setText(view, R.id.routeItem_det_date_tV, DateFormat.getDateFormat(getActivity()).format(routeItem.getDateCreated()) + " " + 
 					DateFormat.getTimeFormat(getActivity()).format(routeItem.getDateCreated()), true);
 			setText(view, R.id.routeItem_det_country_tV, routeItem.getAddress().getCountryName(), true);
-			setText(view, R.id.routeItem_det_adminArea_tV, routeItem.getAddress().getAdminArea(), true);
-			setText(view, R.id.routeItem_det_city_tV, routeItem.getAddress().getAddressLine(0), true);
-			setText(view, R.id.routeItem_det_thoroughfare_tV, routeItem.getAddress().getThoroughfare(), true);
-			setText(view, R.id.routeItem_det_subthoroughfare_tV, routeItem.getAddress().getSubThoroughfare(), true);
+			setText(view, R.id.routeItem_det_city_tV, routeItem.getAddress().getLocality(), true);
+			setText(view, R.id.routeItem_det_street_tV, routeItem.getAddress().getAddressLine(0), true);
 			setText(view, R.id.routeItem_det_postalCode_tV, routeItem.getAddress().getPostalCode(), true);
-			setText(view, R.id.routeItem_det_feature_tV, routeItem.getAddress().getFeatureName(), true);
 			setText(view, R.id.routeItem_det_coordinatesLat_tV, String.valueOf(routeItem.getLatitude()), true);
 			setText(view, R.id.routeItem_det_coordinatesLon_tV, String.valueOf(routeItem.getLongitude()), true);
 		}
