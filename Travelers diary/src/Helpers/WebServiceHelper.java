@@ -132,8 +132,8 @@ public class WebServiceHelper extends AsyncTask<String, Void, Void>{
 				request.addProperty(getPropertyInfo("country", String.class, routeItem.getAddress().getCountryName()));
 				request.addProperty(getPropertyInfo("countryCode", String.class, routeItem.getAddress().getCountryCode()));
 				request.addProperty(getPropertyInfo("postalCode", String.class, routeItem.getAddress().getPostalCode()));
-				request.addProperty(getPropertyInfo("longitude", Long.class, routeItem.getLongitude()));
-				request.addProperty(getPropertyInfo("latitude", Long.class, routeItem.getLatitude()));
+				request.addProperty(getPropertyInfo("longitude", Double.class, routeItem.getLongitude()));
+				request.addProperty(getPropertyInfo("latitude", Double.class, routeItem.getLatitude()));
 				request.addProperty(getPropertyInfo("dateCreated", Long.class, routeItem.getDateCreated().getTime()));
 				request.addProperty(getPropertyInfo("dateModified", Long.class, routeItem.getDateModified().getTime()));
 				
