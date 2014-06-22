@@ -91,8 +91,8 @@ public class LocationProviderService extends IntentService{
 		remoteViews.setTextViewText(R.id.notification_title, getText(R.string.notif_tracking_title));
 		remoteViews.setTextViewText(R.id.noticication_message, getText(R.string.notif_tracking_text));
 		
-		Intent resultIntent = new Intent(getApplicationContext(), MainActivity.class);
-		resultIntent.putExtra(MainActivity.KEY_CLOSE_APP, true);
+		Intent resultIntent = new Intent(getApplicationContext(), RoutesActivity.class);
+		resultIntent.putExtra(RoutesActivity.KEY_CLOSE_APP, true);
 		PendingIntent pendigResultIntent = PendingIntent.getActivity(getApplicationContext(), 0, resultIntent, 0);
 		remoteViews.setOnClickPendingIntent(R.id.notification_button, pendigResultIntent);
 		

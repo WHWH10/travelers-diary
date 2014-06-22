@@ -7,8 +7,10 @@
     </style>
     
     <style name="MainActivityButton" parent="@android:style/Widget.Button">
-        <item name="android:background">@drawable/main_activity_button</item>
-        <item name="android:layout_margin">10dp</item>
+        <item name="android:background">#d35400</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
 </resources>

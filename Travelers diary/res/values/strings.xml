@@ -9,8 +9,7 @@
     <string name="map_add_location_msg">Select a location to add</string>
     
     <!-- Main Activity -->
-    <string name="main_ac_newRoute">New route</string>
-    <string name="main_ac_existingRoute">Existing route</string>
+    <string name="main_ac_route">Routes</string>
     <string name="main_ac_gallery">Gallery</string>
     <string name="main_ac_settings">Settings</string>
     
@@ -34,6 +33,7 @@
    	<string name="menu_changeRouteItemTitle">Change title</string>
    	<string name="menu_deleteRouteItem">Delete point</string>
    	<string name="menu_showGallery">Gallery</string>
+   	<string name="menu_addNewRoute">New route</string>
     
     <!-- Notification -->
     <string name="notif_tracking_ticker">Tracking started</string>
@@ -50,6 +50,7 @@
     <string name="dialog_edit">Edit</string>
     <string name="dialog_cancel">Cancel</string>
     <string name="dialog_set">Set</string>
+    <string name="dialog_add">Add</string>
     <string name="dialog_addInfo">Add Info</string>
     <string name="dialog_confirmation">Confirmation</string>
     <string name="dialog_routeItemDelete">Are you sure you want to delete this point?</string>
@@ -74,9 +75,8 @@
     <string name="ri_edit_postal_code">Postal code:</string>
  	 	
  	<!-- Routes activity -->
- 	<string name="routes_title">Route title</string>
  	<string name="routes_title_hint">Enter route title here</string>
- 	<string name="routes_add_button">Add new route</string>
+ 	<string name="routes_no_routes">No routes</string>
  	
  	<!-- MultiPhotoSelect activity -->
  	<string name="multi_photo_select_add_selected_photos">Add selected photos</string>

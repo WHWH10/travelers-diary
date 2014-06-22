@@ -12,8 +12,10 @@ import Helpers.IImageClickListener;
 import Helpers.ImageHelper;
 import Helpers.MessageHelper;
 import Helpers.SharedPreferenceHelper;
+import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.app.ActivityManager.RunningServiceInfo;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -26,6 +28,7 @@ import android.text.InputType;
 import android.text.format.DateFormat;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -45,6 +48,7 @@ public class RoutesActivity extends ListActivity{
 	private String title;
 	
 	private final static int REQ_CODE_GET_DEFAULT_IMAGE = 1;
+	public static final String KEY_CLOSE_APP = "keyCloseApp";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +59,83 @@ public class RoutesActivity extends ListActivity{
 		this.itemSelected = 0;
 		this.title = "";
 		
+		Bundle bundle = getIntent().getExtras();
+		if(bundle != null){
+			if(bundle.getBoolean(KEY_CLOSE_APP)){
+				if(isLocationProviderServiceRunning(this)){
+					Intent myService = new Intent(this, LocationProviderService.class);
+					startService(myService);
+					stopService(myService);
+				}
+				
+				finish();
+			}
+		}
+		
+		startMainService();
+		
 		registerForContextMenu(listView);
+	}
+	
+	private void startMainService()	{
+		if(!isMainServiceRunning(this)){
+			Intent myService = new Intent(this, MainService.class);
+			startService(myService);
+		}
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater menuInflater = getMenuInflater();
+		menuInflater.inflate(R.menu.activity_route_option, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		Intent intent;
+		
+		switch (item.getItemId()) {
+		case R.id.menu_showGallery:
+			intent = new Intent(this, MultiPhotoSelectActivity.class);
+			intent.putExtra(MultiPhotoSelectActivity.SHOW_GALLERY, true);
+			startActivity(intent);
+			break;
+		case R.id.menu_addNewRoute:
+			addNewRoute();
+			break;
+		case R.id.menu_settings:
+			intent = new Intent(this, LogInActivity.class);
+			startActivity(intent);
+			break;
+
+		default:
+			break;
+		}
+		
+		return super.onOptionsItemSelected(item);
+	}
+
+	public static boolean isMainServiceRunning(Context context) {
+	    ActivityManager manager = (ActivityManager) context.getSystemService(ACTIVITY_SERVICE);
+	    for (RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+	    	
+	        if ("com.android.diary.MainService".equals(service.service.getClassName())) {
+	            return true;
+	        }
+	    }
+	    return false;
+	}
+	
+	public static boolean isLocationProviderServiceRunning(Context context) {
+	    ActivityManager manager = (ActivityManager) context.getSystemService(ACTIVITY_SERVICE);
+	    for (RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+	    	
+	        if ("com.android.diary.LocationProviderService".equals(service.service.getClassName())) {
+	            return true;
+	        }
+	    }
+	    return false;
 	}
 	
 	@Override
@@ -90,7 +170,7 @@ public class RoutesActivity extends ListActivity{
 		DatabaseHandler db = new DatabaseHandler(this);
 		this.routes = db.getRoutes();
 		db.close();
-				
+		
 		List<Map<String, String>> g = new ArrayList<Map<String, String>>();
 		
 		for (int i = 0; i < this.routes.size(); i++) {
@@ -119,7 +199,7 @@ public class RoutesActivity extends ListActivity{
 			}
 		});
 		
-		setListAdapter(adapter);
+		setListAdapter(adapter);		
 	}
 	
 	@Override
@@ -172,7 +252,7 @@ public class RoutesActivity extends ListActivity{
 			break;
 			
 		case R.id.menu_stopTracking:
-			if(MainActivity.isLocationProviderServiceRunning(this) && myService != null)
+			if(isLocationProviderServiceRunning(this) && myService != null)
 			{
 				stopService(myService);
 			}
@@ -221,7 +301,7 @@ public class RoutesActivity extends ListActivity{
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.activity_routes_context, menu);
-		if(MainActivity.isLocationProviderServiceRunning(this))
+		if(isLocationProviderServiceRunning(this))
 		{
 			menu.findItem(R.id.menu_startTracking).setVisible(false);
 			menu.findItem(R.id.menu_stopTracking).setVisible(true);
@@ -292,23 +372,43 @@ public class RoutesActivity extends ListActivity{
 		editText.setSelection(editText.getText().length());
 	}
 	
-	public void addRoute(View view)
+	private void addNewRoute()
 	{
-		EditText et = (EditText) findViewById(R.id.routes_title_editText);
-		if(et.getText().length() > 0)
-		{
-			ContentValues contentValues = new ContentValues();
-			contentValues.put(DatabaseHandler.KEY_TITLE, et.getText().toString());
+		AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+		final EditText editText = new EditText(this);
+		editText.setHint(R.string.routes_title_hint);
+		
+		editText.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+		final InputMethodManager inputMethodManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
+		inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+		
+		dialog.setView(editText);
+		dialog.setNeutralButton(R.string.dialog_add, new OnClickListener() {
 			
-			DatabaseHandler db = new DatabaseHandler(this);
-			db.insertRoute(contentValues);
-			db.close();
+			public void onClick(DialogInterface dialog, int which) {
+				if(editText.getText().length() > 0)
+				{
+					ContentValues contentValues = new ContentValues();
+					contentValues.put(DatabaseHandler.KEY_TITLE, editText.getText().toString());
+					
+					DatabaseHandler db = new DatabaseHandler(getApplicationContext());
+					db.insertRoute(contentValues);
+					db.close();
+					
+					prepareList();
+				}
+				
+				getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+			}
+		});
+		dialog.setNegativeButton(R.string.dialog_cancel, new OnClickListener() {
 			
-			et.setText("");
-			InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-			imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
-			prepareList();
-		}
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.cancel();
+			}
+		});
+		dialog.show();
+		editText.setSelection(editText.getText().length());
 	}
 	
 	private void changeTitle()

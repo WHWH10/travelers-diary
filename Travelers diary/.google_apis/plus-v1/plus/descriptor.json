@@ -17,29 +17,29 @@
   "canonicalName": null, 
   "files": [
     {
-      "downloadUrl": "/downloads/plus/v1/126/java/1.16.0-rc/google-api-services-plus-v1-rev126-1.16.0-rc.jar", 
-      "path": "google-api-services-plus-v1-rev126-1.16.0-rc.jar", 
+      "downloadUrl": "/downloads/plus/v1/127/java/1.16.0-rc/google-api-services-plus-v1-rev127-1.16.0-rc.jar", 
+      "path": "google-api-services-plus-v1-rev127-1.16.0-rc.jar", 
       "type": "binary", 
-      "timestamp": "2014-05-20 08:17"
+      "timestamp": "2014-06-17 02:32"
     }, 
     {
-      "downloadUrl": "/downloads/plus/v1/126/java/1.16.0-rc/google-api-services-plus-v1-rev126-1.16.0-rc-javadoc.jar", 
-      "path": "google-api-services-plus-v1-rev126-1.16.0-rc-javadoc.jar", 
+      "downloadUrl": "/downloads/plus/v1/127/java/1.16.0-rc/google-api-services-plus-v1-rev127-1.16.0-rc-javadoc.jar", 
+      "path": "google-api-services-plus-v1-rev127-1.16.0-rc-javadoc.jar", 
       "type": "documentation", 
-      "timestamp": "2014-05-20 08:17"
+      "timestamp": "2014-06-17 02:32"
     }, 
     {
-      "downloadUrl": "/downloads/plus/v1/126/java/1.16.0-rc/google-api-services-plus-v1-rev126-1.16.0-rc-sources.jar", 
-      "path": "google-api-services-plus-v1-rev126-1.16.0-rc-sources.jar", 
+      "downloadUrl": "/downloads/plus/v1/127/java/1.16.0-rc/google-api-services-plus-v1-rev127-1.16.0-rc-sources.jar", 
+      "path": "google-api-services-plus-v1-rev127-1.16.0-rc-sources.jar", 
       "type": "source", 
-      "timestamp": "2014-05-20 08:13"
+      "timestamp": "2014-06-17 02:31"
     }, 
     {
-      "path": "google-api-services-plus-v1-rev126-1.16.0-rc.jar.properties", 
+      "path": "google-api-services-plus-v1-rev127-1.16.0-rc.jar.properties", 
       "type": "android.properties"
     }
   ], 
-  "revision": 126, 
+  "revision": 127, 
   "language": "java", 
   "language_version": "1.16.0-rc", 
   "dependencies": [
