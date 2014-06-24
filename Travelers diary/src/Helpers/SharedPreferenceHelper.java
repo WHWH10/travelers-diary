@@ -86,4 +86,14 @@ public class SharedPreferenceHelper {
 			return loginInfos;
 		}
 	}
+	
+	public void setUploadOnWifiFlag(boolean needsUpdating){
+		editor.putBoolean(Config.UPLOAD_CONNECTION_TYPE, needsUpdating);
+		editor.commit();
+	}
+	
+	public boolean getUploadOnWifiFlag(){
+		sharedPreferences = context.getSharedPreferences(Config.PREFS_FILE, PREFERENCE_MODE);
+		return sharedPreferences.getBoolean(Config.UPLOAD_CONNECTION_TYPE, false);
+	}
 }

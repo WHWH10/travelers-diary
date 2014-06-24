@@ -38,7 +38,7 @@
     <!-- Notification -->
     <string name="notif_tracking_ticker">Tracking started</string>
  	<string name="notif_tracking_title">Tracking is in progress</string>
- 	<string name="notif_tracking_text">Select to open Location Tracker app</string>
+ 	<string name="notif_tracking_text">Select to open Traveler\'s Diary</string>
  	<string name="notif_prov_ticker">Tracking unavailable</string>
  	<string name="notif_prov_title">Location providers are unavailable</string>
  	<string name="notif_prov_title_gps">GPS provider is unavailable</string>
@@ -55,6 +55,7 @@
     <string name="dialog_confirmation">Confirmation</string>
     <string name="dialog_routeItemDelete">Are you sure you want to delete this point?</string>
     <string name="dialog_routeDelete">Are you sure you want to delete this route?</string>
+    <string name="dialog_imageDelete">Are you sure you want to delete this image?</string>
     
     <!-- Edit route item activity -->
     <string name="ri_edit_save">Save</string>

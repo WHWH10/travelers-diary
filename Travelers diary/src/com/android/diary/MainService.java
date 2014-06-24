@@ -23,9 +23,25 @@ public class MainService extends IntentService {
 	@Override
 	protected void onHandleIntent(Intent intent) {
 		startAddressFillService();
+				
+		if(canMainServiteRun()){
+			WebServiceHelper webServiceHelper = new WebServiceHelper(getApplicationContext());
+			webServiceHelper.execute("");
+		}		
+	}
+	
+	private boolean canMainServiteRun(){
+		if(!Globals.isUserLoggedIn(getApplicationContext()))
+			return false;
 		
-		WebServiceHelper webServiceHelper = new WebServiceHelper(getApplicationContext());
-		webServiceHelper.execute("");
+		SharedPreferenceHelper sharedPreferenceHelper = new SharedPreferenceHelper(getApplicationContext());
+		
+		if(sharedPreferenceHelper.getUploadOnWifiFlag() && Globals.isConnectedToWifi(getApplicationContext()))
+			return true;
+		else
+			Globals.isNetworkAvailable(getApplicationContext());			
+		
+		return false;
 	}
 	
 	private void startAddressFillService()

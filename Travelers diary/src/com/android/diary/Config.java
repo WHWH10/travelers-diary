@@ -15,6 +15,7 @@ public class Config {
 	public static final String UPDATE_ADDRESSES = "updateAddresses";
 	public static final String CAMERA_START_TIME = "cameraStartTime";
 	public static final String AUTHENTICATION_DATA = "authtenticationData";
+	public static final String UPLOAD_CONNECTION_TYPE = "uploadConnectionType";
 	/*----------------------------------*/
 	
 	/*-------- Map configuration -------*/	

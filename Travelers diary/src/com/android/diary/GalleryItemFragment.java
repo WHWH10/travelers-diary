@@ -107,7 +107,7 @@ public final class GalleryItemFragment extends Fragment
 	
 	private void createConfirmDialog()
     {
-    	new AlertDialog.Builder(getActivity()).setTitle(getString(R.string.dialog_confirmation)).setMessage(getString(R.string.dialog_routeDelete))
+    	new AlertDialog.Builder(getActivity()).setTitle(getString(R.string.dialog_confirmation)).setMessage(getString(R.string.dialog_imageDelete))
 		.setIcon(android.R.drawable.ic_dialog_alert)
 		.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 		

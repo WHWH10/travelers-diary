@@ -82,7 +82,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			+ KEY_IS_DEFAULT_ROUTE_ITEM_IMAGE + " INTEGER" + ")";
 	
 	private static final String CREATE_TRACK_POINT_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_TRACK_POINT + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL  UNIQUE, " +
-			KEY_ALTITUDE + " DOUBLE, " + KEY_LATITUDE + " DOUBLE, " + KEY_LONGITUDE + " DOUBLE, " + KEY_DATE_CREATED + " DATETIME NOT NULL, " + KEY_ROUTE_ID + " INTEGER, " + KEY_IS_IMPORTED + " INTEGER" + ")";
+			KEY_ALTITUDE + " DOUBLE, " + KEY_LATITUDE + " DOUBLE, " + KEY_LONGITUDE + " DOUBLE, " + KEY_DATE_CREATED + " DATETIME NOT NULL, " + KEY_ROUTE_ID + " INTEGER, " + KEY_IS_IMPORTED 
+			+ " INTEGER, CONSTRAINT fk_trackPoint FOREIGN KEY(" + KEY_ROUTE_ID + ") REFERENCES " + TABLE_ROUTE + "(" + KEY_ID + ") ON DELETE CASCADE ON UPDATE CASCADE" + ")";
 	
 	public DatabaseHandler(Context context)	{
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -251,7 +252,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	
 	public void deleteRoute(int routeId){
 		SQLiteDatabase db = this.getWritableDatabase();
+		
 		db.delete(TABLE_ROUTE, KEY_ID + "=?", new String[]{String.valueOf(routeId)});
+		db.delete(TABLE_IMAGE, KEY_ROUTE_ID + "=?", new String[]{String.valueOf(routeId)});
+		
 		db.close();
 	}
 	

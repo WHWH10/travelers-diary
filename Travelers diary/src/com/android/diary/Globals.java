@@ -4,6 +4,7 @@ import Helpers.MessageHelper;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 
 public  class Globals {
 	
@@ -26,10 +27,19 @@ public  class Globals {
 	}
 	
 	public static boolean isNetworkAvailableWithToast(Context context){
-		ConnectivityManager connectivityManager = (ConnectivityManager)context.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+		ConnectivityManager connectivityManager = Globals.getConnectivityManager(context);
 		if(connectivityManager.getActiveNetworkInfo() == null || !connectivityManager.getActiveNetworkInfo().isConnected())
 			MessageHelper.ToastMessage(context.getApplicationContext(), context.getApplicationContext().getString(R.string.warn_dataConnectionUnavailable));
 		
 		return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnected();
+	}
+	
+	public static boolean isConnectedToWifi(Context context){
+		NetworkInfo networkInfo = Globals.getConnectivityManager(context).getActiveNetworkInfo();
+		return networkInfo != null && networkInfo.isConnected() && networkInfo.getType() == ConnectivityManager.TYPE_WIFI;
+	}
+	
+	public static ConnectivityManager getConnectivityManager(Context context){
+		return (ConnectivityManager)context.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
 	}
 }
