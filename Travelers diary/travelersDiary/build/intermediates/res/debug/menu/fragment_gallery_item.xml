@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:id="@+id/menu_shareImg"
+        android:icon="@android:drawable/ic_menu_share"
+        android:title="@string/menu_shareImg"
+        android:showAsAction="ifRoom" />    
+    <item android:id="@+id/menu_deleteImg"
+        android:icon="@android:drawable/ic_menu_delete"
+        android:title="@string/menu_deleteImg"
+        android:showAsAction="ifRoom" />
+</menu>
+<!-- From: file:/C:/Users/Aivarass/AndroidstudioProjects/Travelers%20diary/travelersDiary/src/main/res/menu/fragment_gallery_item.xml -->

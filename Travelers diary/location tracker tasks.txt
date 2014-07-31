@@ -1,4 +1,0 @@
-Markeriu dejimas rankiniu budu.(where am I, bet kur)
-Wifi listener.
-Route kontrole (pasirinkimas, trinimas, teksto formavimas).
-Route pavadinimas, data, taskai, aprasai.

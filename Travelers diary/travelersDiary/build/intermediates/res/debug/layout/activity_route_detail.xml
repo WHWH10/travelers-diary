@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/routeDetailFragment"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">        
+    </LinearLayout>
+    
+</LinearLayout><!-- From: file:/C:/Users/Aivarass/AndroidstudioProjects/Travelers%20diary/travelersDiary/src/main/res/layout/activity_route_detail.xml -->

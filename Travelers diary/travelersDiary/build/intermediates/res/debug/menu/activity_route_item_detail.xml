@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/menu_EditRouteItem"
+        android:icon="@android:drawable/ic_menu_edit"
+        android:title="@string/menu_edit"
+        android:showAsAction="ifRoom" />
+    <item android:id="@+id/menu_deleteRouteItem"
+        android:icon="@android:drawable/ic_menu_delete"
+        android:title="@string/menu_delete"
+        android:showAsAction="ifRoom" />
+</menu>
+<!-- From: file:/C:/Users/Aivarass/AndroidstudioProjects/Travelers%20diary/travelersDiary/src/main/res/menu/activity_route_item_detail.xml -->

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="2" >
+
+    <dataSet config="21.0.0-rc1" >
+        <source path="C:\Users\Aivarass\AndroidstudioProjects\Travelers diary\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.0-rc1\assets" />
+    </dataSet>
+    <dataSet config="5.0.77" >
+        <source path="C:\Users\Aivarass\AndroidstudioProjects\Travelers diary\build\intermediates\exploded-aar\com.google.android.gms\play-services\5.0.77\assets" />
+    </dataSet>
+    <dataSet config="unspecified" >
+        <source path="C:\Users\Aivarass\AndroidstudioProjects\Travelers diary\build\intermediates\exploded-aar\Travelers diary\facebookSDK\unspecified\assets" />
+    </dataSet>
+    <dataSet config="main" >
+        <source path="C:\Users\Aivarass\AndroidstudioProjects\Travelers diary\travelersDiary\src\main\assets" />
+    </dataSet>
+    <dataSet config="debug" >
+        <source path="C:\Users\Aivarass\AndroidstudioProjects\Travelers diary\travelersDiary\src\debug\assets" />
+    </dataSet>
+
+</merger>

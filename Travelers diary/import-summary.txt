@@ -1,0 +1,276 @@
+ECLIPSE ANDROID PROJECT IMPORT SUMMARY
+======================================
+
+Risky Project Location:
+-----------------------
+The tools *should* handle project locations in any directory. However,
+due to bugs, placing projects in directories containing spaces in the
+path, or characters like ", ' and &, have had issues. We're working to
+eliminate these bugs, but to save yourself headaches you may want to
+move your project to a location where this is not a problem.
+C:\Users\Aivarass\AndroidstudioProjects\Travelers diary
+                                                 -     
+
+Manifest Merging:
+-----------------
+Your project uses libraries that provide manifests, and your Eclipse
+project did not explicitly turn on manifest merging. In Android Gradle
+projects, manifests are always merged (meaning that contents from your
+libraries' manifests will be merged into the app manifest. If you had
+manually copied contents from library manifests into your app manifest
+you may need to remove these for the app to build correctly.
+
+Ignored Files:
+--------------
+The following files were *not* copied into the new Gradle project; you
+should evaluate whether these are still needed in your project and if
+so manually move them:
+
+From FacebookSDK:
+* build.gradle
+* build.xml
+From Travelers Diary:
+* .google_apis\
+* .google_apis\plus-v1\
+* .google_apis\plus-v1\plus\
+* .google_apis\plus-v1\plus\descriptor.json
+* .google_apis\plus-v1r125lv1.16.0-rc\
+* .google_apis\plus-v1r125lv1.16.0-rc\plus\
+* .google_apis\plus-v1r125lv1.16.0-rc\plus\LICENSE.txt
+* .google_apis\plus-v1r125lv1.16.0-rc\plus\classpath-include
+* .google_apis\plus-v1r125lv1.16.0-rc\plus\descriptor.json
+* .google_apis\plus-v1r125lv1.16.0-rc\plus\google-api-services-plus-v1-rev125-1.16.0-rc-javadoc.jar
+* .google_apis\plus-v1r125lv1.16.0-rc\plus\google-api-services-plus-v1-rev125-1.16.0-rc-sources.jar
+* .google_apis\plus-v1r125lv1.16.0-rc\plus\google-api-services-plus-v1-rev125-1.16.0-rc.jar
+* .google_apis\plus-v1r125lv1.16.0-rc\plus\google-api-services-plus-v1-rev125-1.16.0-rc.jar.properties
+* .google_apis\plus-v1r125lv1.16.0-rc\plus\icons\
+* .google_apis\plus-v1r125lv1.16.0-rc\plus\icons\gplus-16.png
+* .google_apis\plus-v1r125lv1.16.0-rc\plus\icons\gplus-32.png
+* .google_apis\plus-v1r125lv1.16.0-rc\plus\libs-sources\
+* .google_apis\plus-v1r125lv1.16.0-rc\plus\libs-sources\google-api-client-1.16.0-rc-sources.jar
+* .google_apis\plus-v1r125lv1.16.0-rc\plus\libs-sources\google-api-client-android-1.16.0-rc-sources.jar
+* .google_apis\plus-v1r125lv1.16.0-rc\plus\libs-sources\google-http-client-1.16.0-rc-sources.jar
+* .google_apis\plus-v1r125lv1.16.0-rc\plus\libs-sources\google-http-client-android-1.16.0-rc-sources.jar
+* .google_apis\plus-v1r125lv1.16.0-rc\plus\libs-sources\google-http-client-gson-1.16.0-rc-sources.jar
+* .google_apis\plus-v1r125lv1.16.0-rc\plus\libs-sources\google-http-client-jackson-1.16.0-rc-sources.jar
+* .google_apis\plus-v1r125lv1.16.0-rc\plus\libs-sources\google-http-client-jackson2-1.16.0-rc-sources.jar
+* .google_apis\plus-v1r125lv1.16.0-rc\plus\libs-sources\google-oauth-client-1.16.0-rc-sources.jar
+* .google_apis\plus-v1r125lv1.16.0-rc\plus\libs-sources\gson-2.1-sources.jar
+* .google_apis\plus-v1r125lv1.16.0-rc\plus\libs-sources\jackson-core-2.1.3-sources.jar
+* .google_apis\plus-v1r125lv1.16.0-rc\plus\libs-sources\jackson-core-asl-1.9.11-sources.jar
+* .google_apis\plus-v1r125lv1.16.0-rc\plus\libs\
+* .google_apis\plus-v1r125lv1.16.0-rc\plus\libs\google-api-client-1.16.0-rc.jar
+* .google_apis\plus-v1r125lv1.16.0-rc\plus\libs\google-api-client-1.16.0-rc.jar.properties
+* .google_apis\plus-v1r125lv1.16.0-rc\plus\libs\google-api-client-android-1.16.0-rc.jar
+* .google_apis\plus-v1r125lv1.16.0-rc\plus\libs\google-api-client-android-1.16.0-rc.jar.properties
+* .google_apis\plus-v1r125lv1.16.0-rc\plus\libs\google-http-client-1.16.0-rc.jar
+* .google_apis\plus-v1r125lv1.16.0-rc\plus\libs\google-http-client-1.16.0-rc.jar.properties
+* .google_apis\plus-v1r125lv1.16.0-rc\plus\libs\google-http-client-android-1.16.0-rc.jar
+* .google_apis\plus-v1r125lv1.16.0-rc\plus\libs\google-http-client-android-1.16.0-rc.jar.properties
+* .google_apis\plus-v1r125lv1.16.0-rc\plus\libs\google-http-client-gson-1.16.0-rc.jar
+* .google_apis\plus-v1r125lv1.16.0-rc\plus\libs\google-http-client-gson-1.16.0-rc.jar.properties
+* .google_apis\plus-v1r125lv1.16.0-rc\plus\libs\google-http-client-jackson-1.16.0-rc.jar
+* .google_apis\plus-v1r125lv1.16.0-rc\plus\libs\google-http-client-jackson-1.16.0-rc.jar.properties
+* .google_apis\plus-v1r125lv1.16.0-rc\plus\libs\google-http-client-jackson2-1.16.0-rc.jar
+* .google_apis\plus-v1r125lv1.16.0-rc\plus\libs\google-http-client-jackson2-1.16.0-rc.jar.properties
+* .google_apis\plus-v1r125lv1.16.0-rc\plus\libs\google-oauth-client-1.16.0-rc.jar
+* .google_apis\plus-v1r125lv1.16.0-rc\plus\libs\google-oauth-client-1.16.0-rc.jar.properties
+* .google_apis\plus-v1r125lv1.16.0-rc\plus\libs\gson-2.1.jar
+* .google_apis\plus-v1r125lv1.16.0-rc\plus\libs\gson-2.1.jar.properties
+* .google_apis\plus-v1r125lv1.16.0-rc\plus\libs\jackson-core-2.1.3.jar
+* .google_apis\plus-v1r125lv1.16.0-rc\plus\libs\jackson-core-2.1.3.jar.properties
+* .google_apis\plus-v1r125lv1.16.0-rc\plus\libs\jackson-core-asl-1.9.11.jar
+* .google_apis\plus-v1r125lv1.16.0-rc\plus\libs\jackson-core-asl-1.9.11.jar.properties
+* .google_apis\plus-v1r125lv1.16.0-rc\plus\libs\jsr305-1.3.9.jar
+* .google_apis\plus-v1r125lv1.16.0-rc\plus\proguard-google-api-client.txt
+* .google_apis\plus-v1r125lv1.16.0-rc\plus\readme.html
+* .google_apis\plus-v1r126lv1.16.0-rc\
+* .google_apis\plus-v1r126lv1.16.0-rc\plus\
+* .google_apis\plus-v1r126lv1.16.0-rc\plus\LICENSE.txt
+* .google_apis\plus-v1r126lv1.16.0-rc\plus\classpath-include
+* .google_apis\plus-v1r126lv1.16.0-rc\plus\descriptor.json
+* .google_apis\plus-v1r126lv1.16.0-rc\plus\google-api-services-plus-v1-rev126-1.16.0-rc-javadoc.jar
+* .google_apis\plus-v1r126lv1.16.0-rc\plus\google-api-services-plus-v1-rev126-1.16.0-rc-sources.jar
+* .google_apis\plus-v1r126lv1.16.0-rc\plus\google-api-services-plus-v1-rev126-1.16.0-rc.jar
+* .google_apis\plus-v1r126lv1.16.0-rc\plus\google-api-services-plus-v1-rev126-1.16.0-rc.jar.properties
+* .google_apis\plus-v1r126lv1.16.0-rc\plus\icons\
+* .google_apis\plus-v1r126lv1.16.0-rc\plus\icons\gplus-16.png
+* .google_apis\plus-v1r126lv1.16.0-rc\plus\icons\gplus-32.png
+* .google_apis\plus-v1r126lv1.16.0-rc\plus\libs-sources\
+* .google_apis\plus-v1r126lv1.16.0-rc\plus\libs-sources\google-api-client-1.16.0-rc-sources.jar
+* .google_apis\plus-v1r126lv1.16.0-rc\plus\libs-sources\google-api-client-android-1.16.0-rc-sources.jar
+* .google_apis\plus-v1r126lv1.16.0-rc\plus\libs-sources\google-http-client-1.16.0-rc-sources.jar
+* .google_apis\plus-v1r126lv1.16.0-rc\plus\libs-sources\google-http-client-android-1.16.0-rc-sources.jar
+* .google_apis\plus-v1r126lv1.16.0-rc\plus\libs-sources\google-http-client-gson-1.16.0-rc-sources.jar
+* .google_apis\plus-v1r126lv1.16.0-rc\plus\libs-sources\google-http-client-jackson-1.16.0-rc-sources.jar
+* .google_apis\plus-v1r126lv1.16.0-rc\plus\libs-sources\google-http-client-jackson2-1.16.0-rc-sources.jar
+* .google_apis\plus-v1r126lv1.16.0-rc\plus\libs-sources\google-oauth-client-1.16.0-rc-sources.jar
+* .google_apis\plus-v1r126lv1.16.0-rc\plus\libs-sources\gson-2.1-sources.jar
+* .google_apis\plus-v1r126lv1.16.0-rc\plus\libs-sources\jackson-core-2.1.3-sources.jar
+* .google_apis\plus-v1r126lv1.16.0-rc\plus\libs-sources\jackson-core-asl-1.9.11-sources.jar
+* .google_apis\plus-v1r126lv1.16.0-rc\plus\libs\
+* .google_apis\plus-v1r126lv1.16.0-rc\plus\libs\google-api-client-1.16.0-rc.jar
+* .google_apis\plus-v1r126lv1.16.0-rc\plus\libs\google-api-client-1.16.0-rc.jar.properties
+* .google_apis\plus-v1r126lv1.16.0-rc\plus\libs\google-api-client-android-1.16.0-rc.jar
+* .google_apis\plus-v1r126lv1.16.0-rc\plus\libs\google-api-client-android-1.16.0-rc.jar.properties
+* .google_apis\plus-v1r126lv1.16.0-rc\plus\libs\google-http-client-1.16.0-rc.jar
+* .google_apis\plus-v1r126lv1.16.0-rc\plus\libs\google-http-client-1.16.0-rc.jar.properties
+* .google_apis\plus-v1r126lv1.16.0-rc\plus\libs\google-http-client-android-1.16.0-rc.jar
+* .google_apis\plus-v1r126lv1.16.0-rc\plus\libs\google-http-client-android-1.16.0-rc.jar.properties
+* .google_apis\plus-v1r126lv1.16.0-rc\plus\libs\google-http-client-gson-1.16.0-rc.jar
+* .google_apis\plus-v1r126lv1.16.0-rc\plus\libs\google-http-client-gson-1.16.0-rc.jar.properties
+* .google_apis\plus-v1r126lv1.16.0-rc\plus\libs\google-http-client-jackson-1.16.0-rc.jar
+* .google_apis\plus-v1r126lv1.16.0-rc\plus\libs\google-http-client-jackson-1.16.0-rc.jar.properties
+* .google_apis\plus-v1r126lv1.16.0-rc\plus\libs\google-http-client-jackson2-1.16.0-rc.jar
+* .google_apis\plus-v1r126lv1.16.0-rc\plus\libs\google-http-client-jackson2-1.16.0-rc.jar.properties
+* .google_apis\plus-v1r126lv1.16.0-rc\plus\libs\google-oauth-client-1.16.0-rc.jar
+* .google_apis\plus-v1r126lv1.16.0-rc\plus\libs\google-oauth-client-1.16.0-rc.jar.properties
+* .google_apis\plus-v1r126lv1.16.0-rc\plus\libs\gson-2.1.jar
+* .google_apis\plus-v1r126lv1.16.0-rc\plus\libs\gson-2.1.jar.properties
+* .google_apis\plus-v1r126lv1.16.0-rc\plus\libs\jackson-core-2.1.3.jar
+* .google_apis\plus-v1r126lv1.16.0-rc\plus\libs\jackson-core-2.1.3.jar.properties
+* .google_apis\plus-v1r126lv1.16.0-rc\plus\libs\jackson-core-asl-1.9.11.jar
+* .google_apis\plus-v1r126lv1.16.0-rc\plus\libs\jackson-core-asl-1.9.11.jar.properties
+* .google_apis\plus-v1r126lv1.16.0-rc\plus\libs\jsr305-1.3.9.jar
+* .google_apis\plus-v1r126lv1.16.0-rc\plus\proguard-google-api-client.txt
+* .google_apis\plus-v1r126lv1.16.0-rc\plus\readme.html
+* .google_apis\plus-v1r127lv1.16.0-rc\
+* .google_apis\plus-v1r127lv1.16.0-rc\plus\
+* .google_apis\plus-v1r127lv1.16.0-rc\plus\LICENSE.txt
+* .google_apis\plus-v1r127lv1.16.0-rc\plus\classpath-include
+* .google_apis\plus-v1r127lv1.16.0-rc\plus\descriptor.json
+* .google_apis\plus-v1r127lv1.16.0-rc\plus\google-api-services-plus-v1-rev127-1.16.0-rc-javadoc.jar
+* .google_apis\plus-v1r127lv1.16.0-rc\plus\google-api-services-plus-v1-rev127-1.16.0-rc-sources.jar
+* .google_apis\plus-v1r127lv1.16.0-rc\plus\google-api-services-plus-v1-rev127-1.16.0-rc.jar
+* .google_apis\plus-v1r127lv1.16.0-rc\plus\google-api-services-plus-v1-rev127-1.16.0-rc.jar.properties
+* .google_apis\plus-v1r127lv1.16.0-rc\plus\icons\
+* .google_apis\plus-v1r127lv1.16.0-rc\plus\icons\gplus-16.png
+* .google_apis\plus-v1r127lv1.16.0-rc\plus\icons\gplus-32.png
+* .google_apis\plus-v1r127lv1.16.0-rc\plus\libs-sources\
+* .google_apis\plus-v1r127lv1.16.0-rc\plus\libs-sources\google-api-client-1.16.0-rc-sources.jar
+* .google_apis\plus-v1r127lv1.16.0-rc\plus\libs-sources\google-api-client-android-1.16.0-rc-sources.jar
+* .google_apis\plus-v1r127lv1.16.0-rc\plus\libs-sources\google-http-client-1.16.0-rc-sources.jar
+* .google_apis\plus-v1r127lv1.16.0-rc\plus\libs-sources\google-http-client-android-1.16.0-rc-sources.jar
+* .google_apis\plus-v1r127lv1.16.0-rc\plus\libs-sources\google-http-client-gson-1.16.0-rc-sources.jar
+* .google_apis\plus-v1r127lv1.16.0-rc\plus\libs-sources\google-http-client-jackson-1.16.0-rc-sources.jar
+* .google_apis\plus-v1r127lv1.16.0-rc\plus\libs-sources\google-http-client-jackson2-1.16.0-rc-sources.jar
+* .google_apis\plus-v1r127lv1.16.0-rc\plus\libs-sources\google-oauth-client-1.16.0-rc-sources.jar
+* .google_apis\plus-v1r127lv1.16.0-rc\plus\libs-sources\gson-2.1-sources.jar
+* .google_apis\plus-v1r127lv1.16.0-rc\plus\libs-sources\jackson-core-2.1.3-sources.jar
+* .google_apis\plus-v1r127lv1.16.0-rc\plus\libs-sources\jackson-core-asl-1.9.11-sources.jar
+* .google_apis\plus-v1r127lv1.16.0-rc\plus\libs\
+* .google_apis\plus-v1r127lv1.16.0-rc\plus\libs\google-api-client-1.16.0-rc.jar
+* .google_apis\plus-v1r127lv1.16.0-rc\plus\libs\google-api-client-1.16.0-rc.jar.properties
+* .google_apis\plus-v1r127lv1.16.0-rc\plus\libs\google-api-client-android-1.16.0-rc.jar
+* .google_apis\plus-v1r127lv1.16.0-rc\plus\libs\google-api-client-android-1.16.0-rc.jar.properties
+* .google_apis\plus-v1r127lv1.16.0-rc\plus\libs\google-http-client-1.16.0-rc.jar
+* .google_apis\plus-v1r127lv1.16.0-rc\plus\libs\google-http-client-1.16.0-rc.jar.properties
+* .google_apis\plus-v1r127lv1.16.0-rc\plus\libs\google-http-client-android-1.16.0-rc.jar
+* .google_apis\plus-v1r127lv1.16.0-rc\plus\libs\google-http-client-android-1.16.0-rc.jar.properties
+* .google_apis\plus-v1r127lv1.16.0-rc\plus\libs\google-http-client-gson-1.16.0-rc.jar
+* .google_apis\plus-v1r127lv1.16.0-rc\plus\libs\google-http-client-gson-1.16.0-rc.jar.properties
+* .google_apis\plus-v1r127lv1.16.0-rc\plus\libs\google-http-client-jackson-1.16.0-rc.jar
+* .google_apis\plus-v1r127lv1.16.0-rc\plus\libs\google-http-client-jackson-1.16.0-rc.jar.properties
+* .google_apis\plus-v1r127lv1.16.0-rc\plus\libs\google-http-client-jackson2-1.16.0-rc.jar
+* .google_apis\plus-v1r127lv1.16.0-rc\plus\libs\google-http-client-jackson2-1.16.0-rc.jar.properties
+* .google_apis\plus-v1r127lv1.16.0-rc\plus\libs\google-oauth-client-1.16.0-rc.jar
+* .google_apis\plus-v1r127lv1.16.0-rc\plus\libs\google-oauth-client-1.16.0-rc.jar.properties
+* .google_apis\plus-v1r127lv1.16.0-rc\plus\libs\gson-2.1.jar
+* .google_apis\plus-v1r127lv1.16.0-rc\plus\libs\gson-2.1.jar.properties
+* .google_apis\plus-v1r127lv1.16.0-rc\plus\libs\jackson-core-2.1.3.jar
+* .google_apis\plus-v1r127lv1.16.0-rc\plus\libs\jackson-core-2.1.3.jar.properties
+* .google_apis\plus-v1r127lv1.16.0-rc\plus\libs\jackson-core-asl-1.9.11.jar
+* .google_apis\plus-v1r127lv1.16.0-rc\plus\libs\jackson-core-asl-1.9.11.jar.properties
+* .google_apis\plus-v1r127lv1.16.0-rc\plus\libs\jsr305-1.3.9.jar
+* .google_apis\plus-v1r127lv1.16.0-rc\plus\proguard-google-api-client.txt
+* .google_apis\plus-v1r127lv1.16.0-rc\plus\readme.html
+* google map debug kodas.txt
+* ic_launcher-web.png
+* location tracker tasks.txt
+
+Replaced Jars with Dependencies:
+--------------------------------
+The importer recognized the following .jar files as third party
+libraries and replaced them with Gradle dependencies instead. This has
+the advantage that more explicit version information is known, and the
+libraries can be updated automatically. However, it is possible that
+the .jar file in your project was of an older version than the
+dependency we picked, which could render the project not compileable.
+You can disable the jar replacement in the import wizard and try again:
+
+android-support-v4.jar => com.android.support:support-v4:+
+google-http-client-gson-1.16.0-rc.jar => com.google.http-client:google-http-client-gson:1.17.0-rc
+gson-2.1.jar => com.google.code.gson:gson:2.1
+
+Potentially Missing Dependency:
+-------------------------------
+When we replaced the following .jar files with a Gradle dependency, we
+inferred the dependency version number from the filename. This
+specific version may not actually be available from the repository.
+If you get a build error stating that the dependency is missing, edit
+the version number to for example "+" to pick up the latest version
+instead. (This may require you to update your code if the library APIs
+have changed.)
+
+gson-2.1.jar => version 2.1 in com.google.code.gson:gson:2.1
+
+Replaced Libraries with Dependencies:
+-------------------------------------
+The importer recognized the following library projects as third party
+libraries and replaced them with Gradle dependencies instead. This has
+the advantage that more explicit version information is known, and the
+libraries can be updated automatically. However, it is possible that
+the source files in your project were of an older version than the
+dependency we picked, which could render the project not compileable.
+You can disable the library replacement in the import wizard and try
+again:
+
+google-play-services_lib => [com.google.android.gms:play-services:+]
+
+Moved Files:
+------------
+Android Gradle projects use a different directory structure than ADT
+Eclipse projects. Here's how the projects were restructured:
+
+In FacebookSDK:
+* AndroidManifest.xml => facebookSDK\src\main\AndroidManifest.xml
+* libs\bolts.jar => facebookSDK\libs\bolts.jar
+* lint.xml => facebookSDK\lint.xml
+* res\ => facebookSDK\src\main\res\
+* src\ => facebookSDK\src\main\java\
+In Travelers Diary:
+* AndroidManifest.xml => travelersDiary\src\main\AndroidManifest.xml
+* assets\ => travelersDiary\src\main\assets\
+* libs\google-api-client-1.16.0-rc.jar => travelersDiary\libs\google-api-client-1.16.0-rc.jar
+* libs\google-api-client-android-1.16.0-rc.jar => travelersDiary\libs\google-api-client-android-1.16.0-rc.jar
+* libs\google-api-services-plus-v1-rev127-1.16.0-rc.jar => travelersDiary\libs\google-api-services-plus-v1-rev127-1.16.0-rc.jar
+* libs\google-http-client-1.16.0-rc.jar => travelersDiary\libs\google-http-client-1.16.0-rc.jar
+* libs\google-http-client-android-1.16.0-rc.jar => travelersDiary\libs\google-http-client-android-1.16.0-rc.jar
+* libs\google-http-client-jackson-1.16.0-rc.jar => travelersDiary\libs\google-http-client-jackson-1.16.0-rc.jar
+* libs\google-http-client-jackson2-1.16.0-rc.jar => travelersDiary\libs\google-http-client-jackson2-1.16.0-rc.jar
+* libs\google-oauth-client-1.16.0-rc.jar => travelersDiary\libs\google-oauth-client-1.16.0-rc.jar
+* libs\jackson-core-2.1.3.jar => travelersDiary\libs\jackson-core-2.1.3.jar
+* libs\jackson-core-asl-1.9.11.jar => travelersDiary\libs\jackson-core-asl-1.9.11.jar
+* libs\jsr305-1.3.9.jar => travelersDiary\libs\jsr305-1.3.9.jar
+* libs\ksoap2-android-assembly-2.4-jar-with-dependencies.jar => travelersDiary\libs\ksoap2-android-assembly-2.4-jar-with-dependencies.jar
+* libs\universal-image-loader-1.6.1-with-src.jar => travelersDiary\libs\universal-image-loader-1.6.1-with-src.jar
+* lint.xml => travelersDiary\lint.xml
+* proguard-google-api-client.txt => travelersDiary\proguard-google-api-client.txt
+* proguard-project.txt => travelersDiary\proguard-project.txt
+* res\ => travelersDiary\src\main\res\
+* src\ => travelersDiary\src\main\java\
+
+Next Steps:
+-----------
+You can now build the project. The Gradle project needs network
+connectivity to download dependencies.
+
+Bugs:
+-----
+If for some reason your project does not build, and you determine that
+it is due to a bug or limitation of the Eclipse to Gradle importer,
+please file a bug at http://b.android.com with category
+Component-Tools.
+
+(This import summary is for your information only, and can be deleted
+after import once you are satisfied with the results.)
