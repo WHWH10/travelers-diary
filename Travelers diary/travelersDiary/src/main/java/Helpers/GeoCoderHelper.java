@@ -1,6 +1,5 @@
 package Helpers;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
@@ -60,25 +59,8 @@ public class GeoCoderHelper extends AsyncTask<RouteItem, Void, RouteItem> {
     }
 
     private void saveData(RouteItem routeItem) {
-        ContentValues cv = new ContentValues();
-
-        Address address = routeItem.getAddress();
-
-        cv.put(DatabaseHandler.KEY_COUNTRY, address.getCountryName());
-        cv.put(DatabaseHandler.KEY_COUNTRY_CODE, address.getCountryCode());
-        cv.put(DatabaseHandler.KEY_ADMIN_AREA, address.getAdminArea());
-        cv.put(DatabaseHandler.KEY_THOROUGHFARE, address.getSubThoroughfare());
-        cv.put(DatabaseHandler.KEY_SUB_THOROUGHFARE, address.getSubThoroughfare());
-        cv.put(DatabaseHandler.KEY_POSTAL_CODE, address.getPostalCode());
-        cv.put(DatabaseHandler.KEY_FEATURE, address.getFeatureName());
-        cv.put(DatabaseHandler.KEY_LOCALITY, address.getLocality());
-        cv.put(DatabaseHandler.KEY_LOCALE, address.getLocale().getLanguage());
-        if(address.getMaxAddressLineIndex() > -1)
-            cv.put(DatabaseHandler.KEY_ADDRESS_LINE, address.getAddressLine(0));
-        cv.put(DatabaseHandler.KEY_IS_ADDRESS_UPDATED, 1);
-
         DatabaseHandler db = new DatabaseHandler(context);
-        db.updateRouteItem(cv, routeItem.getRouteItemId());
+        db.updateRouteItem(routeItem, true, true);
         db.close();
     }
 }

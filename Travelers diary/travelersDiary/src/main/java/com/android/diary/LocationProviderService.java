@@ -1,7 +1,5 @@
 package com.android.diary;
 
-import com.android.diary.R;
-
 import Helpers.ILocationListener;
 import Helpers.LocationHelper;
 import Helpers.MessageHelper;
@@ -125,7 +123,13 @@ public class LocationProviderService extends IntentService{
 				
 				public void locationFound(Location location) {
 					DatabaseHandler db = new DatabaseHandler(getApplicationContext());
-					db.addTrackPoint(routeId, location.getAltitude(), location.getLatitude(), location.getLongitude());
+
+                    RouteItem routeItem = new RouteItem(getResources().getConfiguration().locale);
+                    routeItem.setRouteId(routeId);
+                    routeItem.getAddress().setLatitude(location.getLatitude());
+                    routeItem.getAddress().setLongitude(location.getLongitude());
+                    db.insertRouteItem(routeItem);
+
 					db.close();
 				}
 			});
