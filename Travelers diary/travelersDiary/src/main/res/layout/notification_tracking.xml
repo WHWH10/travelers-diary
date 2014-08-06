@@ -23,7 +23,7 @@
         android:gravity="center_vertical"
         android:orientation="vertical"
         android:layout_toRightOf="@+id/notification_iconImgView"
-        android:layout_toLeftOf="@+id/notification_button" >
+        android:layout_toLeftOf="@+id/notificationLinearLayout" >
 
         <TextView
             android:id="@+id/notification_title"
@@ -38,14 +38,24 @@
             android:textAppearance="?android:attr/textAppearanceSmall" />
     </LinearLayout>
 
-    <ImageButton
-        android:id="@+id/notification_button"
+    <LinearLayout
+        android:id="@+id/notificationLinearLayout"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:paddingRight="2dp"
-        android:contentDescription="@string/app_name"
-        android:src="@android:drawable/ic_menu_close_clear_cancel"
-        android:background="?android:attr/selectableItemBackground"        
-        android:layout_alignParentRight="true" />
+        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:layout_alignParentRight="true">
+
+        <ImageButton
+            android:id="@+id/notification_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="2dp"
+            android:contentDescription="@string/app_name"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            android:background="?android:attr/selectableItemBackground"
+            android:layout_alignParentRight="true" />
+    </LinearLayout>
 
 </RelativeLayout>

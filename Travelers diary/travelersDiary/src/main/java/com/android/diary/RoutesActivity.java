@@ -61,9 +61,8 @@ public class RoutesActivity extends ListActivity {
         if (bundle != null) {
             if (bundle.getBoolean(KEY_CLOSE_APP)) {
                 if (isLocationProviderServiceRunning(this)) {
-                    Intent myService = new Intent(this, LocationProviderService.class);
-                    startService(myService);
-                    stopService(myService);
+                    Intent s = new Intent(LocationProviderService.ACTION_STOP_LOCATION_PROVIDER);
+                    startService(s);
                 }
 
                 finish();
@@ -71,7 +70,6 @@ public class RoutesActivity extends ListActivity {
         }
 
         startMainService();
-
         registerForContextMenu(listView);
     }
 
@@ -106,7 +104,6 @@ public class RoutesActivity extends ListActivity {
                 intent = new Intent(this, LogInActivity.class);
                 startActivity(intent);
                 break;
-
             default:
                 break;
         }
@@ -117,7 +114,6 @@ public class RoutesActivity extends ListActivity {
     public static boolean isMainServiceRunning(Context context) {
         ActivityManager manager = (ActivityManager) context.getSystemService(ACTIVITY_SERVICE);
         for (RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-
             if ("com.android.diary.MainService".equals(service.service.getClassName())) {
                 return true;
             }
@@ -128,7 +124,6 @@ public class RoutesActivity extends ListActivity {
     public static boolean isLocationProviderServiceRunning(Context context) {
         ActivityManager manager = (ActivityManager) context.getSystemService(ACTIVITY_SERVICE);
         for (RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-
             if ("com.android.diary.LocationProviderService".equals(service.service.getClassName())) {
                 return true;
             }
@@ -243,7 +238,7 @@ public class RoutesActivity extends ListActivity {
                 if (this.routes == null || this.routes.size() <= itemSelected)
                     break;
 
-                myService = new Intent(this, LocationProviderService.class);
+                myService = new Intent(LocationProviderService.ACTION_START_LOCATION_PROVIDER);
                 myService.putExtra(LocationProviderService.ROUTE_ID, this.routes.get(itemSelected).getRouteId());
                 startService(myService);
                 break;
@@ -252,9 +247,8 @@ public class RoutesActivity extends ListActivity {
                 if (isLocationProviderServiceRunning(this) && myService != null) {
                     stopService(myService);
                 } else {
-                    myService = new Intent(this, LocationProviderService.class);
+                    myService = new Intent(LocationProviderService.ACTION_STOP_LOCATION_PROVIDER);
                     startService(myService);
-                    stopService(myService);
                 }
                 break;
 

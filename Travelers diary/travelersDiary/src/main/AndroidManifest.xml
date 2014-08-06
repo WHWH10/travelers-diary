@@ -34,6 +34,12 @@
         <service
             android:name=".LocationProviderService"
             android:exported="false" >
+            <intent-filter>
+                <action android:name="com.android.diary.action.START_LOCATION_PROVIDER"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.android.diary.action.STOP_LOCATION_PROVIDER"/>
+            </intent-filter>
         </service>
         <service
             android:name=".MainService"
